@@ -1,0 +1,160 @@
+/**
+ * API 模块
+ * 按业务模块组织所有 API 接口
+ */
+import { get, post, setToken } from '@/utils/request'
+
+/**
+ * 认证相关 API
+ */
+export const authApi = {
+  // 登录
+  login: (data) => post('/auth/login', data),
+
+  // 获取用户信息
+  getUserInfo: () => get('/auth/userInfo'),
+
+  // 获取测试账号列表
+  getTestAccounts: () => get('/auth/testAccounts')
+}
+
+/**
+ * 首页相关 API
+ */
+export const homeApi = {
+  // 获取首页数据（轮播图、热榜、公告、导航等）
+  getData: () => get('/home/data')
+}
+
+/**
+ * 帖子相关 API
+ */
+export const postApi = {
+  // 获取帖子列表
+  getList: (params) => get('/post/list', params),
+
+  // 获取帖子详情
+  getDetail: (id) => get(`/post/detail/${id}`),
+
+  // 创建/更新帖子
+  saveOrUpdate: (data) => post('/post/saveOrUpdate', data),
+
+  // 点赞帖子
+  like: (id) => post(`/post/like/${id}`),
+
+  // 收藏帖子
+  collect: (id) => post(`/post/collect/${id}`)
+}
+
+/**
+ * 投票相关 API
+ */
+export const voteApi = {
+  // 获取投票列表
+  getList: (params) => get('/vote/list', params),
+
+  // 获取投票详情
+  getDetail: (id) => get(`/vote/detail/${id}`),
+
+  // 创建/更新投票
+  saveOrUpdate: (data) => post('/vote/saveOrUpdate', data),
+
+  // 提交投票
+  submit: (data) => post('/vote/submit', data)
+}
+
+/**
+ * 跑腿相关 API
+ */
+export const errandApi = {
+  // 获取跑腿列表
+  getList: (params) => get('/errand/list', params),
+
+  // 获取跑腿详情
+  getDetail: (id) => get(`/errand/detail/${id}`),
+
+  // 创建/更新跑腿任务
+  saveOrUpdate: (data) => post('/errand/saveOrUpdate', data),
+
+  // 接单
+  accept: (id) => post(`/errand/accept/${id}`),
+
+  // 完成订单
+  complete: (id) => post(`/errand/complete/${id}`)
+}
+
+/**
+ * 闲置相关 API
+ */
+export const idleApi = {
+  // 获取闲置列表
+  getList: (params) => get('/idle/list', params),
+
+  // 获取闲置详情
+  getDetail: (id) => get(`/idle/detail/${id}`),
+
+  // 创建/更新闲置商品
+  saveOrUpdate: (data) => post('/idle/saveOrUpdate', data),
+
+  // 想要商品
+  want: (id) => post(`/idle/want/${id}`)
+}
+
+/**
+ * 交友相关 API
+ */
+export const loveApi = {
+  // 获取交友列表
+  getList: (params) => get('/love/list', params),
+
+  // 获取交友详情
+  getDetail: (id) => get(`/love/detail/${id}`),
+
+  // 创建/更新交友信息
+  saveOrUpdate: (data) => post('/love/saveOrUpdate', data),
+
+  // 喜欢/取消喜欢
+  like: (id) => post(`/love/like/${id}`)
+}
+
+/**
+ * 互助拍卖相关 API
+ */
+export const helpApi = {
+  // 获取互助拍卖列表
+  getList: (params) => get('/help/list', params),
+
+  // 获取互助拍卖详情
+  getDetail: (id) => get(`/help/detail/${id}`),
+
+  // 创建/更新互助拍卖
+  saveOrUpdate: (data) => post('/help/saveOrUpdate', data),
+
+  // 出价
+  bid: (data) => post('/help/bid', data)
+}
+
+/**
+ * 消息相关 API
+ */
+export const messageApi = {
+  // 获取消息列表
+  getList: (params) => get('/message/list', params),
+
+  // 标记已读
+  markRead: (data) => post('/message/markRead', data)
+}
+
+/**
+ * 聊天相关 API
+ */
+export const chatApi = {
+  // 获取聊天记录
+  getList: (targetId, params) => get(`/chat/list/${targetId}`, params),
+
+  // 发送消息
+  send: (data) => post('/chat/send', data)
+}
+
+// 导出 setToken 供登录时使用
+export { setToken }

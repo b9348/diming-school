@@ -1,0 +1,225 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^dm-(.*)": "@/components/dm-$1/dm-$1.vue",
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "主页",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/help/index",
+      "style": {
+        "navigationBarTitleText": "互助",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/errand/index",
+      "style": {
+        "navigationBarTitleText": "跑腿",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/idle/index",
+      "style": {
+        "navigationBarTitleText": "闲置",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/message/index",
+      "style": {
+        "navigationBarTitleText": "消息",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/vote/index",
+      "style": {
+        "navigationBarTitleText": "投票",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/love/index",
+      "style": {
+        "navigationBarTitleText": "恋爱",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/post/detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/errand/detail",
+      "style": {
+        "navigationBarTitleText": "跑腿详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/idle/detail",
+      "style": {
+        "navigationBarTitleText": "闲置详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/vote/detail",
+      "style": {
+        "navigationBarTitleText": "投票详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/love/detail",
+      "style": {
+        "navigationBarTitleText": "个人详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/help/detail",
+      "style": {
+        "navigationBarTitleText": "互助详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/publish/post",
+      "style": {
+        "navigationBarTitleText": "发布帖子",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/publish/errand",
+      "style": {
+        "navigationBarTitleText": "发布跑腿",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/publish/idle",
+      "style": {
+        "navigationBarTitleText": "发布闲置",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/publish/vote",
+      "style": {
+        "navigationBarTitleText": "发布投票",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/publish/love",
+      "style": {
+        "navigationBarTitleText": "发布交友",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/profile",
+      "style": {
+        "navigationBarTitleText": "编辑资料",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/verify",
+      "style": {
+        "navigationBarTitleText": "身份认证",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/chat/index",
+      "style": {
+        "navigationBarTitleText": "聊天",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/wallet/index",
+      "style": {
+        "navigationBarTitleText": "收益中心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/feedback/index",
+      "style": {
+        "navigationBarTitleText": "意见反馈",
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "递明校园",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/help/index",
+        "text": "互助"
+      },
+      {
+        "pagePath": "pages/errand/index",
+        "text": "跑腿"
+      },
+      {
+        "pagePath": "pages/idle/index",
+        "text": "闲置"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我"
+      }
+    ]
+  }
+}
