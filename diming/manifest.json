@@ -1,5 +1,5 @@
 {
-    "name" : "递明校园",
+    "name" : "地鸣校园",
     "appid" : "__UNI__DIMING",
     "description" : "校园综合社交生活服务平台",
     "versionName" : "1.0.0",
@@ -67,5 +67,6 @@
         "router" : {
             "mode" : "hash"
         }
-    }
+    },
+    "fallbackLocale" : "zh-Hans"
 }

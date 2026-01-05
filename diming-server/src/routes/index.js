@@ -13,6 +13,23 @@ const loveController = require('../controllers/loveController')
 const helpController = require('../controllers/helpController')
 const messageController = require('../controllers/messageController')
 
+// 管理后台控制器
+const adminController = require('../controllers/adminController')
+const adminUserController = require('../controllers/adminUserController')
+const adminContentController = require('../controllers/adminContentController')
+const adminReportController = require('../controllers/adminReportController')
+const adminSensitiveController = require('../controllers/adminSensitiveController')
+const adminAIConfigController = require('../controllers/adminAIConfigController')
+const adminTradeController = require('../controllers/adminTradeController')
+const adminDisputeController = require('../controllers/adminDisputeController')
+const adminRefundController = require('../controllers/adminRefundController')
+const adminFundController = require('../controllers/adminFundController')
+const adminStatisticsController = require('../controllers/adminStatisticsController')
+const adminRoleController = require('../controllers/adminRoleController')
+const adminSystemController = require('../controllers/adminSystemController')
+const adminNoticeController = require('../controllers/adminNoticeController')
+const adminVersionController = require('../controllers/adminVersionController')
+
 // 健康检查
 router.get('/health', (req, res) => {
   successResponse(res, { status: 'ok' }, '服务正常')
@@ -69,5 +86,73 @@ router.get('/message/list', messageController.getList)
 router.get('/chat/list/:targetId', messageController.getChatList)
 router.post('/chat/send', messageController.send)
 router.post('/message/markRead', messageController.markRead)
+
+// ==================== 管理后台 ====================
+// 管理员认证
+router.post('/admin/login', adminController.login)
+router.get('/admin/userInfo', adminController.getUserInfo)
+router.post('/admin/logout', adminController.logout)
+
+// 用户管理
+router.get('/admin/user/list', adminUserController.getList)
+router.get('/admin/user/detail/:id', adminUserController.getDetail)
+router.post('/admin/user/ban/:id', adminUserController.ban)
+router.post('/admin/user/unban/:id', adminUserController.unban)
+router.get('/admin/user/verify/list', adminUserController.getVerifyList)
+router.post('/admin/user/verify/approve/:id', adminUserController.approveVerify)
+router.post('/admin/user/verify/reject/:id', adminUserController.rejectVerify)
+
+// 内容管理
+router.get('/admin/content/audit/list', adminContentController.getAuditList)
+router.post('/admin/content/approve/:id', adminContentController.approve)
+router.post('/admin/content/reject/:id', adminContentController.reject)
+router.delete('/admin/content/:id', adminContentController.delete)
+
+// 举报管理
+router.get('/admin/report/list', adminReportController.getList)
+router.post('/admin/report/handle/:id', adminReportController.handle)
+
+// 敏感词管理
+router.get('/admin/sensitive/list', adminSensitiveController.getList)
+router.post('/admin/sensitive/add', adminSensitiveController.add)
+router.put('/admin/sensitive/:id', adminSensitiveController.update)
+router.delete('/admin/sensitive/:id', adminSensitiveController.delete)
+router.post('/admin/sensitive/batch', adminSensitiveController.batchAdd)
+
+// AI审核配置
+router.get('/admin/ai-config', adminAIConfigController.getConfig)
+router.post('/admin/ai-config', adminAIConfigController.saveConfig)
+router.post('/admin/ai-config/test', adminAIConfigController.testConfig)
+
+// 交易管理
+router.get('/admin/order/list', adminTradeController.getOrderList)
+router.get('/admin/order/detail/:id', adminTradeController.getOrderDetail)
+router.get('/admin/dispute/list', adminDisputeController.getDisputeList)
+router.post('/admin/dispute/handle/:id', adminDisputeController.handleDispute)
+router.get('/admin/refund/list', adminRefundController.getRefundList)
+router.post('/admin/refund/approve/:id', adminRefundController.approveRefund)
+router.post('/admin/refund/reject/:id', adminRefundController.rejectRefund)
+router.get('/admin/fund/flow', adminFundController.getFundFlow)
+
+// 数据统计
+router.get('/admin/statistics/dashboard', adminStatisticsController.getDashboard)
+router.get('/admin/statistics/user-growth', adminStatisticsController.getUserGrowth)
+router.get('/admin/statistics/active', adminStatisticsController.getActiveData)
+router.get('/admin/statistics/trade', adminStatisticsController.getTradeData)
+router.get('/admin/statistics/income', adminStatisticsController.getIncomeData)
+
+// 系统设置
+router.get('/admin/role/list', adminRoleController.getRoleList)
+router.get('/admin/permission/list', adminRoleController.getPermissions)
+router.put('/admin/role/:id', adminRoleController.updateRole)
+router.get('/admin/system/config', adminSystemController.getConfig)
+router.post('/admin/system/config', adminSystemController.saveConfig)
+router.get('/admin/notice/list', adminNoticeController.getList)
+router.post('/admin/notice', adminNoticeController.add)
+router.put('/admin/notice/:id', adminNoticeController.update)
+router.delete('/admin/notice/:id', adminNoticeController.delete)
+router.get('/admin/version/list', adminVersionController.getList)
+router.post('/admin/version', adminVersionController.add)
+router.put('/admin/version/:id', adminVersionController.update)
 
 module.exports = router

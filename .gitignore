@@ -1,3 +1,5 @@
 diming/unpackage
 diming/node_modules
 diming-server/node_modules
+diming-manage/node_modules
+claude --dangerously-skip-permissions
