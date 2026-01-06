@@ -4,58 +4,66 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目说明
 
-递明校园（diming-school）是一个校园多社区综合平台，采用前后端分离架构：
-- **前端 (diming/)**: UniApp 跨平台应用，支持微信小程序、H5、APP
-- **后端 (diming-server/)**: Express.js Node.js API 服务
+递明校园（diming-school）是一个校园多社区综合平台，采用前后端分离架构，包含三个子项目：
+
+| 子项目 | 技术栈 | 说明 |
+|--------|--------|------|
+| **diming/** | UniApp (Vue 3) | 前端小程序/H5/APP |
+| **diming-server/** | Express.js | 后端 API 服务 (端口 5102) |
+| **diming-manage/** | Vue 3 + Element Plus + Vite | 后台管理系统 (端口 5173) |
 
 ## 开发命令
 
 ```bash
-# 后端开发（带热重载）
+# 后端服务（带热重载）
 cd diming-server && pnpm dev
 
-# 后端生产启动
-cd diming-server && pnpm start
+# 后台管理系统
+cd diming-manage && pnpm dev
 
-# 前端依赖安装
-cd diming && pnpm install
+# 后台管理系统构建
+cd diming-manage && pnpm build
 
-# 前端开发需使用 HBuilder 编译运行
+# 前端小程序需使用 HBuilder 编译运行
 ```
 
 ## 代码架构
 
-### 前端结构 (diming/)
+### 前端小程序 (diming/)
 ```
-pages/          # 页面组件（按功能模块划分）
-  ├── index/    # 首页动态
-  ├── post/     # 帖子/动态
-  ├── vote/     # 投票
-  ├── errand/   # 跑腿任务
-  ├── idle/     # 闲置交易
-  ├── love/     # 交友
-  ├── help/     # 互助拍卖
-  ├── message/  # 消息
-  ├── chat/     # 聊天
-  └── mine/     # 个人中心
-components/     # 可复用组件（dm-* 前缀）
-api/index.js    # API 服务层（所有接口定义）
-utils/
-  ├── request.js  # HTTP 请求封装（自动token注入、错误处理）
-  └── admin.js    # 管理员权限系统
-store/user.js   # 用户状态管理
-pages.json      # 路由配置
+pages/           # 页面（index/post/vote/errand/idle/love/help/message/chat/mine）
+components/      # 可复用组件（dm-* 前缀）
+api/index.js     # API 接口定义
+utils/request.js # 请求封装（token: access_token）
+store/user.js    # 用户状态管理
+pages.json       # 路由配置
 ```
 
-### 后端结构 (diming-server/)
+### 后端服务 (diming-server/)
 ```
 src/
-  ├── app.js           # Express 应用入口
-  ├── config/index.js  # 配置（端口5102）
-  ├── routes/index.js  # 所有路由注册
-  ├── controllers/     # 控制器（业务逻辑）
-  ├── middlewares/     # 中间件（auth、errorHandler）
-  └── utils/response.js # 响应格式化
+├── app.js              # 应用入口
+├── config/index.js     # 配置
+├── routes/index.js     # 路由注册
+├── controllers/        # 控制器（含 admin* 后台管理接口）
+├── middlewares/        # auth、errorHandler
+└── utils/response.js   # 响应格式化
+```
+
+### 后台管理系统 (diming-manage/)
+```
+src/
+├── api/index.js        # API 接口（所有 /admin/* 路由）
+├── utils/request.js    # 请求封装（token: admin_token）
+├── router/index.js     # 路由配置（含路由守卫）
+├── store/user.js       # 管理员状态
+├── layouts/            # 布局组件
+└── views/              # 页面视图
+    ├── user/           # 用户管理（列表、实名审核）
+    ├── content/        # 内容管理（审核、举报、敏感词、AI配置）
+    ├── trade/          # 交易管理（订单、纠纷、退款、资金流水）
+    ├── statistics/     # 数据统计（Dashboard、用户增长、活跃度、交易、收入）
+    └── system/         # 系统设置（权限、配置、公告、版本）
 ```
 
 ## 关键约定
@@ -65,35 +73,30 @@ src/
 { code: 200, message: "success", data: {...} }
 ```
 
+### Token 存储差异
+- 小程序端：`localStorage.access_token`
+- 后台管理：`localStorage.admin_token`
+
 ### 管理员角色层级
-1. SUPER_ADMIN（总管理员）
-2. PLATFORM_ADMIN（平台管理员）
-3. PLATFORM_SUB_ADMIN（平台分管理员）
-4. FORUM_ADMIN（分管理员）
-5. SUB_ADMIN（子管理员）
-6. NONE（普通用户）
+SUPER_ADMIN > PLATFORM_ADMIN > PLATFORM_SUB_ADMIN > FORUM_ADMIN > SUB_ADMIN > NONE
 
-### 前端请求拦截器
-- 自动注入 Bearer token（从 localStorage 读取 `access_token`）
-- 401 响应自动跳转登录页
-- 统一错误提示处理
-
-### 多平台 API 地址
-- H5: 使用 `/api` 代理到 `localhost:5102`
-- 小程序/APP: 直接使用完整 URL `http://localhost:5102/api`
+### API 代理配置
+- 后台管理 (Vite): `/api` → `localhost:5102`
+- 小程序 H5: `/api` → `localhost:5102`
+- 小程序/APP: 直接使用完整 URL
 
 ## 重要文件
 
 | 文件 | 作用 |
 |------|------|
-| `diming/api/index.js` | 所有前端 API 接口定义 |
-| `diming/utils/request.js` | HTTP 请求封装与拦截器 |
-| `diming-server/src/routes/index.js` | 所有后端路由注册 |
-| `diming/pages.json` | 前端页面路由配置 |
+| `diming/api/index.js` | 小程序 API 接口 |
+| `diming-manage/src/api/index.js` | 后台管理 API 接口 |
+| `diming-server/src/routes/index.js` | 后端路由注册 |
+| `diming-server/src/controllers/admin*.js` | 后台管理控制器 |
 
 ## 注意事项
 
 - 中文对话
 - 测试文件测试完后自动删除
 - 不要伪造任何简单的过程来代替原本的流程
-- 不要使用模拟和伪造的数据来糊弄
+- 不要使用模拟和伪造的数据

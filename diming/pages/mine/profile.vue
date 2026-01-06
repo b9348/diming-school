@@ -1,15 +1,13 @@
 <template>
   <view class="page-container">
-    <!-- 自定义导航栏 -->
-    <view class="navbar" :style="{ paddingTop: statusBarHeight + 'px' }">
-      <view class="navbar-inner">
-        <view class="navbar-left" @click="goBack">
+    <!-- 导航栏 -->
+    <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
+      <view class="nav-content">
+        <view class="nav-back" @click="goBack">
           <uni-icons type="left" size="18" color="#333333"></uni-icons>
         </view>
-        <text class="navbar-title">编辑资料</text>
-        <view class="navbar-right" @click="saveProfile">
-          <text class="save-text">保存</text>
-        </view>
+        <text class="nav-title">编辑资料</text>
+        <view class="nav-placeholder"></view>
       </view>
     </view>
 
@@ -101,6 +99,9 @@
           />
         </view>
       </view>
+
+      <!-- 保存按钮 -->
+      <view class="save-btn" @click="saveProfile">保存</view>
     </scroll-view>
 
     <!-- 性别选择器 -->
@@ -236,37 +237,17 @@ export default {
   background-color: #F8F8F8;
 }
 
-.navbar {
+.nav-bar {
   background-color: #FFFFFF;
-  border-bottom: 1rpx solid #EEEEEE;
-
-  .navbar-inner {
-    height: 88rpx;
+  .nav-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 88rpx;
     padding: 0 24rpx;
-
-    .navbar-left, .navbar-right {
-      width: 120rpx;
-    }
-
-    .navbar-title {
-      flex: 1;
-      text-align: center;
-      font-size: 32rpx;
-      color: #333333;
-      font-weight: 600;
-    }
-
-    .navbar-right {
-      text-align: right;
-
-      .save-text {
-        font-size: 28rpx;
-        color: #007AFF;
-      }
-    }
+    .nav-back { padding: 10rpx; }
+    .nav-title { font-size: 34rpx; color: #333333; font-weight: 600; }
+    .nav-placeholder { width: 40rpx; }
   }
 }
 
@@ -292,18 +273,16 @@ export default {
   .item-label {
     font-size: 30rpx;
     color: #333333;
-    margin-bottom: 0;
+    flex-shrink: 0;
   }
 
   .item-right {
     display: flex;
     align-items: center;
-    flex: 1;
-    margin-left: 24rpx;
+    gap: 8rpx;
 
     &.full-width {
       width: 100%;
-      margin-left: 0;
       margin-top: 20rpx;
     }
 
@@ -311,7 +290,6 @@ export default {
       width: 100rpx;
       height: 100rpx;
       border-radius: 50%;
-      margin-right: 16rpx;
     }
 
     .item-input {
@@ -319,6 +297,7 @@ export default {
       font-size: 28rpx;
       color: #333333;
       text-align: right;
+      min-width: 200rpx;
     }
 
     .item-textarea {
@@ -331,15 +310,28 @@ export default {
 
     .item-value {
       font-size: 28rpx;
-      color: #666666;
-      margin-right: 12rpx;
+      color: #999999;
     }
 
     .picker-view {
       display: flex;
       align-items: center;
+      gap: 8rpx;
     }
   }
+}
+
+.save-btn {
+  margin: 40rpx 24rpx;
+  height: 88rpx;
+  background-color: #007AFF;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #FFFFFF;
+  font-weight: 600;
 }
 
 .gender-picker {

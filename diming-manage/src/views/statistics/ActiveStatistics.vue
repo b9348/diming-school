@@ -4,7 +4,14 @@
       <template #header>
         <div class="card-header">
           <span>活跃度分析</span>
-          <el-date-picker v-model="dateRange" type="daterange" start-placeholder="开始" end-placeholder="结束" @change="fetchData" />
+          <div class="filter-group">
+            <el-select v-model="searchForm.school" placeholder="选择学校" clearable @change="fetchData">
+              <el-option label="全部学校" value="" />
+              <el-option label="示例大学" value="示例大学" />
+              <el-option label="测试学院" value="测试学院" />
+            </el-select>
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始" end-placeholder="结束" value-format="YYYY-MM-DD" @change="fetchData" />
+          </div>
         </div>
       </template>
 
@@ -36,7 +43,7 @@ import { statisticsApi } from '@/api'
 
 const dauChartRef = ref()
 const retentionChartRef = ref()
-const dateRange = ref(null)
+const searchForm = reactive({ school: '', dateRange: null })
 let dauChart, retentionChart
 
 const stats = reactive([
@@ -47,7 +54,7 @@ const stats = reactive([
 ])
 
 const fetchData = async () => {
-  const res = await statisticsApi.getActiveData({ dateRange: dateRange.value })
+  const res = await statisticsApi.getActiveData({ school: searchForm.school, dateRange: searchForm.dateRange })
   if (res.code === 200) {
     const d = res.data
     stats[0].value = d.dau
@@ -87,7 +94,9 @@ onUnmounted(() => { dauChart?.dispose(); retentionChart?.dispose() })
 </script>
 
 <style scoped>
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.filter-group .el-select { width: 140px; }
 .stat-row { margin-bottom: 20px; }
 .stat-item { text-align: center; padding: 20px; background: #f5f7fa; border-radius: 8px; }
 .stat-value { font-size: 28px; font-weight: bold; color: #67c23a; }

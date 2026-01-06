@@ -1,20 +1,37 @@
 const { successResponse, errorResponse } = require('../utils/response')
 
+// 生成评论预览数据
+const generateCommentPreview = (index) => {
+  const comments = [
+    { avatar: 'https://iph.href.lu/100x100?text=头像', content: '最热评论，显示该评论前20字' },
+    { avatar: 'https://iph.href.lu/100x100?text=头像', content: '最新评论，显示该评论的前20字' },
+    { avatar: 'https://iph.href.lu/100x100?text=头像', content: '次最新评论，显示该评论前20字' }
+  ]
+  // 部分帖子不显示评论预览
+  if (index % 4 === 3) return []
+  return comments.slice(0, (index % 3) + 1)
+}
+
 // 生成帖子列表数据
 const generatePostList = (page, pageSize, tab) => {
   const startId = (page - 1) * pageSize
+  const titles = ['头衔', '学长', '学姐', '校友', '']
+
   return Array(pageSize).fill(null).map((_, i) => ({
     id: startId + i + 1,
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: ['张三', '李四', '王五', '赵六', '钱七'][i % 5],
+    title: titles[i % 5],
     time: ['2分钟前', '5分钟前', '10分钟前', '30分钟前', '1小时前'][i % 5],
-    tag: i === 0 ? '置顶' : (i === 1 ? '精华' : ''),
-    content: '今天天气很好，校园里的花都开了，和室友一起去图书馆自习，然后在食堂吃了顿好吃的，感觉生活真美好！大家也来分享一下今天发生的开心事吧～',
+    isTop: i === 0,
+    content: '今天天气很好，测试文本的代价弟弟得到好的好的环境的基督教弟弟弟弟等级地方法的那段艰难的大家都降低看到，这里显示帖子里的文字前200字',
     images: i % 3 === 0 ? [] : [
       'https://iph.href.lu/400x300?text=图片1',
       'https://iph.href.lu/400x300?text=图片2',
       'https://iph.href.lu/400x300?text=图片3'
     ].slice(0, (i % 3) + 1),
+    comments: generateCommentPreview(i),
+    viewCount: Math.floor(Math.random() * 900) + 100,
     location: ['闵行校区', '徐汇校区', '海定校区', '杨浦校区'][i % 4],
     likeCount: Math.floor(Math.random() * 100) + 10,
     commentCount: Math.floor(Math.random() * 50) + 5,
@@ -48,12 +65,15 @@ const getDetail = (req, res) => {
     id: parseInt(id),
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: '张三',
+    title: '头衔',
     time: '2分钟前',
+    isTop: true,
     content: '今天天气很好，测试文本的代价弟弟得到好的好的环境的基督教弟弟弟弟等级地方法的那段艰难的大家都降低看到，这里显示帖子里的文字前200字',
     images: [
       'https://iph.href.lu/400x300?text=图片1',
       'https://iph.href.lu/400x300?text=图片2'
     ],
+    viewCount: 888,
     location: '闵行校区',
     likeCount: 77,
     commentCount: 95,
@@ -67,7 +87,7 @@ const getDetail = (req, res) => {
       id: '123456',
       nickname: '张三',
       isBanned: false,
-      title: '',
+      title: '头衔',
       isAdmin: false
     },
     // 评论列表

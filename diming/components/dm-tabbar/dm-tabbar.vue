@@ -133,19 +133,9 @@ export default {
       const currentPage = pages[pages.length - 1]
       const route = '/' + currentPage.route
 
-      // 如果在主页，检查当前选中的tab
+      // 如果在主页，弹出发布选择器
       if (route === '/pages/index/index') {
-        const globalData = getApp().globalData || {}
-        const currentTab = globalData.currentIndexTab || '最新'
-
-        // 根据主页当前tab决定发布类型
-        const tabPublishMap = {
-          '投票': '/pages/publish/vote',
-          '恋爱': '/pages/publish/love'
-        }
-
-        const publishUrl = tabPublishMap[currentTab] || '/pages/publish/post'
-        uni.navigateTo({ url: publishUrl })
+        this.showPublishMenu()
         return
       }
 

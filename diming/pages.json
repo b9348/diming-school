@@ -22,6 +22,13 @@
       }
     },
     {
+      "path": "pages/search/index",
+      "style": {
+        "navigationBarTitleText": "搜索",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/help/index",
       "style": {
         "navigationBarTitleText": "互助",
@@ -179,6 +186,62 @@
       "path": "pages/mine/feedback/index",
       "style": {
         "navigationBarTitleText": "意见反馈",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/posts",
+      "style": {
+        "navigationBarTitleText": "我的帖子",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/collect",
+      "style": {
+        "navigationBarTitleText": "我的收藏",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/history",
+      "style": {
+        "navigationBarTitleText": "浏览历史",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/orders",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/service",
+      "style": {
+        "navigationBarTitleText": "客服中心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/notification",
+      "style": {
+        "navigationBarTitleText": "消息通知",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/privacy",
+      "style": {
+        "navigationBarTitleText": "隐私设置",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/setting",
+      "style": {
+        "navigationBarTitleText": "设置",
         "navigationStyle": "custom"
       }
     }

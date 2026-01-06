@@ -12,6 +12,8 @@ const idleController = require('../controllers/idleController')
 const loveController = require('../controllers/loveController')
 const helpController = require('../controllers/helpController')
 const messageController = require('../controllers/messageController')
+const searchController = require('../controllers/searchController')
+const userController = require('../controllers/userController')
 
 // 管理后台控制器
 const adminController = require('../controllers/adminController')
@@ -43,6 +45,9 @@ router.get('/auth/testAccounts', authController.getTestAccounts)
 // ==================== 首页 ====================
 router.get('/home/data', homeController.getData)
 
+// ==================== 搜索 ====================
+router.get('/search', searchController.search)
+
 // ==================== 帖子 ====================
 router.get('/post/list', postController.getList)
 router.get('/post/detail/:id', postController.getDetail)
@@ -68,6 +73,7 @@ router.get('/idle/list', idleController.getList)
 router.get('/idle/detail/:id', idleController.getDetail)
 router.post('/idle/saveOrUpdate', idleController.saveOrUpdate)
 router.post('/idle/want/:id', idleController.want)
+router.post('/idle/setTop/:id', idleController.setTop)
 
 // ==================== 交友 ====================
 router.get('/love/list', loveController.getList)
@@ -86,6 +92,40 @@ router.get('/message/list', messageController.getList)
 router.get('/chat/list/:targetId', messageController.getChatList)
 router.post('/chat/send', messageController.send)
 router.post('/message/markRead', messageController.markRead)
+
+// ==================== 用户中心 ====================
+// 我的帖子
+router.get('/user/posts', userController.getMyPosts)
+router.post('/user/posts/:id/delete', userController.deletePost)
+
+// 我的收藏
+router.get('/user/collects', userController.getCollects)
+router.post('/user/collects/cancel', userController.cancelCollects)
+
+// 浏览历史
+router.get('/user/history', userController.getHistory)
+router.post('/user/history/:id/delete', userController.deleteHistory)
+router.post('/user/history/clear', userController.clearHistory)
+
+// 我的订单
+router.get('/user/orders', userController.getOrders)
+router.post('/user/orders/:id/cancel', userController.cancelOrder)
+router.post('/user/orders/:id/confirm', userController.confirmOrder)
+router.post('/user/orders/:id/delete', userController.deleteOrder)
+
+// 消息通知
+router.get('/user/notifications', userController.getNotifications)
+router.post('/user/notifications/:id/read', userController.markNotificationRead)
+router.post('/user/notifications/read-all', userController.markAllNotificationsRead)
+
+// 设置
+router.get('/user/settings', userController.getSettings)
+router.post('/user/settings/update', userController.updateSetting)
+
+// 隐私设置
+router.get('/user/privacy', userController.getPrivacySettings)
+router.post('/user/privacy/update', userController.updatePrivacySetting)
+router.post('/user/data/download', userController.requestDataDownload)
 
 // ==================== 管理后台 ====================
 // 管理员认证

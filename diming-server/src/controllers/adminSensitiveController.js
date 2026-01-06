@@ -3,7 +3,8 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取敏感词列表
 exports.getList = async (req, res) => {
   try {
-    const { page = 1, keyword, category } = req.query
+    const { page = 1, keyword, category, dateRange } = req.query
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按添加时间筛选
 
     const list = Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,

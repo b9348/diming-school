@@ -6,6 +6,12 @@
       </template>
 
       <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="举报人">
+          <el-input v-model="searchForm.reporter" placeholder="请输入举报人" clearable />
+        </el-form-item>
+        <el-form-item label="被举报人">
+          <el-input v-model="searchForm.reported" placeholder="请输入被举报人" clearable />
+        </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择" clearable>
             <el-option label="待处理" value="pending" />
@@ -18,6 +24,9 @@
             <el-option label="用户行为" value="user" />
             <el-option label="交易纠纷" value="trade" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="举报时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -64,15 +73,15 @@
       <el-form :model="processForm" label-width="100px">
         <el-form-item label="处理结果">
           <el-radio-group v-model="processForm.result">
-            <el-radio value="valid">举报有效</el-radio>
-            <el-radio value="invalid">举报无效</el-radio>
+            <el-radio label="valid">举报有效</el-radio>
+            <el-radio label="invalid">举报无效</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="处理措施" v-if="processForm.result === 'valid'">
           <el-checkbox-group v-model="processForm.actions">
-            <el-checkbox value="delete">删除内容</el-checkbox>
-            <el-checkbox value="warn">警告用户</el-checkbox>
-            <el-checkbox value="ban">封禁用户</el-checkbox>
+            <el-checkbox label="delete">删除内容</el-checkbox>
+            <el-checkbox label="warn">警告用户</el-checkbox>
+            <el-checkbox label="ban">封禁用户</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="处理说明">
@@ -98,7 +107,7 @@ const processVisible = ref(false)
 const currentRow = ref(null)
 
 const typeText = { content: '违规内容', user: '用户行为', trade: '交易纠纷' }
-const searchForm = reactive({ status: 'pending', type: '' })
+const searchForm = reactive({ reporter: '', reported: '', status: 'pending', type: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 const processForm = reactive({ result: 'valid', actions: [], remark: '' })
 
@@ -140,5 +149,6 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

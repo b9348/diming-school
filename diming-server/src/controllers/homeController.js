@@ -26,12 +26,28 @@ const getData = (req, res) => {
       { id: 4, title: '图书馆自习室预约攻略，期末必看' },
       { id: 5, title: '校园跑步打卡活动开始啦，一起运动吧' }
     ],
-    // 公告
-    noticeList: [
-      { id: 1, tag: '公告', content: '欢迎使用递明校园，这是一个专属于大学生的社交生活服务平台' },
-      { id: 2, tag: '活动', content: '校园歌手大赛正在火热报名中，快来展示你的才艺吧' },
-      { id: 3, tag: '推荐', content: '新用户专享：首次发布帖子可获得积分奖励' }
-    ],
+    // 公告信息（显示前50字，蓝色标签+蓝色下划线）
+    noticeInfo: {
+      id: 1,
+      type: 'notice',
+      content: '欢迎使用递明校园，这是一个专属于大学生的社交生活服务平台，在这里你可以发现更多精彩内容',
+      url: '/pages/notice/detail?id=1'
+    },
+    // 活动信息（显示前50字）
+    activityInfo: {
+      id: 2,
+      type: 'activity',
+      content: '校园歌手大赛正在火热报名中，快来展示你的才艺吧，丰厚奖品等你来拿',
+      url: '/pages/activity/detail?id=2'
+    },
+    // 推荐信息（标签可自定义，显示前50字）
+    recommendInfo: {
+      id: 3,
+      type: 'recommend',
+      tag: '推荐',  // 可自定义标签，如：热门、精选、新人福利等
+      content: '新用户专享：首次发布帖子可获得积分奖励，快来参与吧',
+      url: '/pages/recommend/detail?id=3'
+    },
     // 内容分类
     tabList: ['最新', '树洞', '失物招领', '投票', '恋爱', '互助群']
   }

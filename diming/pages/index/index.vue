@@ -41,8 +41,24 @@
         </swiper>
       </view>
 
-      <!-- 公告栏 -->
-      <dm-notice :list="noticeList" @click="handleNoticeClick" />
+      <!-- 公告/活动/推荐 -->
+      <view class="info-section" v-if="noticeInfo || activityInfo || recommendInfo">
+        <view class="info-item notice-item" v-if="noticeInfo" @click="handleInfoClick(noticeInfo)">
+          <text class="info-tag notice-tag">公告</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ noticeInfo.content }}</text>
+        </view>
+        <view class="info-item activity-item" v-if="activityInfo" @click="handleInfoClick(activityInfo)">
+          <text class="info-tag activity-tag">活动</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ activityInfo.content }}</text>
+        </view>
+        <view class="info-item recommend-item" v-if="recommendInfo" @click="handleInfoClick(recommendInfo)">
+          <text class="info-tag recommend-tag">{{ recommendInfo.tag || '推荐' }}</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ recommendInfo.content }}</text>
+        </view>
+      </view>
 
       <!-- 内容分类Tabs -->
       <dm-tabs :list="tabList" :current="currentTab" @change="handleTabChange" />
@@ -85,7 +101,9 @@ export default {
       bannerList: [],
       navList: [],
       hotList: [],
-      noticeList: [],
+      noticeInfo: null,
+      activityInfo: null,
+      recommendInfo: null,
       tabList: [],
       postList: []
     }
@@ -108,7 +126,9 @@ export default {
       this.bannerList = data.bannerList || []
       this.navList = data.navList || []
       this.hotList = data.hotList || []
-      this.noticeList = data.noticeList || []
+      this.noticeInfo = data.noticeInfo || null
+      this.activityInfo = data.activityInfo || null
+      this.recommendInfo = data.recommendInfo || null
       this.tabList = data.tabList || ['最新']
 
       // 初始化全局tab状态
@@ -154,8 +174,12 @@ export default {
     goNavMore() {
       uni.showToast({ title: '更多分类', icon: 'none' })
     },
-    handleNoticeClick({ item, index }) {
-      uni.showToast({ title: item.content, icon: 'none' })
+    handleInfoClick(item) {
+      if (item.url) {
+        uni.navigateTo({ url: item.url })
+      } else {
+        uni.showToast({ title: item.content, icon: 'none' })
+      }
     },
     handleTabChange(index) {
       this.currentTab = index
@@ -245,6 +269,61 @@ export default {
         font-size: 26rpx;
         color: #333333;
       }
+    }
+  }
+}
+
+.info-section {
+  margin: 0 24rpx 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 20rpx 20rpx;
+    position: relative;
+
+    &.notice-item {
+      border-bottom: 2rpx solid #007AFF;
+    }
+
+    &.activity-item {
+      border-bottom: 1rpx solid #F5F5F5;
+    }
+
+    &.recommend-item {
+      // 最后一项无边框
+    }
+
+    .info-tag {
+      flex-shrink: 0;
+      font-size: 26rpx;
+      font-weight: 500;
+
+      &.notice-tag {
+        color: #007AFF;
+      }
+
+      &.activity-tag {
+        color: #333333;
+      }
+
+      &.recommend-tag {
+        color: #333333;
+      }
+    }
+
+    .info-divider {
+      margin: 0 16rpx;
+      color: #CCCCCC;
+      font-size: 26rpx;
+    }
+
+    .info-text {
+      flex: 1;
+      font-size: 26rpx;
+      color: #666666;
     }
   }
 }

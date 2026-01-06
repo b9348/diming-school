@@ -24,6 +24,9 @@
             <el-option label="其他" value="other" />
           </el-select>
         </el-form-item>
+        <el-form-item label="添加时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
         </el-form-item>
@@ -132,7 +135,7 @@ const categoryText = { political: '政治敏感', porn: '色情低俗', violence
 const levelText = { 1: '低', 2: '中', 3: '高' }
 const levelType = { 1: 'info', 2: 'warning', 3: 'danger' }
 
-const searchForm = reactive({ keyword: '', category: '' })
+const searchForm = reactive({ keyword: '', category: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 const form = reactive({ id: null, word: '', category: 'other', level: 2, replacement: '' })
 const batchForm = reactive({ category: 'other', words: '' })
@@ -204,5 +207,6 @@ onMounted(() => fetchData())
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

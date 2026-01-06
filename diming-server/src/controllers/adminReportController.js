@@ -3,7 +3,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取举报列表
 exports.getList = async (req, res) => {
   try {
-    const { page = 1, status = 'pending', type } = req.query
+    const { page = 1, reporter, reported, status = 'pending', type, dateRange } = req.query
+    // reporter: 举报人, reported: 被举报人
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按举报时间筛选
 
     const list = Array.from({ length: 8 }, (_, i) => ({
       id: i + 1,

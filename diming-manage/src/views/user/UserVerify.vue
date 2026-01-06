@@ -6,12 +6,18 @@
       </template>
 
       <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable />
+        </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择" clearable>
             <el-option label="待审核" value="pending" />
             <el-option label="已通过" value="approved" />
             <el-option label="已拒绝" value="rejected" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="提交时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -91,7 +97,7 @@ const previewImageList = ref([])
 const statusType = { pending: 'warning', approved: 'success', rejected: 'danger' }
 const statusText = { pending: '待审核', approved: '已通过', rejected: '已拒绝' }
 
-const searchForm = reactive({ status: 'pending' })
+const searchForm = reactive({ username: '', status: 'pending', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 
 const fetchData = async () => {
@@ -150,6 +156,7 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 .image-preview { display: flex; gap: 10px; flex-wrap: wrap; }
 .image-preview .el-image { width: 200px; height: 150px; }

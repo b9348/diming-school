@@ -4,11 +4,20 @@
       <template #header>
         <div class="card-header">
           <span>用户增长统计</span>
-          <el-radio-group v-model="timeRange" @change="fetchData">
-            <el-radio-button value="7">近7天</el-radio-button>
-            <el-radio-button value="30">近30天</el-radio-button>
-            <el-radio-button value="90">近90天</el-radio-button>
-          </el-radio-group>
+          <div class="filter-group">
+            <el-select v-model="searchForm.school" placeholder="选择学校" clearable @change="fetchData">
+              <el-option label="全部学校" value="" />
+              <el-option label="示例大学" value="示例大学" />
+              <el-option label="测试学院" value="测试学院" />
+            </el-select>
+            <el-radio-group v-model="searchForm.timeRange" @change="handleTimeRangeChange">
+              <el-radio-button label="7">近7天</el-radio-button>
+              <el-radio-button label="30">近30天</el-radio-button>
+              <el-radio-button label="90">近90天</el-radio-button>
+              <el-radio-button label="custom">自定义</el-radio-button>
+            </el-radio-group>
+            <el-date-picker v-if="searchForm.timeRange === 'custom'" v-model="searchForm.dateRange" type="daterange" start-placeholder="开始" end-placeholder="结束" value-format="YYYY-MM-DD" @change="fetchData" />
+          </div>
         </div>
       </template>
 
@@ -32,8 +41,12 @@ import * as echarts from 'echarts'
 import { statisticsApi } from '@/api'
 
 const chartRef = ref()
-const timeRange = ref('7')
+const searchForm = reactive({ school: '', timeRange: '7', dateRange: null })
 let chart
+
+const handleTimeRangeChange = () => {
+  if (searchForm.timeRange !== 'custom') fetchData()
+}
 
 const stats = reactive([
   { label: '总用户数', value: 0 },
@@ -43,7 +56,9 @@ const stats = reactive([
 ])
 
 const fetchData = async () => {
-  const res = await statisticsApi.getUserGrowth({ days: timeRange.value })
+  const params = { days: searchForm.timeRange, school: searchForm.school }
+  if (searchForm.timeRange === 'custom' && searchForm.dateRange) params.dateRange = searchForm.dateRange
+  const res = await statisticsApi.getUserGrowth(params)
   if (res.code === 200) {
     const d = res.data
     stats[0].value = d.total
@@ -77,7 +92,9 @@ onUnmounted(() => chart?.dispose())
 </script>
 
 <style scoped>
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.filter-group .el-select { width: 140px; }
 .stat-row { margin-bottom: 20px; }
 .stat-item { text-align: center; padding: 20px; background: #f5f7fa; border-radius: 8px; }
 .stat-value { font-size: 28px; font-weight: bold; color: #409eff; }

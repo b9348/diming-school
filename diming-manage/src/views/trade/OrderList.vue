@@ -9,6 +9,12 @@
         <el-form-item label="订单号">
           <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
         </el-form-item>
+        <el-form-item label="买家">
+          <el-input v-model="searchForm.buyer" placeholder="请输入买家" clearable />
+        </el-form-item>
+        <el-form-item label="卖家">
+          <el-input v-model="searchForm.seller" placeholder="请输入卖家" clearable />
+        </el-form-item>
         <el-form-item label="订单类型">
           <el-select v-model="searchForm.type" placeholder="请选择" clearable>
             <el-option label="跑腿" value="errand" />
@@ -23,6 +29,9 @@
             <el-option label="已完成" value="completed" />
             <el-option label="已取消" value="cancelled" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -92,7 +101,7 @@ const typeText = { errand: '跑腿', idle: '闲置', help: '拍卖' }
 const statusText = { pending: '待支付', processing: '进行中', completed: '已完成', cancelled: '已取消' }
 const statusType = { pending: 'warning', processing: 'primary', completed: 'success', cancelled: 'info' }
 
-const searchForm = reactive({ orderNo: '', type: '', status: '' })
+const searchForm = reactive({ orderNo: '', buyer: '', seller: '', type: '', status: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 
 const fetchData = async () => {
@@ -111,8 +120,11 @@ const fetchData = async () => {
 const handleSearch = () => { pagination.page = 1; fetchData() }
 const handleReset = () => {
   searchForm.orderNo = ''
+  searchForm.buyer = ''
+  searchForm.seller = ''
   searchForm.type = ''
   searchForm.status = ''
+  searchForm.dateRange = null
   handleSearch()
 }
 
@@ -129,5 +141,6 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

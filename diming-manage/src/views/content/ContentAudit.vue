@@ -6,6 +6,9 @@
       </template>
 
       <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="发布者">
+          <el-input v-model="searchForm.username" placeholder="请输入发布者" clearable />
+        </el-form-item>
         <el-form-item label="内容类型">
           <el-select v-model="searchForm.type" placeholder="请选择" clearable>
             <el-option label="帖子" value="post" />
@@ -22,6 +25,9 @@
             <el-option label="已通过" value="approved" />
             <el-option label="已拒绝" value="rejected" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="发布时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -120,7 +126,7 @@ const typeText = { post: '帖子', vote: '投票', errand: '跑腿', idle: '闲�
 const statusType = { pending: 'warning', approved: 'success', rejected: 'danger' }
 const statusText = { pending: '待审核', approved: '已通过', rejected: '已拒绝' }
 
-const searchForm = reactive({ type: '', status: 'pending' })
+const searchForm = reactive({ username: '', type: '', status: 'pending', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 
 const fetchData = async () => {
@@ -164,6 +170,7 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 .text-gray { color: #999; }
 .images-preview { margin-top: 15px; }

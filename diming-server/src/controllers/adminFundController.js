@@ -3,7 +3,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取资金流水
 exports.getFundFlow = async (req, res) => {
   try {
-    const { page = 1, type } = req.query
+    const { page = 1, orderNo, type, dateRange } = req.query
+    // orderNo: 关联订单号
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按时间筛选
 
     const list = Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,

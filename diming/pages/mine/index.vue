@@ -24,7 +24,7 @@
       <view class="function-grid">
         <view class="function-item" v-for="(item, index) in functionList" :key="index" @click="handleFunction(item)">
           <view class="function-icon-box" :style="{ backgroundColor: item.bgColor }">
-            <uni-icons :type="item.icon" size="20" :color="item.iconColor"></uni-icons>
+            <uni-icons :type="item.action === 'toggleDarkMode' ? (darkMode ? 'smallcircle-filled' : 'smallcircle') : item.icon" size="20" :color="item.iconColor"></uni-icons>
           </view>
           <text class="function-name">{{ item.name }}</text>
         </view>
@@ -71,14 +71,14 @@ export default {
         nickname: '张三',
         id: '123456'
       },
+      darkMode: false,
       baseFunctionList: [
         { name: '我的帖子', icon: 'compose', iconColor: '#4CAF50', bgColor: '#E8F5E9', path: '/pages/mine/posts' },
+        { name: '夜间模式', icon: 'eye-slash', iconColor: '#5856D6', bgColor: '#EDE7F6', action: 'toggleDarkMode' },
         { name: '我的收藏', icon: 'star', iconColor: '#FF9800', bgColor: '#FFF3E0', path: '/pages/mine/collect' },
         { name: '浏览历史', icon: 'eye', iconColor: '#2196F3', bgColor: '#E3F2FD', path: '/pages/mine/history' },
         { name: '我的订单', icon: 'list', iconColor: '#F44336', bgColor: '#FFEBEE', path: '/pages/mine/orders' },
-        { name: '我的钱包', icon: 'wallet', iconColor: '#E91E63', bgColor: '#FCE4EC', path: '/pages/mine/wallet/index' },
         { name: '身份认证', icon: 'checkmarkempty', iconColor: '#9C27B0', bgColor: '#F3E5F5', path: '/pages/mine/verify' },
-        { name: '邀请好友', icon: 'personadd', iconColor: '#00BCD4', bgColor: '#E0F7FA', path: '/pages/mine/invite' },
         { name: '意见反馈', icon: 'chatbubble', iconColor: '#CDDC39', bgColor: '#FFFDE7', path: '/pages/mine/feedback/index' },
         { name: '客服中心', icon: 'contact', iconColor: '#3F51B5', bgColor: '#E8EAF6', path: '/pages/mine/service' },
         { name: '消息通知', icon: 'notification', iconColor: '#FF5722', bgColor: '#FBE9E7', path: '/pages/mine/notification' },
@@ -110,6 +110,7 @@ export default {
   onLoad() {
     this.getSystemInfo()
     this.loadUserInfo()
+    this.darkMode = uni.getStorageSync('darkMode') || false
   },
   onShow() {
     this.loadUserInfo()
@@ -132,9 +133,16 @@ export default {
       uni.navigateTo({ url: '/pages/mine/profile' })
     },
     handleFunction(item) {
-      if (item.path) {
+      if (item.action) {
+        this[item.action]()
+      } else if (item.path) {
         uni.navigateTo({ url: item.path })
       }
+    },
+    toggleDarkMode() {
+      this.darkMode = !this.darkMode
+      uni.setStorageSync('darkMode', this.darkMode)
+      uni.showToast({ title: this.darkMode ? '夜间模式已开启' : '夜间模式已关闭', icon: 'none' })
     },
     editTags() {
       uni.showToast({ title: '编辑标签', icon: 'none' })

@@ -3,7 +3,8 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取用户列表
 exports.getList = async (req, res) => {
   try {
-    const { page = 1, pageSize = 10, username, phone, status } = req.query
+    const { page = 1, pageSize = 10, username, phone, status, dateRange } = req.query
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按注册时间筛选
 
     // 模拟数据
     const list = Array.from({ length: 10 }, (_, i) => ({
@@ -69,7 +70,9 @@ exports.unban = async (req, res) => {
 // 获取实名认证列表
 exports.getVerifyList = async (req, res) => {
   try {
-    const { page = 1, status = 'pending' } = req.query
+    const { page = 1, username, status = 'pending', dateRange } = req.query
+    // username: 用户名
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按提交时间筛选
 
     const list = Array.from({ length: 5 }, (_, i) => ({
       id: i + 1,

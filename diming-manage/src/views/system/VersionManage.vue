@@ -8,6 +8,22 @@
         </div>
       </template>
 
+      <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="平台">
+          <el-select v-model="searchForm.platform" placeholder="请选择" clearable>
+            <el-option label="Android" value="android" />
+            <el-option label="iOS" value="ios" />
+            <el-option label="全部" value="all" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发布时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">搜索</el-button>
+        </el-form-item>
+      </el-form>
+
       <el-table :data="tableData" v-loading="loading" stripe>
         <el-table-column prop="version" label="版本号" width="120" />
         <el-table-column prop="platform" label="平台" width="100">
@@ -81,13 +97,14 @@ const formVisible = ref(false)
 const isEdit = ref(false)
 
 const platformText = { android: 'Android', ios: 'iOS', all: '全部' }
+const searchForm = reactive({ platform: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 const form = reactive({ id: null, version: '', platform: 'all', description: '', downloadUrl: '', forceUpdate: false })
 
 const fetchData = async () => {
   loading.value = true
   try {
-    const res = await systemApi.getVersionList(pagination)
+    const res = await systemApi.getVersionList({ ...searchForm, ...pagination })
     if (res.code === 200) {
       tableData.value = res.data.list
       pagination.total = res.data.total
@@ -96,6 +113,8 @@ const fetchData = async () => {
     loading.value = false
   }
 }
+
+const handleSearch = () => { pagination.page = 1; fetchData() }
 
 const handleAdd = () => {
   isEdit.value = false
@@ -125,5 +144,7 @@ onMounted(() => fetchData())
 
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
+.search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

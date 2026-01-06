@@ -52,8 +52,10 @@ exports.getDashboard = async (req, res) => {
 // 用户增长统计
 exports.getUserGrowth = async (req, res) => {
   try {
-    const { days = 7 } = req.query
-    const dates = generateDates(Number(days))
+    const { days = 7, school, dateRange } = req.query
+    // school: 学校筛选, dateRange: 自定义日期范围
+    const numDays = days === 'custom' ? 30 : Number(days)
+    const dates = generateDates(numDays)
     const daily = dates.map(() => Math.floor(Math.random() * 100 + 50))
     let sum = 10000
     const cumulative = daily.map(v => { sum += v; return sum })
@@ -61,7 +63,7 @@ exports.getUserGrowth = async (req, res) => {
     successResponse(res, {
       total: sum,
       newUsers: daily.reduce((a, b) => a + b, 0),
-      avgDaily: Math.floor(daily.reduce((a, b) => a + b, 0) / days),
+      avgDaily: Math.floor(daily.reduce((a, b) => a + b, 0) / numDays),
       growthRate: 12.5,
       dates, daily, cumulative
     })
@@ -73,6 +75,8 @@ exports.getUserGrowth = async (req, res) => {
 // 活跃度统计
 exports.getActiveData = async (req, res) => {
   try {
+    const { school, dateRange } = req.query
+    // school: 学校筛选, dateRange: 日期范围
     const dates = generateDates(7)
     successResponse(res, {
       dau: 3580, wau: 8920, mau: 12580, retention: 45.2,
@@ -88,8 +92,10 @@ exports.getActiveData = async (req, res) => {
 // 交易统计
 exports.getTradeData = async (req, res) => {
   try {
-    const { days = 7 } = req.query
-    const dates = generateDates(Number(days))
+    const { days = 7, type, dateRange } = req.query
+    // type: 交易类型(errand/idle/help), dateRange: 自定义日期范围
+    const numDays = days === 'custom' ? 30 : Number(days)
+    const dates = generateDates(numDays)
     successResponse(res, {
       totalAmount: '35,800.00', orderCount: 580, avgPrice: '61.72', completeRate: 92.5,
       dates,
@@ -109,8 +115,10 @@ exports.getTradeData = async (req, res) => {
 // 收入统计
 exports.getIncomeData = async (req, res) => {
   try {
-    const { days = 7 } = req.query
-    const dates = generateDates(Number(days))
+    const { days = 7, incomeType, dateRange } = req.query
+    // incomeType: 收入类型(commission/ad/other), dateRange: 自定义日期范围
+    const numDays = days === 'custom' ? 30 : Number(days)
+    const dates = generateDates(numDays)
     successResponse(res, {
       total: '8,580.00', commission: '5,800.00', ad: '2,000.00', other: '780.00',
       dates,

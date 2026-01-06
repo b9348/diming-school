@@ -21,6 +21,9 @@
             <el-option label="已封禁" value="banned" />
           </el-select>
         </el-form-item>
+        <el-form-item label="注册时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
           <el-button @click="handleReset">重置</el-button>
@@ -128,7 +131,8 @@ const currentUser = ref(null)
 const searchForm = reactive({
   username: '',
   phone: '',
-  status: ''
+  status: '',
+  dateRange: null
 })
 
 const pagination = reactive({
@@ -168,6 +172,7 @@ const handleReset = () => {
   searchForm.username = ''
   searchForm.phone = ''
   searchForm.status = ''
+  searchForm.dateRange = null
   handleSearch()
 }
 
@@ -215,6 +220,9 @@ onMounted(() => {
 }
 .search-form {
   margin-bottom: 20px;
+}
+.search-form .el-select {
+  width: 140px;
 }
 .pagination {
   margin-top: 20px;

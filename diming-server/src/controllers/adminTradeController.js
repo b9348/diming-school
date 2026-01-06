@@ -3,7 +3,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取订单列表
 exports.getOrderList = async (req, res) => {
   try {
-    const { page = 1, orderNo, type, status } = req.query
+    const { page = 1, orderNo, buyer, seller, type, status, dateRange } = req.query
+    // orderNo: 订单号, buyer: 买家, seller: 卖家
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按创建时间筛选
 
     const list = Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,

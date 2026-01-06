@@ -6,12 +6,24 @@
       </template>
 
       <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="订单号">
+          <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
+        </el-form-item>
+        <el-form-item label="申请人">
+          <el-input v-model="searchForm.applicant" placeholder="请输入申请人" clearable />
+        </el-form-item>
+        <el-form-item label="被申请人">
+          <el-input v-model="searchForm.respondent" placeholder="请输入被申请人" clearable />
+        </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择" clearable>
             <el-option label="待处理" value="pending" />
             <el-option label="处理中" value="processing" />
             <el-option label="已解决" value="resolved" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="申请时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -55,9 +67,9 @@
       <el-form :model="processForm" label-width="100px">
         <el-form-item label="处理结果">
           <el-radio-group v-model="processForm.result">
-            <el-radio value="buyer">支持买家</el-radio>
-            <el-radio value="seller">支持卖家</el-radio>
-            <el-radio value="both">双方协商</el-radio>
+            <el-radio label="buyer">支持买家</el-radio>
+            <el-radio label="seller">支持卖家</el-radio>
+            <el-radio label="both">双方协商</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="退款金额" v-if="processForm.result === 'buyer'">
@@ -88,7 +100,7 @@ const currentRow = ref(null)
 const statusText = { pending: '待处理', processing: '处理中', resolved: '已解决' }
 const statusType = { pending: 'warning', processing: 'primary', resolved: 'success' }
 
-const searchForm = reactive({ status: 'pending' })
+const searchForm = reactive({ orderNo: '', applicant: '', respondent: '', status: 'pending', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 const processForm = reactive({ result: 'buyer', refundAmount: 0, remark: '' })
 
@@ -130,5 +142,6 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

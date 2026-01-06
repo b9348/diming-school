@@ -4,10 +4,20 @@
       <template #header>
         <div class="card-header">
           <span>交易数据统计</span>
-          <el-radio-group v-model="timeRange" @change="fetchData">
-            <el-radio-button value="7">近7天</el-radio-button>
-            <el-radio-button value="30">近30天</el-radio-button>
-          </el-radio-group>
+          <div class="filter-group">
+            <el-select v-model="searchForm.type" placeholder="交易类型" clearable @change="fetchData">
+              <el-option label="全部类型" value="" />
+              <el-option label="跑腿" value="errand" />
+              <el-option label="闲置" value="idle" />
+              <el-option label="拍卖" value="help" />
+            </el-select>
+            <el-radio-group v-model="searchForm.timeRange" @change="handleTimeRangeChange">
+              <el-radio-button label="7">近7天</el-radio-button>
+              <el-radio-button label="30">近30天</el-radio-button>
+              <el-radio-button label="custom">自定义</el-radio-button>
+            </el-radio-group>
+            <el-date-picker v-if="searchForm.timeRange === 'custom'" v-model="searchForm.dateRange" type="daterange" start-placeholder="开始" end-placeholder="结束" value-format="YYYY-MM-DD" @change="fetchData" />
+          </div>
         </div>
       </template>
 
@@ -39,8 +49,12 @@ import { statisticsApi } from '@/api'
 
 const trendChartRef = ref()
 const typeChartRef = ref()
-const timeRange = ref('7')
+const searchForm = reactive({ type: '', timeRange: '7', dateRange: null })
 let trendChart, typeChart
+
+const handleTimeRangeChange = () => {
+  if (searchForm.timeRange !== 'custom') fetchData()
+}
 
 const stats = reactive([
   { label: '总交易额', value: '¥0' },
@@ -50,7 +64,9 @@ const stats = reactive([
 ])
 
 const fetchData = async () => {
-  const res = await statisticsApi.getTradeData({ days: timeRange.value })
+  const params = { days: searchForm.timeRange, type: searchForm.type }
+  if (searchForm.timeRange === 'custom' && searchForm.dateRange) params.dateRange = searchForm.dateRange
+  const res = await statisticsApi.getTradeData(params)
   if (res.code === 200) {
     const d = res.data
     stats[0].value = '¥' + d.totalAmount
@@ -92,7 +108,9 @@ onUnmounted(() => { trendChart?.dispose(); typeChart?.dispose() })
 </script>
 
 <style scoped>
-.card-header { display: flex; justify-content: space-between; align-items: center; }
+.card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.filter-group .el-select { width: 140px; }
 .stat-row { margin-bottom: 20px; }
 .stat-item { text-align: center; padding: 20px; background: #f5f7fa; border-radius: 8px; }
 .stat-value { font-size: 28px; font-weight: bold; color: #e6a23c; }

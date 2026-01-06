@@ -8,6 +8,28 @@
         </div>
       </template>
 
+      <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="类型">
+          <el-select v-model="searchForm.type" placeholder="请选择" clearable>
+            <el-option label="系统公告" value="system" />
+            <el-option label="活动公告" value="activity" />
+            <el-option label="更新公告" value="update" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="searchForm.status" placeholder="请选择" clearable>
+            <el-option label="已发布" value="published" />
+            <el-option label="草稿" value="draft" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker v-model="searchForm.dateRange" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">搜索</el-button>
+        </el-form-item>
+      </el-form>
+
       <el-table :data="tableData" v-loading="loading" stripe>
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="title" label="标题" min-width="200" />
@@ -58,8 +80,8 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
-            <el-radio value="draft">草稿</el-radio>
-            <el-radio value="published">发布</el-radio>
+            <el-radio label="draft">草稿</el-radio>
+            <el-radio label="published">发布</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -82,13 +104,14 @@ const formVisible = ref(false)
 const isEdit = ref(false)
 
 const typeText = { system: '系统公告', activity: '活动公告', update: '更新公告' }
+const searchForm = reactive({ type: '', status: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 const form = reactive({ id: null, title: '', type: 'system', content: '', status: 'draft' })
 
 const fetchData = async () => {
   loading.value = true
   try {
-    const res = await systemApi.getNoticeList(pagination)
+    const res = await systemApi.getNoticeList({ ...searchForm, ...pagination })
     if (res.code === 200) {
       tableData.value = res.data.list
       pagination.total = res.data.total
@@ -97,6 +120,8 @@ const fetchData = async () => {
     loading.value = false
   }
 }
+
+const handleSearch = () => { pagination.page = 1; fetchData() }
 
 const handleAdd = () => {
   isEdit.value = false
@@ -138,5 +163,7 @@ onMounted(() => fetchData())
 
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
+.search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 </style>

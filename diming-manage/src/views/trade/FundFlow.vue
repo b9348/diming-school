@@ -6,6 +6,9 @@
       </template>
 
       <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="关联订单">
+          <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
+        </el-form-item>
         <el-form-item label="流水类型">
           <el-select v-model="searchForm.type" placeholder="请选择" clearable>
             <el-option label="收入" value="income" />
@@ -67,7 +70,7 @@ const tableData = ref([])
 const typeText = { income: '收入', expense: '支出', refund: '退款', withdraw: '提现' }
 const typeStyle = { income: 'success', expense: 'danger', refund: 'warning', withdraw: 'info' }
 
-const searchForm = reactive({ type: '', dateRange: null })
+const searchForm = reactive({ orderNo: '', type: '', dateRange: null })
 const pagination = reactive({ page: 1, pageSize: 10, total: 0 })
 
 const fetchData = async () => {
@@ -111,6 +114,7 @@ onMounted(() => fetchData())
 
 <style scoped>
 .search-form { margin-bottom: 20px; }
+.search-form .el-select { width: 140px; }
 .pagination { margin-top: 20px; justify-content: flex-end; }
 .text-success { color: #67c23a; }
 .text-danger { color: #f56c6c; }

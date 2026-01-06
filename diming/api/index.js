@@ -97,7 +97,10 @@ export const idleApi = {
   saveOrUpdate: (data) => post('/idle/saveOrUpdate', data),
 
   // 想要商品
-  want: (id) => post(`/idle/want/${id}`)
+  want: (id) => post(`/idle/want/${id}`),
+
+  // 置顶商品
+  setTop: (id, hours) => post(`/idle/setTop/${id}`, { hours })
 }
 
 /**
@@ -154,6 +157,52 @@ export const chatApi = {
 
   // 发送消息
   send: (data) => post('/chat/send', data)
+}
+
+/**
+ * 搜索相关 API
+ */
+export const searchApi = {
+  // 搜索内容
+  search: (params) => get('/search', params)
+}
+
+/**
+ * 用户中心相关 API
+ */
+export const userApi = {
+  // 我的帖子
+  getMyPosts: (params) => get('/user/posts', params),
+  deletePost: (id) => post(`/user/posts/${id}/delete`),
+
+  // 我的收藏
+  getCollects: (params) => get('/user/collects', params),
+  cancelCollects: (ids) => post('/user/collects/cancel', { ids }),
+
+  // 浏览历史
+  getHistory: (params) => get('/user/history', params),
+  deleteHistory: (id) => post(`/user/history/${id}/delete`),
+  clearHistory: () => post('/user/history/clear'),
+
+  // 我的订单
+  getOrders: (params) => get('/user/orders', params),
+  cancelOrder: (id) => post(`/user/orders/${id}/cancel`),
+  confirmOrder: (id) => post(`/user/orders/${id}/confirm`),
+  deleteOrder: (id) => post(`/user/orders/${id}/delete`),
+
+  // 消息通知
+  getNotifications: (params) => get('/user/notifications', params),
+  markNotificationRead: (id) => post(`/user/notifications/${id}/read`),
+  markAllNotificationsRead: () => post('/user/notifications/read-all'),
+
+  // 设置相关
+  getSettings: () => get('/user/settings'),
+  updateSetting: (data) => post('/user/settings/update', data),
+
+  // 隐私设置
+  getPrivacySettings: () => get('/user/privacy'),
+  updatePrivacySetting: (data) => post('/user/privacy/update', data),
+  requestDataDownload: () => post('/user/data/download')
 }
 
 // 导出 setToken 供登录时使用

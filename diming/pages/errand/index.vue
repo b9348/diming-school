@@ -118,20 +118,19 @@ export default {
           title: '任务类型',
           key: 'type',
           items: [
-            { label: '全部', value: '' },
             { label: '代取快递', value: 'express' },
-            { label: '代买商品', value: 'buy' },
-            { label: '代打印/复印', value: 'print' },
+            { label: '代买东西', value: 'buy' },
+            { label: '代打印', value: 'print' },
             { label: '代排队', value: 'queue' },
-            { label: '其他跑腿', value: 'other' }
+            { label: '其他', value: 'other' }
           ]
         },
         {
           title: '价格范围',
-          key: 'price',
+          key: 'priceRange',
           items: [
-            { label: '全部', value: '' },
-            { label: '0-5元', value: '0-5' },
+            { label: '不限', value: '' },
+            { label: '5元以下', value: '0-5' },
             { label: '5-10元', value: '5-10' },
             { label: '10-20元', value: '10-20' },
             { label: '20元以上', value: '20+' }
@@ -139,12 +138,22 @@ export default {
         },
         {
           title: '时间要求',
-          key: 'time',
+          key: 'timeLimit',
           items: [
-            { label: '全部', value: '' },
+            { label: '不限', value: '' },
             { label: '1小时内', value: '1h' },
             { label: '今天内', value: 'today' },
             { label: '明天内', value: 'tomorrow' }
+          ]
+        },
+        {
+          title: '排序方式',
+          key: 'sort',
+          items: [
+            { label: '默认排序', value: '' },
+            { label: '价格最高', value: 'price_desc' },
+            { label: '价格最低', value: 'price_asc' },
+            { label: '最新发布', value: 'time_desc' }
           ]
         }
       ],

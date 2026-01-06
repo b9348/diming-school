@@ -3,7 +3,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取纠纷列表
 exports.getDisputeList = async (req, res) => {
   try {
-    const { page = 1, status = 'pending' } = req.query
+    const { page = 1, orderNo, applicant, respondent, status = 'pending', dateRange } = req.query
+    // orderNo: 订单号, applicant: 申请人, respondent: 被申请人
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按申请时间筛选
 
     const list = Array.from({ length: 5 }, (_, i) => ({
       id: i + 1,

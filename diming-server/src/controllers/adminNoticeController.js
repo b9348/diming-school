@@ -2,7 +2,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 
 exports.getList = async (req, res) => {
   try {
-    const { page = 1 } = req.query
+    const { page = 1, type, status, dateRange } = req.query
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按创建时间筛选
+
     const list = Array.from({ length: 5 }, (_, i) => ({
       id: i + 1,
       title: `公告标题 ${i + 1}`,

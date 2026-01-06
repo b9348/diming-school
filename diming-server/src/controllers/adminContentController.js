@@ -3,7 +3,9 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 获取待审核内容列表
 exports.getAuditList = async (req, res) => {
   try {
-    const { page = 1, type, status = 'pending' } = req.query
+    const { page = 1, username, type, status = 'pending', dateRange } = req.query
+    // username: 发布者
+    // dateRange: ['2024-01-01', '2024-12-31'] 用于按发布时间筛选
 
     const list = Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
