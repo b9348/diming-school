@@ -23,11 +23,12 @@ const getList = (req, res) => {
   const {
     page = 1,
     pageSize = 10,
-    tab = '全部',
-    type,        // 任务类型: express/buy/print/queue/other
-    priceRange,  // 价格范围: 0-5/5-10/10-20/20+
-    timeLimit,   // 时间要求: 1h/today/tomorrow
-    sort         // 排序方式: price_desc/price_asc/time_desc
+    price_min = '',
+    price_max = '',
+    status = '',
+    finishTime = '',
+    sort = 'default',
+    timeRange = ''
   } = req.query
 
   const pageNum = parseInt(page)
@@ -36,47 +37,45 @@ const getList = (req, res) => {
   // 生成基础列表
   let list = generateErrandList(pageNum, size)
 
-  // 根据任务类型筛选
-  if (type) {
-    const typeMap = {
-      'express': '代取快递',
-      'buy': '代买东西',
-      'print': '代打印',
-      'queue': '代排队',
-      'other': '其他'
-    }
-    list = list.filter(item => item.type === typeMap[type])
+  // 根据价格范围筛选
+  if (price_min) {
+    list = list.filter(item => item.price >= parseInt(price_min))
+  }
+  if (price_max) {
+    list = list.filter(item => item.price <= parseInt(price_max))
   }
 
-  // 根据价格范围筛选
-  if (priceRange) {
-    list = list.filter(item => {
-      const price = item.price
-      switch (priceRange) {
-        case '0-5': return price <= 5
-        case '5-10': return price > 5 && price <= 10
-        case '10-20': return price > 10 && price <= 20
-        case '20+': return price > 20
-        default: return true
-      }
-    })
+  // 根据状态筛选
+  if (status) {
+    const statusMap = {
+      'pending': '待抢单',
+      'ongoing': '进行中',
+      'completed': '已完成'
+    }
+    if (statusMap[status]) {
+      list = list.filter(item => item.status === statusMap[status])
+    }
   }
+
+  // 根据完成时间筛选（模拟）
+  // finishTime: hours, date
 
   // 根据排序方式排序
-  if (sort) {
-    switch (sort) {
-      case 'price_desc':
-        list.sort((a, b) => b.price - a.price)
-        break
-      case 'price_asc':
-        list.sort((a, b) => a.price - b.price)
-        break
-      case 'time_desc':
-        // 按时间倒序（最新发布）
-        list.sort((a, b) => b.id - a.id)
-        break
-    }
+  switch (sort) {
+    case 'price_asc':
+      list.sort((a, b) => a.price - b.price)
+      break
+    case 'price_desc':
+      list.sort((a, b) => b.price - a.price)
+      break
+    case 'default':
+    default:
+      // 综合排序，保持原顺序
+      break
   }
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
 
   const total = 30
   const maxPage = Math.ceil(total / size)

@@ -122,35 +122,49 @@ export default {
       goodsList: [],
       filterOptions: [
         {
-          title: '商品分类',
-          key: 'category',
-          items: [
-            { label: '全部', value: '' },
-            { label: '教材书籍', value: 'book' },
-            { label: '数码产品', value: 'digital' },
-            { label: '生活用品', value: 'daily' },
-            { label: '服饰鞋包', value: 'clothes' },
-            { label: '其他', value: 'other' }
-          ]
-        },
-        {
-          title: '价格范围',
+          title: '价格',
           key: 'price',
-          items: [
-            { label: '全部', value: '' },
-            { label: '0-50元', value: '0-50' },
-            { label: '50-100元', value: '50-100' },
-            { label: '100-500元', value: '100-500' },
-            { label: '500元以上', value: '500+' }
-          ]
+          type: 'input-range',
+          minPlaceholder: '最低价',
+          maxPlaceholder: '最高价'
         },
         {
-          title: '交易方式',
+          title: '配送方式',
           key: 'delivery',
           items: [
-            { label: '全部', value: '' },
-            { label: '自提', value: 'pickup' },
-            { label: '快递', value: 'express' }
+            { label: '包邮', value: 'free_shipping' },
+            { label: '自提', value: 'pickup' }
+          ]
+        },
+        {
+          title: '发货时间',
+          key: 'shipTime',
+          items: [
+            { label: '多少小时内', value: 'hours' },
+            { label: '指定日期前', value: 'date' }
+          ]
+        },
+        {
+          title: '排序方式',
+          key: 'sort',
+          items: [
+            { label: '综合排序', value: 'default' },
+            { label: '价格升序', value: 'price_asc' },
+            { label: '价格降序', value: 'price_desc' }
+          ]
+        },
+        {
+          title: '发布时间',
+          key: 'timeRange',
+          items: [
+            { label: '不限', value: '' },
+            { label: '一天内', value: '1d' },
+            { label: '三天内', value: '3d' },
+            { label: '一周内', value: '1w' },
+            { label: '半个月内', value: '15d' },
+            { label: '一个月内', value: '1m' },
+            { label: '三个月内', value: '3m' },
+            { label: '六个月内', value: '6m' }
           ]
         }
       ],

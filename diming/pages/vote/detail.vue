@@ -30,7 +30,7 @@
             <text>管理</text>
           </view>
         </view>
-        <text class="vote-deadline">{{ data.deadline }}</text>
+        <text class="vote-deadline">截止时间：{{ data.deadline }}</text>
       </view>
 
       <!-- 投票选项 -->
@@ -39,7 +39,12 @@
           class="option-item" :class="{ voted: opt.voted }"
           @click="handleVote(opt)">
           <view class="option-content">
-            <text class="option-text">{{ opt.text }}</text>
+            <view class="option-left">
+              <view class="check-icon" v-if="opt.voted">
+                <uni-icons type="checkmarkempty" size="14" color="#007AFF"></uni-icons>
+              </view>
+              <text class="option-text">{{ opt.text }}</text>
+            </view>
             <text class="option-percent">{{ opt.percent }}%</text>
           </view>
           <view class="option-bar" :style="{ width: opt.percent + '%' }"></view>
@@ -48,8 +53,7 @@
 
       <!-- 投票统计 -->
       <view class="vote-stats">
-        <text>{{ data.totalVotes }}人参与</text>
-        <text>{{ data.viewCount }}人围观</text>
+        <text>{{ data.totalVotes }}人参与 · {{ data.viewCount }}人围观</text>
       </view>
 
       <!-- 发布者 -->
@@ -59,9 +63,30 @@
           <text class="user-name">{{ data.nickname }}</text>
           <text class="user-time">{{ data.time }}</text>
         </view>
-        <view class="follow-btn" @click="handleFollow">{{ data.isFollowed ? '已关注' : '关注' }}</view>
+        <view class="follow-btn" :class="{ followed: data.isFollowed }" @click="handleFollow">{{ data.isFollowed ? '已关注' : '关注' }}</view>
       </view>
     </scroll-view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="input-wrap" @click="goComment">
+        <text class="input-placeholder">说点什么...</text>
+      </view>
+      <view class="action-btns">
+        <view class="action-item" @click="handleLike">
+          <uni-icons :type="data.isLiked ? 'heart-filled' : 'heart'" size="22" :color="data.isLiked ? '#FF6B6B' : '#666'"></uni-icons>
+          <text>{{ data.likeCount || 0 }}</text>
+        </view>
+        <view class="action-item">
+          <uni-icons type="chat" size="22" color="#666"></uni-icons>
+          <text>{{ data.commentCount || 0 }}</text>
+        </view>
+        <view class="action-item" @click="handleShare">
+          <uni-icons type="redo" size="22" color="#666"></uni-icons>
+          <text>分享</text>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -90,6 +115,9 @@ export default {
         isAnnouncement: false,
         isFollowed: false,
         hasVoted: false,
+        isLiked: false,
+        likeCount: 0,
+        commentCount: 0,
         userInfo: {
           id: '',
           nickname: '',
@@ -159,13 +187,23 @@ export default {
     },
     handleFollow() {
       this.data.isFollowed = !this.data.isFollowed
+    },
+    goComment() {
+      // 跳转到评论页或打开评论输入框
+    },
+    handleLike() {
+      this.data.isLiked = !this.data.isLiked
+      this.data.likeCount += this.data.isLiked ? 1 : -1
+    },
+    handleShare() {
+      uni.share && uni.share({ title: this.data.title })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.page-container { min-height: 100vh; background: #F8F8F8; }
+.page-container { min-height: 100vh; background: #F8F8F8; display: flex; flex-direction: column; }
 .nav-bar { background: #FFF;
   .nav-content { display: flex; align-items: center; justify-content: space-between; height: 88rpx; padding: 0 24rpx;
     .nav-back { padding: 10rpx; }
@@ -173,6 +211,7 @@ export default {
     .nav-placeholder { width: 60rpx; }
   }
 }
+.content-scroll { flex: 1; padding-bottom: 120rpx; }
 .vote-header { padding: 24rpx; background: #FFF;
   .vote-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16rpx; }
   .vote-title { flex: 1; font-size: 32rpx; color: #333; font-weight: 600; line-height: 1.6; }
@@ -182,19 +221,34 @@ export default {
   .vote-deadline { display: block; margin-top: 12rpx; font-size: 24rpx; color: #FF9500; }
 }
 .vote-options { padding: 24rpx; background: #FFF; margin-top: 20rpx;
-  .option-item { position: relative; padding: 24rpx; margin-bottom: 16rpx; background: #F5F5F5; border-radius: 8rpx; overflow: hidden;
-    &.voted { background: rgba(0,122,255,0.1); }
-    .option-content { position: relative; z-index: 1; display: flex; justify-content: space-between;
+  .option-item { position: relative; padding: 24rpx; margin-bottom: 16rpx; background: #F5F5F5; border-radius: 12rpx; overflow: hidden;
+    &:last-child { margin-bottom: 0; }
+    &.voted { background: rgba(0,122,255,0.08); }
+    .option-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center;
+      .option-left { display: flex; align-items: center; gap: 12rpx; }
+      .check-icon { width: 36rpx; height: 36rpx; background: #007AFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
       .option-text { font-size: 28rpx; color: #333; }
       .option-percent { font-size: 28rpx; color: #007AFF; font-weight: 500; }
     }
-    .option-bar { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(0,122,255,0.15); border-radius: 8rpx; }
+    .option-bar { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(0,122,255,0.12); border-radius: 12rpx; }
   }
 }
-.vote-stats { display: flex; gap: 32rpx; padding: 24rpx; font-size: 26rpx; color: #999; }
+.vote-stats { padding: 24rpx; font-size: 26rpx; color: #999; }
 .user-section { display: flex; align-items: center; padding: 24rpx; background: #FFF; margin-top: 20rpx;
   .user-avatar { width: 80rpx; height: 80rpx; border-radius: 50%; margin-right: 16rpx; }
   .user-info { flex: 1; .user-name { display: block; font-size: 28rpx; color: #333; } .user-time { font-size: 24rpx; color: #999; } }
-  .follow-btn { padding: 12rpx 32rpx; font-size: 26rpx; color: #007AFF; border: 1rpx solid #007AFF; border-radius: 24rpx; }
+  .follow-btn { padding: 12rpx 32rpx; font-size: 26rpx; color: #007AFF; border: 1rpx solid #007AFF; border-radius: 24rpx;
+    &.followed { color: #999; border-color: #DDD; background: #F5F5F5; }
+  }
+}
+.bottom-bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 20rpx; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); background: #FFF; border-top: 1rpx solid #EAEAEA;
+  .input-wrap { flex: 1; height: 64rpx; background: #F5F5F5; border-radius: 32rpx; display: flex; align-items: center; padding: 0 24rpx;
+    .input-placeholder { font-size: 26rpx; color: #999; }
+  }
+  .action-btns { display: flex; align-items: center; gap: 32rpx;
+    .action-item { display: flex; flex-direction: column; align-items: center; gap: 4rpx;
+      text { font-size: 20rpx; color: #666; }
+    }
+  }
 }
 </style>

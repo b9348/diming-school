@@ -115,45 +115,50 @@ export default {
       errandList: [],
       filterOptions: [
         {
-          title: '任务类型',
-          key: 'type',
+          title: '价格',
+          key: 'price',
+          type: 'input-range',
+          minPlaceholder: '最低价',
+          maxPlaceholder: '最高价'
+        },
+        {
+          title: '任务状态',
+          key: 'status',
           items: [
-            { label: '代取快递', value: 'express' },
-            { label: '代买东西', value: 'buy' },
-            { label: '代打印', value: 'print' },
-            { label: '代排队', value: 'queue' },
-            { label: '其他', value: 'other' }
+            { label: '待抢单', value: 'pending' },
+            { label: '进行中', value: 'ongoing' },
+            { label: '已完成', value: 'completed' }
           ]
         },
         {
-          title: '价格范围',
-          key: 'priceRange',
+          title: '完成时间',
+          key: 'finishTime',
           items: [
-            { label: '不限', value: '' },
-            { label: '5元以下', value: '0-5' },
-            { label: '5-10元', value: '5-10' },
-            { label: '10-20元', value: '10-20' },
-            { label: '20元以上', value: '20+' }
-          ]
-        },
-        {
-          title: '时间要求',
-          key: 'timeLimit',
-          items: [
-            { label: '不限', value: '' },
-            { label: '1小时内', value: '1h' },
-            { label: '今天内', value: 'today' },
-            { label: '明天内', value: 'tomorrow' }
+            { label: '多少小时内', value: 'hours' },
+            { label: '指定日期前', value: 'date' }
           ]
         },
         {
           title: '排序方式',
           key: 'sort',
           items: [
-            { label: '默认排序', value: '' },
-            { label: '价格最高', value: 'price_desc' },
-            { label: '价格最低', value: 'price_asc' },
-            { label: '最新发布', value: 'time_desc' }
+            { label: '综合排序', value: 'default' },
+            { label: '价格升序', value: 'price_asc' },
+            { label: '价格降序', value: 'price_desc' }
+          ]
+        },
+        {
+          title: '发布时间',
+          key: 'timeRange',
+          items: [
+            { label: '不限', value: '' },
+            { label: '一天内', value: '1d' },
+            { label: '三天内', value: '3d' },
+            { label: '一周内', value: '1w' },
+            { label: '半个月内', value: '15d' },
+            { label: '一个月内', value: '1m' },
+            { label: '三个月内', value: '3m' },
+            { label: '六个月内', value: '6m' }
           ]
         }
       ],

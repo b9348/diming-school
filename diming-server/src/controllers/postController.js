@@ -41,7 +41,14 @@ const generatePostList = (page, pageSize, tab) => {
 
 // 获取帖子列表
 const getList = (req, res) => {
-  const { page = 1, pageSize = 10, tab = '最新' } = req.query
+  const {
+    page = 1,
+    pageSize = 10,
+    tab = '最新',
+    sort = 'latest',
+    contentType = '',
+    timeRange = ''
+  } = req.query
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
 
@@ -53,7 +60,27 @@ const getList = (req, res) => {
     return successResponse(res, { list: [], total })
   }
 
-  const list = generatePostList(pageNum, size, tab)
+  let list = generatePostList(pageNum, size, tab)
+
+  // 根据排序方式排序
+  switch (sort) {
+    case 'hot':
+      list.sort((a, b) => b.likeCount - a.likeCount)
+      break
+    case 'most_likes':
+      list.sort((a, b) => b.likeCount - a.likeCount)
+      break
+    case 'most_comments':
+      list.sort((a, b) => b.commentCount - a.commentCount)
+      break
+  }
+
+  // 根据内容类型筛选（模拟）
+  // contentType: image_text, text, image
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
+
   successResponse(res, { list, total })
 }
 

@@ -22,7 +22,17 @@ const generateHelpList = (page, pageSize) => {
 
 // 获取互助拍卖列表
 const getList = (req, res) => {
-  const { page = 1, pageSize = 10, status = '全部' } = req.query
+  const {
+    page = 1,
+    pageSize = 10,
+    price_min = '',
+    price_max = '',
+    status = '',
+    remainTime_min = '',
+    remainTime_max = '',
+    sort = 'default',
+    timeRange = ''
+  } = req.query
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
 
@@ -33,7 +43,44 @@ const getList = (req, res) => {
     return successResponse(res, { list: [], total })
   }
 
-  const list = generateHelpList(pageNum, size)
+  let list = generateHelpList(pageNum, size)
+
+  // 根据价格范围筛选
+  if (price_min) {
+    list = list.filter(item => item.currentPrice >= parseInt(price_min))
+  }
+  if (price_max) {
+    list = list.filter(item => item.currentPrice <= parseInt(price_max))
+  }
+
+  // 根据状态筛选
+  if (status) {
+    const statusMap = { 'ongoing': '进行中', 'ended': '已结束' }
+    if (statusMap[status]) {
+      list = list.filter(item => item.status === statusMap[status])
+    }
+  }
+
+  // 根据剩余时间筛选（模拟）
+  // remainTime_min, remainTime_max
+
+  // 根据排序方式排序
+  switch (sort) {
+    case 'price_asc':
+      list.sort((a, b) => a.currentPrice - b.currentPrice)
+      break
+    case 'price_desc':
+      list.sort((a, b) => b.currentPrice - a.currentPrice)
+      break
+    case 'default':
+    default:
+      // 综合排序，保持原顺序
+      break
+  }
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
+
   successResponse(res, { list, total })
 }
 

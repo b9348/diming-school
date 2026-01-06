@@ -7,8 +7,10 @@
     <dm-search
       placeholder="请输入搜索关键词"
       :disabled="true"
+      :show-filter="true"
       :show-switch="true"
       @click="goSearch"
+      @filter="showFilter = true"
       @switch="switchCommunity"
     />
 
@@ -81,13 +83,71 @@
       </view>
     </scroll-view>
 
+    <!-- 筛选弹窗 -->
+    <dm-filter
+      :visible.sync="showFilter"
+      :options="filterOptions"
+      :value="filterValue"
+      @confirm="handleFilterConfirm"
+    />
+
     <!-- 自定义 TabBar -->
     <dm-tabbar />
   </view>
 </template>
 
 <script>
-import { homeApi, postApi } from '@/api/index.js'
+import { homeApi, postApi, voteApi, idleApi, errandApi, loveApi, helpApi } from '@/api/index.js'
+
+// 各tab的筛选配置
+const FILTER_CONFIG = {
+  '最新': [
+    { key: 'sort', title: '排序方式', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '点赞最多', value: 'most_likes' }, { label: '评论最多', value: 'most_comments' }] },
+    { key: 'contentType', title: '内容类型', items: [{ label: '不限', value: '' }, { label: '图文', value: 'image_text' }, { label: '文字', value: 'text' }, { label: '图片', value: 'image' }] },
+    { key: 'timeRange', title: '发布时间', items: [{ label: '不限', value: '' }, { label: '一天内', value: '1d' }, { label: '三天内', value: '3d' }, { label: '一周内', value: '1w' }, { label: '半个月内', value: '15d' }, { label: '一个月内', value: '1m' }, { label: '三个月内', value: '3m' }, { label: '六个月内', value: '6m' }] }
+  ],
+  '帖子': [
+    { key: 'sort', title: '排序', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }] },
+    { key: 'category', title: '分类', items: [{ label: '全部', value: '' }, { label: '吐槽', value: 'tucao' }, { label: '提问', value: 'question' }, { label: '分享', value: 'share' }, { label: '日常', value: 'daily' }, { label: '其他', value: 'other' }] }
+  ],
+  '投票': [
+    { key: 'sort', title: '排序方式', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '评论最多', value: 'most_comments' }, { label: '点赞最多', value: 'most_likes' }, { label: '参与数多', value: 'most_participants' }, { label: '票数多', value: 'most_votes' }] },
+    { key: 'status', title: '投票状态', items: [{ label: '进行中', value: 'ongoing' }, { label: '待开始', value: 'pending' }, { label: '已结束', value: 'ended' }] },
+    { key: 'remainTime', title: '剩余时间', type: 'input-range', minPlaceholder: '最少', maxPlaceholder: '最多' },
+    { key: 'voteType', title: '投票类型', items: [{ label: '不限', value: '' }, { label: '文字', value: 'text' }, { label: '图文', value: 'image_text' }] },
+    { key: 'timeRange', title: '发布时间', items: [{ label: '不限', value: '' }, { label: '一天内', value: '1d' }, { label: '三天内', value: '3d' }, { label: '一周内', value: '1w' }, { label: '半个月内', value: '15d' }, { label: '一个月内', value: '1m' }, { label: '三个月内', value: '3m' }, { label: '六个月内', value: '6m' }] }
+  ],
+  '闲置': [
+    { key: 'sort', title: '排序', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '价格从低到高', value: 'price_asc' }, { label: '价格从高到低', value: 'price_desc' }] },
+    { key: 'category', title: '分类', items: [{ label: '全部', value: '' }, { label: '数码', value: 'digital' }, { label: '服饰', value: 'clothing' }, { label: '书籍', value: 'book' }, { label: '生活', value: 'life' }, { label: '其他', value: 'other' }] },
+    { key: 'condition', title: '成色', items: [{ label: '全部', value: '' }, { label: '全新', value: 'new' }, { label: '几乎全新', value: 'like_new' }, { label: '轻微使用', value: 'light_use' }, { label: '明显使用', value: 'heavy_use' }] }
+  ],
+  '跑腿': [
+    { key: 'sort', title: '排序', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '赏金从低到高', value: 'reward_asc' }, { label: '赏金从高到低', value: 'reward_desc' }] },
+    { key: 'status', title: '状态', items: [{ label: '全部', value: '' }, { label: '待接单', value: 'pending' }, { label: '进行中', value: 'ongoing' }, { label: '已完成', value: 'completed' }] },
+    { key: 'type', title: '类型', items: [{ label: '全部', value: '' }, { label: '代取快递', value: 'express' }, { label: '代买东西', value: 'buy' }, { label: '代送物品', value: 'deliver' }, { label: '其他', value: 'other' }] }
+  ],
+  '恋爱': [
+    { key: 'gender', title: '性别', items: [{ label: '女', value: 'female' }, { label: '男', value: 'male' }] },
+    { key: 'birthYear', title: '出生年月', type: 'input-range', minPlaceholder: '最小', maxPlaceholder: '最大' },
+    { key: 'height', title: '身高范围', type: 'input-range', minPlaceholder: '最低', maxPlaceholder: '最高' },
+    { key: 'weight', title: '体重范围', type: 'input-range', minPlaceholder: '最低', maxPlaceholder: '最高' },
+    { key: 'education', title: '学历', items: [{ label: '本科', value: 'bachelor' }, { label: '大专', value: 'college' }, { label: '硕士', value: 'master' }, { label: '博士', value: 'doctor' }] },
+    { key: 'studyType', title: '', items: [{ label: '全日制', value: 'fulltime' }, { label: '非全日制', value: 'parttime' }] },
+    { key: 'occupation', title: '职业', type: 'picker', items: [{ label: '不限', value: '' }, { label: '学生', value: 'student' }, { label: '上班族', value: 'employee' }, { label: '自由职业', value: 'freelance' }, { label: '其他', value: 'other' }] },
+    { key: 'location', title: '现居地', type: 'picker', items: [{ label: '不限', value: '' }, { label: '北京', value: 'beijing' }, { label: '上海', value: 'shanghai' }, { label: '广州', value: 'guangzhou' }, { label: '深圳', value: 'shenzhen' }, { label: '其他', value: 'other' }] },
+    { key: 'hometown', title: '籍贯', type: 'picker', items: [{ label: '不限', value: '' }, { label: '北京', value: 'beijing' }, { label: '上海', value: 'shanghai' }, { label: '广东', value: 'guangdong' }, { label: '江苏', value: 'jiangsu' }, { label: '浙江', value: 'zhejiang' }, { label: '其他', value: 'other' }] },
+    { key: 'noSmoke', title: '不抽烟', type: 'switch' },
+    { key: 'noDrink', title: '不喝酒', type: 'switch' },
+    { key: 'noSnore', title: '不打呼噜', type: 'switch' },
+    { key: 'timeRange', title: '发布时间', items: [{ label: '一天内', value: '1d' }, { label: '三天内', value: '3d' }, { label: '一周内', value: '1w' }, { label: '半个月内', value: '15d' }] }
+  ],
+  '拍卖': [
+    { key: 'sort', title: '排序', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '当前价从低到高', value: 'price_asc' }, { label: '当前价从高到低', value: 'price_desc' }] },
+    { key: 'status', title: '状态', items: [{ label: '全部', value: '' }, { label: '进行中', value: 'ongoing' }, { label: '已结束', value: 'ended' }] },
+    { key: 'category', title: '分类', items: [{ label: '全部', value: '' }, { label: '数码', value: 'digital' }, { label: '服饰', value: 'clothing' }, { label: '书籍', value: 'book' }, { label: '生活', value: 'life' }, { label: '其他', value: 'other' }] }
+  ]
+}
 
 export default {
   data() {
@@ -105,7 +165,29 @@ export default {
       activityInfo: null,
       recommendInfo: null,
       tabList: [],
-      postList: []
+      postList: [],
+      filterValue: {},
+      showFilter: false
+    }
+  },
+  computed: {
+    currentTabName() {
+      return this.tabList[this.currentTab] || '最新'
+    },
+    currentFilters() {
+      return FILTER_CONFIG[this.currentTabName] || []
+    },
+    filterOptions() {
+      return this.currentFilters.map(f => ({
+        title: f.title,
+        key: f.key,
+        items: f.items,
+        type: f.type,
+        min: f.min,
+        max: f.max,
+        unit: f.unit,
+        step: f.step
+      }))
     }
   },
   onLoad() {
@@ -139,17 +221,45 @@ export default {
       if (this.loading || this.noMore) return
       this.loading = true
 
-      const data = await postApi.getList({
+      const tabName = this.currentTabName
+      const params = {
         page: this.page,
         pageSize: 10,
-        tab: this.tabList[this.currentTab]
-      })
+        ...this.filterValue
+      }
 
-      if (data.list.length === 0) {
-        this.noMore = true
-      } else {
-        this.postList = [...this.postList, ...data.list]
-        this.page++
+      let data
+      try {
+        // 根据tab调用不同的API
+        switch (tabName) {
+          case '投票':
+            data = await voteApi.getList(params)
+            break
+          case '闲置':
+            data = await idleApi.getList(params)
+            break
+          case '跑腿':
+            data = await errandApi.getList(params)
+            break
+          case '恋爱':
+            data = await loveApi.getList(params)
+            break
+          case '拍卖':
+            data = await helpApi.getList(params)
+            break
+          default:
+            params.tab = tabName
+            data = await postApi.getList(params)
+        }
+
+        if (data.list.length === 0) {
+          this.noMore = true
+        } else {
+          this.postList = [...this.postList, ...data.list]
+          this.page++
+        }
+      } catch (e) {
+        console.error('加载列表失败', e)
       }
       this.loading = false
     },
@@ -186,11 +296,19 @@ export default {
       this.page = 1
       this.postList = []
       this.noMore = false
+      this.filterValue = {}
       this.loadPostList()
 
       const tabName = this.tabList[index]
       getApp().globalData = getApp().globalData || {}
       getApp().globalData.currentIndexTab = tabName
+    },
+    handleFilterConfirm(value) {
+      this.filterValue = value
+      this.page = 1
+      this.postList = []
+      this.noMore = false
+      this.loadPostList()
     },
     loadMore() {
       this.loadPostList()
@@ -199,12 +317,14 @@ export default {
       uni.navigateTo({ url: '/pages/post/detail?id=' + item.id })
     },
     goPostDetail(item) {
-      const currentTabName = this.tabList[this.currentTab]
       const detailPageMap = {
         '投票': '/pages/vote/detail',
-        '恋爱': '/pages/love/detail'
+        '恋爱': '/pages/love/detail',
+        '闲置': '/pages/idle/detail',
+        '跑腿': '/pages/errand/detail',
+        '拍卖': '/pages/help/detail'
       }
-      const detailUrl = detailPageMap[currentTabName] || '/pages/post/detail'
+      const detailUrl = detailPageMap[this.currentTabName] || '/pages/post/detail'
       uni.navigateTo({ url: detailUrl + '?id=' + item.id })
     }
   }

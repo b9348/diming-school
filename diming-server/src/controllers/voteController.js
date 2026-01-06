@@ -41,7 +41,16 @@ const generateVoteList = (page, pageSize) => {
 
 // 获取投票列表
 const getList = (req, res) => {
-  const { page = 1, pageSize = 10 } = req.query
+  const {
+    page = 1,
+    pageSize = 10,
+    sort = 'latest',
+    status = '',
+    remainTime_min = '',
+    remainTime_max = '',
+    voteType = '',
+    timeRange = ''
+  } = req.query
   const pageNum = parseInt(page)
 
   const total = 6
@@ -51,7 +60,39 @@ const getList = (req, res) => {
     return successResponse(res, { list: [], total })
   }
 
-  const list = generateVoteList(pageNum, parseInt(pageSize))
+  let list = generateVoteList(pageNum, parseInt(pageSize))
+
+  // 根据排序方式排序
+  switch (sort) {
+    case 'hot':
+      list.sort((a, b) => b.totalVotes - a.totalVotes)
+      break
+    case 'most_comments':
+      list.sort((a, b) => b.totalVotes - a.totalVotes)
+      break
+    case 'most_likes':
+      list.sort((a, b) => b.totalVotes - a.totalVotes)
+      break
+    case 'most_participants':
+      list.sort((a, b) => b.totalVotes - a.totalVotes)
+      break
+    case 'most_votes':
+      list.sort((a, b) => b.totalVotes - a.totalVotes)
+      break
+  }
+
+  // 根据状态筛选（模拟）
+  // status: ongoing, pending, ended
+
+  // 根据剩余时间筛选（模拟）
+  // remainTime_min, remainTime_max
+
+  // 根据投票类型筛选（模拟）
+  // voteType: text, image_text
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
+
   successResponse(res, { list, total })
 }
 

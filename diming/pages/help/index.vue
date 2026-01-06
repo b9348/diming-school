@@ -128,24 +128,48 @@ export default {
       helpList: [],
       filterOptions: [
         {
-          title: '商品分类',
-          key: 'category',
+          title: '当前价',
+          key: 'price',
+          type: 'input-range',
+          minPlaceholder: '最低价',
+          maxPlaceholder: '最高价'
+        },
+        {
+          title: '拍卖状态',
+          key: 'status',
           items: [
-            { label: '全部', value: '' },
-            { label: '数码产品', value: 'digital' },
-            { label: '生活用品', value: 'daily' },
-            { label: '服饰鞋包', value: 'clothes' },
-            { label: '其他', value: 'other' }
+            { label: '竞价中', value: 'ongoing' },
+            { label: '已结束', value: 'ended' }
           ]
         },
         {
-          title: '价格范围',
-          key: 'price',
+          title: '剩余时间',
+          key: 'remainTime',
+          type: 'input-range',
+          minPlaceholder: '最少',
+          maxPlaceholder: '最多'
+        },
+        {
+          title: '排序方式',
+          key: 'sort',
           items: [
-            { label: '全部', value: '' },
-            { label: '0-50元', value: '0-50' },
-            { label: '50-200元', value: '50-200' },
-            { label: '200元以上', value: '200+' }
+            { label: '综合排序', value: 'default' },
+            { label: '价格升序', value: 'price_asc' },
+            { label: '价格降序', value: 'price_desc' }
+          ]
+        },
+        {
+          title: '发布时间',
+          key: 'timeRange',
+          items: [
+            { label: '不限', value: '' },
+            { label: '一天内', value: '1d' },
+            { label: '三天内', value: '3d' },
+            { label: '一周内', value: '1w' },
+            { label: '半个月内', value: '15d' },
+            { label: '一个月内', value: '1m' },
+            { label: '三个月内', value: '3m' },
+            { label: '六个月内', value: '6m' }
           ]
         }
       ],

@@ -20,7 +20,26 @@ const generateLoveList = (page, pageSize) => {
 
 // 获取交友列表
 const getList = (req, res) => {
-  const { page = 1, pageSize = 10, gender = '全部' } = req.query
+  const {
+    page = 1,
+    pageSize = 10,
+    gender = '',
+    birthYear_min = '',
+    birthYear_max = '',
+    height_min = '',
+    height_max = '',
+    weight_min = '',
+    weight_max = '',
+    education = '',
+    studyType = '',
+    occupation = '',
+    location = '',
+    hometown = '',
+    noSmoke = '',
+    noDrink = '',
+    noSnore = '',
+    timeRange = ''
+  } = req.query
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
 
@@ -31,7 +50,51 @@ const getList = (req, res) => {
     return successResponse(res, { list: [], total })
   }
 
-  const list = generateLoveList(pageNum, size)
+  let list = generateLoveList(pageNum, size)
+
+  // 根据性别筛选
+  if (gender) {
+    const genderMap = { 'male': '男', 'female': '女' }
+    if (genderMap[gender]) {
+      list = list.filter(item => item.gender === genderMap[gender])
+    }
+  }
+
+  // 根据学历筛选
+  if (education) {
+    const eduMap = { 'college': '大专', 'bachelor': '本科', 'master': '硕士', 'doctor': '博士' }
+    if (eduMap[education]) {
+      list = list.filter(item => item.education === eduMap[education])
+    }
+  }
+
+  // 根据出生年月筛选（模拟）
+  // birthYear_min, birthYear_max
+
+  // 根据身高筛选（模拟）
+  // height_min, height_max
+
+  // 根据体重筛选（模拟）
+  // weight_min, weight_max
+
+  // 根据学制筛选（模拟）
+  // studyType: fulltime, parttime
+
+  // 根据职业筛选（模拟）
+  // occupation
+
+  // 根据现居地筛选（模拟）
+  // location
+
+  // 根据籍贯筛选（模拟）
+  // hometown
+
+  // 根据生活习惯筛选（模拟）
+  // noSmoke, noDrink, noSnore
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d
+
   successResponse(res, { list, total })
 }
 

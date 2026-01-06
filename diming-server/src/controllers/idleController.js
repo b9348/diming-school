@@ -26,7 +26,16 @@ const generateIdleList = (page, pageSize) => {
 
 // 获取闲置列表
 const getList = (req, res) => {
-  const { page = 1, pageSize = 10, category = '全部' } = req.query
+  const {
+    page = 1,
+    pageSize = 10,
+    price_min = '',
+    price_max = '',
+    delivery = '',
+    shipTime = '',
+    sort = 'default',
+    timeRange = ''
+  } = req.query
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
 
@@ -37,7 +46,39 @@ const getList = (req, res) => {
     return successResponse(res, { list: [], total })
   }
 
-  const list = generateIdleList(pageNum, size)
+  let list = generateIdleList(pageNum, size)
+
+  // 根据价格范围筛选
+  if (price_min) {
+    list = list.filter(item => item.price >= parseInt(price_min))
+  }
+  if (price_max) {
+    list = list.filter(item => item.price <= parseInt(price_max))
+  }
+
+  // 根据配送方式筛选（模拟）
+  // delivery: free_shipping, pickup
+
+  // 根据发货时间筛选（模拟）
+  // shipTime: hours, date
+
+  // 根据排序方式排序
+  switch (sort) {
+    case 'price_asc':
+      list.sort((a, b) => a.price - b.price)
+      break
+    case 'price_desc':
+      list.sort((a, b) => b.price - a.price)
+      break
+    case 'default':
+    default:
+      // 综合排序，保持原顺序
+      break
+  }
+
+  // 根据发布时间筛选（模拟）
+  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
+
   successResponse(res, { list, total })
 }
 
