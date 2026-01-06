@@ -218,9 +218,9 @@ export default {
   }
   .goods-buy-btn { padding: 12rpx 24rpx; border: 1rpx solid #333; border-radius: 8rpx; font-size: 26rpx; color: #333; }
 }
-.chat-scroll { padding: 24rpx; }
+.chat-scroll { padding: 24rpx; box-sizing: border-box; }
 .message-item { display: flex; align-items: flex-start; margin-bottom: 24rpx;
-  &.mine { flex-direction: row-reverse; .msg-bubble { background: #007AFF; .msg-text { color: #FFF; } } }
+  &.mine { justify-content: flex-end; .msg-bubble { background: #007AFF; .msg-text { color: #FFF; } } }
   .msg-avatar { width: 72rpx; height: 72rpx; border-radius: 50%; }
   .msg-bubble { max-width: 500rpx; margin: 0 16rpx; padding: 20rpx; background: #FFF; border-radius: 16rpx;
     .msg-text { font-size: 28rpx; color: #333; line-height: 1.5; }

@@ -29,10 +29,7 @@
 
       <!-- 今日热榜 -->
       <view class="hot-section">
-        <view class="hot-header">
-          <text class="hot-title">今日热榜</text>
-          <text class="hot-desc">间隔n秒上下滚动显示20条最热的帖子</text>
-        </view>
+        <text class="hot-title">今日热榜</text>
         <swiper class="hot-swiper" vertical :autoplay="true" :interval="3000" circular>
           <swiper-item v-for="(item, index) in hotList" :key="index" @click="goHotDetail(item)">
             <view class="hot-item">
@@ -350,36 +347,29 @@ export default {
   padding: 20rpx;
   background-color: #FFFFFF;
   border-radius: 12rpx;
+  display: flex;
+  align-items: center;
 
-  .hot-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16rpx;
-
-    .hot-title {
-      font-size: 30rpx;
-      color: #333333;
-      font-weight: 600;
-      margin-right: 16rpx;
-    }
-
-    .hot-desc {
-      font-size: 22rpx;
-      color: #999999;
-    }
+  .hot-title {
+    flex-shrink: 0;
+    font-size: 28rpx;
+    color: #333333;
+    font-weight: 600;
+    margin-right: 20rpx;
   }
 
   .hot-swiper {
-    height: 60rpx;
+    flex: 1;
+    height: 40rpx;
 
     .hot-item {
       display: flex;
       align-items: center;
-      height: 60rpx;
+      height: 40rpx;
 
       .hot-rank {
-        width: 40rpx;
-        font-size: 28rpx;
+        width: 36rpx;
+        font-size: 26rpx;
         color: #FF9500;
         font-weight: 600;
       }
