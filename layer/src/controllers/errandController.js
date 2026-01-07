@@ -5,16 +5,20 @@ const generateErrandList = (page, pageSize) => {
   const startId = (page - 1) * pageSize
   return Array(pageSize).fill(null).map((_, i) => ({
     id: startId + i + 1,
-    price: [350, 200, 150, 500, 280][i % 5],
-    deadline: ['24小时内完成', '2-30 18:20前完成', '今天下午6点前', '明天中午前', '本周五前'][i % 5],
     content: '找一位同学帮忙取快递，快递在菜鸟驿站，需要送到南区西苑八号楼909室，谢谢！',
     images: i % 2 === 0 ? ['https://iph.href.lu/400x300?text=图片1'] : [],
+    timeType: ['hours', 'deadline'][i % 2],
+    hours: '24',
+    deadline: '2025-03-01',
+    contactTypes: ['phone', 'wechat', 'qq'].slice(0, (i % 3) + 1),
+    contactValue: '138****8888',
+    visibilityType: ['campus', 'school'][i % 2],
+    visibilityValue: ['all', 'dishui', 'east', 'province'][i % 4],
     location: ['闵行校区', '徐汇校区', '海定校区', '杨浦校区'][i % 4],
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: ['张三', '李四', '王五', '赵六', '钱七'][i % 5],
     time: '2-23 18:24',
-    status: ['待接单', '进行中', '已完成'][i % 3],
-    type: ['代取快递', '代买东西', '代打印', '代排队', '其他'][i % 5]
+    status: ['待接单', '进行中', '已完成'][i % 3]
   }))
 }
 
@@ -23,10 +27,9 @@ const getList = (req, res) => {
   const {
     page = 1,
     pageSize = 10,
-    price_min = '',
-    price_max = '',
     status = '',
-    finishTime = '',
+    timeType = '',
+    visibilityType = '',
     sort = 'default',
     timeRange = ''
   } = req.query
@@ -34,21 +37,12 @@ const getList = (req, res) => {
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
 
-  // 生成基础列表
   let list = generateErrandList(pageNum, size)
-
-  // 根据价格范围筛选
-  if (price_min) {
-    list = list.filter(item => item.price >= parseInt(price_min))
-  }
-  if (price_max) {
-    list = list.filter(item => item.price <= parseInt(price_max))
-  }
 
   // 根据状态筛选
   if (status) {
     const statusMap = {
-      'pending': '待抢单',
+      'pending': '待接单',
       'ongoing': '进行中',
       'completed': '已完成'
     }
@@ -57,25 +51,15 @@ const getList = (req, res) => {
     }
   }
 
-  // 根据完成时间筛选（模拟）
-  // finishTime: hours, date
-
-  // 根据排序方式排序
-  switch (sort) {
-    case 'price_asc':
-      list.sort((a, b) => a.price - b.price)
-      break
-    case 'price_desc':
-      list.sort((a, b) => b.price - a.price)
-      break
-    case 'default':
-    default:
-      // 综合排序，保持原顺序
-      break
+  // 根据时间类型筛选
+  if (timeType) {
+    list = list.filter(item => item.timeType === timeType)
   }
 
-  // 根据发布时间筛选（模拟）
-  // timeRange: 1d, 3d, 1w, 15d, 1m, 3m, 6m
+  // 根据可见范围类型筛选
+  if (visibilityType) {
+    list = list.filter(item => item.visibilityType === visibilityType)
+  }
 
   const total = 30
   const maxPage = Math.ceil(total / size)
@@ -93,18 +77,21 @@ const getDetail = (req, res) => {
 
   const detail = {
     id: parseInt(id),
-    price: 350,
-    status: '待接单',
-    type: '代取快递',
-    deadline: '24小时内完成',
-    pickupLocation: '菜鸟驿站',
-    deliveryLocation: '南区西苑八号楼909室',
     content: '找一位女生打印资料送到南区，资料比较重要，请小心保管，谢谢！',
     images: ['https://iph.href.lu/400x300?text=示例图片'],
+    hiddenInfo: '取件码：1234，在菜鸟驿站3号柜',
+    hiddenImages: [],
+    timeType: 'hours',
+    hours: '24',
+    deadline: '',
+    contactTypes: ['phone'],
+    contactValue: '138****8888',
+    visibilityType: 'campus',
+    visibilityValue: 'all',
+    status: '待接单',
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: '张三',
     time: '2-23 18:24',
-    phone: '138****8888',
     isFollowed: false,
     userInfo: {
       id: 'errand_user_1',
@@ -120,14 +107,23 @@ const getDetail = (req, res) => {
 
 // 创建或更新跑腿任务
 const saveOrUpdate = (req, res) => {
-  const { id, content, price, deadline, type, pickupLocation, deliveryLocation } = req.body
+  const {
+    id,
+    content,
+    images,
+    hiddenInfo,
+    hiddenImages,
+    timeType,
+    hours,
+    deadline,
+    contactTypes,
+    contactValue,
+    visibilityType,
+    visibilityValue
+  } = req.body
 
   if (!content) {
-    return errorResponse(res, '任务描述不能为空', 400)
-  }
-
-  if (!price) {
-    return errorResponse(res, '请设置价格', 400)
+    return errorResponse(res, '请填写任务描述', 400)
   }
 
   if (id) {

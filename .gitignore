@@ -1,5 +1,5 @@
-diming/unpackage
-diming/node_modules
-diming-server/node_modules
-diming-manage/node_modules
+front-end/unpackage
+front-end/node_modules
+layer/node_modules
+admin/node_modules
 claude --dangerously-skip-permissions
