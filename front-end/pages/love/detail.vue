@@ -520,7 +520,7 @@ export default {
 
   .stats-text {
     font-size: 26rpx;
-    color: #999999;
+    color: #BBBBBB;
   }
 }
 

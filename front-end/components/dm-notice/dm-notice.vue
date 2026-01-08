@@ -60,8 +60,8 @@ export default {
         margin-right: 16rpx;
         font-size: 22rpx;
         color: #FF9500;
-        background-color: #FFE5B4;
-        border-radius: 4rpx;
+        background-color: #FFF3E0;
+        border-radius: 0;
       }
 
       .notice-text {

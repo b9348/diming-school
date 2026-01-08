@@ -101,7 +101,8 @@ const generateErrandList = (page, pageSize) => {
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: ['张三', '李四', '王五', '赵六', '钱七'][i % 5],
     time: '2-23 18:24',
-    status: ['待接单', '进行中', '已完成'][i % 3]
+    status: ['待接单', '进行中', '已完成'][i % 3],
+    price: [10, 20, 30, 40, 50][i % 5]
   }))
 }
 
@@ -176,6 +177,7 @@ const getDetail = (req, res) => {
     nickname: '张三',
     time: '2-23 18:24',
     isFollowed: false,
+    price: 25,
     userInfo: {
       id: 'errand_user_1',
       nickname: '张三',

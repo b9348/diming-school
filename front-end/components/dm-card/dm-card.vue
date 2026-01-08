@@ -5,8 +5,8 @@
       <image class="avatar" :src="data.avatar || 'https://iph.href.lu/100x100?text=头像'" mode="aspectFill"></image>
       <view class="user-info">
         <view class="user-top">
-          <text class="nickname">{{ data.nickname || '匿名用户' }}</text>
           <text v-if="data.title" class="user-title">{{ data.title }}</text>
+          <text class="nickname">{{ data.nickname || '匿名用户' }}</text>
         </view>
       </view>
       <view class="header-right">
@@ -47,11 +47,11 @@
         <text v-if="data.location" class="location">{{ data.location }}</text>
       </view>
       <view class="footer-right">
-        <view class="action-item" v-if="showLike">
-          <uni-icons type="heart" size="16" color="#999999"></uni-icons>
-          <text class="action-text">{{ data.likeCount || 0 }}</text>
+        <view class="action-item" v-if="showLike" @click.stop="handleLike">
+          <uni-icons :type="data.isLiked ? 'heart-filled' : 'heart'" size="16" :color="data.isLiked ? '#FF3B30' : '#999999'"></uni-icons>
+          <text class="action-text" :class="{ 'is-liked': data.isLiked }">{{ data.likeCount || 0 }}</text>
         </view>
-        <view class="action-item" v-if="showComment">
+        <view class="action-item" v-if="showComment" @click.stop="handleComment">
           <uni-icons type="chat" size="16" color="#999999"></uni-icons>
           <text class="action-text">{{ data.commentCount || 0 }}</text>
         </view>
@@ -88,6 +88,12 @@ export default {
   methods: {
     handleClick() {
       this.$emit('click', this.data)
+    },
+    handleLike() {
+      this.$emit('like', this.data)
+    },
+    handleComment() {
+      this.$emit('comment', this.data)
     },
     truncateText(text, maxLength) {
       if (!text) return ''
@@ -152,8 +158,12 @@ export default {
 
       .top-tag {
         font-size: 20rpx;
-        color: #FF3B30;
-        margin-left: 4rpx;
+        color: #FFFFFF;
+        background-color: #FF3B30;
+        padding: 2rpx 8rpx;
+        border-radius: 4rpx;
+        margin-left: 8rpx;
+        line-height: 1.5;
       }
     }
   }
@@ -229,7 +239,7 @@ export default {
 
       .view-count {
         font-size: 24rpx;
-        color: #666666;
+        color: #BBBBBB;
       }
 
       .location {
@@ -251,6 +261,10 @@ export default {
         .action-text {
           font-size: 24rpx;
           color: #999999;
+
+          &.is-liked {
+            color: #FF3B30;
+          }
         }
       }
     }

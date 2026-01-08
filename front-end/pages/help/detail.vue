@@ -55,7 +55,10 @@
             <image class="bid-avatar" :src="bid.avatar" mode="aspectFill"></image>
             <text class="bid-name">{{ bid.nickname }}</text>
             <text class="bid-time">{{ bid.time }}</text>
-            <text class="bid-price">¥{{ bid.price }}</text>
+            <view class="bid-price">
+              <text class="bid-price-symbol">¥</text>
+              <text class="bid-price-value">{{ bid.price }}</text>
+            </view>
           </view>
         </view>
       </view>
@@ -329,7 +332,7 @@ export default {
 
     .countdown {
       font-size: 36rpx;
-      color: #333333;
+      color: #FF3B30;
       font-weight: 600;
       font-family: monospace;
     }
@@ -455,9 +458,20 @@ export default {
       }
 
       .bid-price {
+        display: flex;
+        align-items: baseline;
         font-size: 32rpx;
         color: #FF3B30;
         font-weight: 600;
+
+        .bid-price-symbol {
+          font-size: 24rpx;
+          margin-right: 2rpx;
+        }
+
+        .bid-price-value {
+          font-size: 32rpx;
+        }
       }
     }
   }

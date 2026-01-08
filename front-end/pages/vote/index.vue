@@ -454,7 +454,7 @@ export default {
       }
       .vote-count {
         font-size: 24rpx;
-        color: #999999;
+        color: #BBBBBB;
       }
     }
 

@@ -198,6 +198,8 @@
           :key="index"
           :data="item"
           @click="goPostDetail(item)"
+          @like="handleLike(item)"
+          @comment="handleComment(item)"
         />
       </view>
 
@@ -227,6 +229,14 @@
         <text>发送</text>
       </view>
     </view>
+
+    <!-- 评论输入框 -->
+    <dm-comment-input
+      :visible="showCommentInput"
+      placeholder="写评论..."
+      @send="handleSendComment"
+      @update:visible="showCommentInput = $event"
+    />
 
     <!-- 筛选弹窗 -->
     <dm-filter
@@ -315,7 +325,9 @@ export default {
       groupInputText: '',
       filterValue: {},
       showFilter: false,
-      scrollIntoView: ''
+      scrollIntoView: '',
+      showCommentInput: false,
+      currentCommentTarget: null
     }
   },
   computed: {
@@ -498,6 +510,56 @@ export default {
       const detailUrl = detailPageMap[this.currentTabName] || '/pages/post/detail'
       uni.navigateTo({ url: detailUrl + '?id=' + item.id })
     },
+    async handleLike(item) {
+      if (item.isLiked) return
+      try {
+        const tabName = this.currentTabName
+        let api
+        switch (tabName) {
+          case '投票':
+            api = voteApi
+            break
+          case '恋爱':
+            api = loveApi
+            break
+          default:
+            api = postApi
+        }
+        await api.like(item.id)
+        item.likeCount++
+        item.isLiked = true
+      } catch (e) {
+        console.error('点赞失败', e)
+      }
+    },
+    handleComment(item) {
+      this.currentCommentTarget = item
+      this.showCommentInput = true
+    },
+    async handleSendComment(content) {
+      if (!this.currentCommentTarget) return
+      try {
+        const tabName = this.currentTabName
+        let api
+        switch (tabName) {
+          case '投票':
+            api = voteApi
+            break
+          case '恋爱':
+            api = loveApi
+            break
+          default:
+            api = postApi
+        }
+        await api.comment(this.currentCommentTarget.id, content)
+        this.currentCommentTarget.commentCount++
+        uni.showToast({ title: '评论成功', icon: 'success' })
+      } catch (e) {
+        console.error('评论失败', e)
+        uni.showToast({ title: '评论失败', icon: 'none' })
+      }
+      this.currentCommentTarget = null
+    },
     async loadGroupMessages() {
       try {
         const data = await groupApi.getMessages()
@@ -661,15 +723,24 @@ export default {
       font-weight: 500;
 
       &.notice-tag {
-        color: #007AFF;
+        color: #FF9500;
+        background-color: #FFF3E0;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
 
       &.activity-tag {
         color: #333333;
+        background-color: #E8F4F8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
 
       &.recommend-tag {
         color: #333333;
+        background-color: #E8F8E8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
     }
 
@@ -941,7 +1012,7 @@ export default {
         }
         .vote-count {
           font-size: 24rpx;
-          color: #999999;
+          color: #BBBBBB;
         }
       }
 

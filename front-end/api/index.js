@@ -43,7 +43,10 @@ export const postApi = {
   like: (id) => post(`/post/like/${id}`),
 
   // 收藏帖子
-  collect: (id) => post(`/post/collect/${id}`)
+  collect: (id) => post(`/post/collect/${id}`),
+
+  // 评论帖子
+  comment: (id, content) => post(`/post/comment/${id}`, { content })
 }
 
 /**
@@ -60,7 +63,10 @@ export const voteApi = {
   saveOrUpdate: (data) => post('/vote/saveOrUpdate', data),
 
   // 提交投票
-  submit: (data) => post('/vote/submit', data)
+  submit: (data) => post('/vote/submit', data),
+
+  // 评论投票
+  comment: (id, content) => post(`/vote/comment/${id}`, { content })
 }
 
 /**
@@ -120,7 +126,10 @@ export const loveApi = {
   saveOrUpdate: (data) => post('/love/saveOrUpdate', data),
 
   // 喜欢/取消喜欢
-  like: (id) => post(`/love/like/${id}`)
+  like: (id) => post(`/love/like/${id}`),
+
+  // 评论交友
+  comment: (id, content) => post(`/love/comment/${id}`, { content })
 }
 
  /**

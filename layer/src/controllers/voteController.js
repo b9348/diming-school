@@ -230,9 +230,22 @@ const submit = (req, res) => {
   successResponse(res, null, '投票成功')
 }
 
+// 评论投票
+const comment = (req, res) => {
+  const { id } = req.params
+  const { content } = req.body
+
+  if (!content) {
+    return errorResponse(res, '评论内容不能为空', 400)
+  }
+
+  successResponse(res, null, '评论成功')
+}
+
 module.exports = {
   getList,
   getDetail,
   saveOrUpdate,
-  submit
+  submit,
+  comment
 }

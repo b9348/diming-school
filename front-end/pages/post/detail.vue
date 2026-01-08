@@ -318,7 +318,7 @@ export default {
   .post-tags { display: flex; gap: 8rpx; margin-right: 16rpx;
     .tag-item { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 4rpx;
       &.pinned { color: #FF6B6B; background: rgba(255,107,107,0.1); }
-      &.announcement { color: #007AFF; background: rgba(0,122,255,0.1); }
+      &.announcement { color: #FF9500; background: rgba(255,149,0,0.1); }
     }
   }
   .follow-btn { padding: 12rpx 32rpx; font-size: 26rpx; color: #007AFF; border: 1rpx solid #007AFF; border-radius: 24rpx; }

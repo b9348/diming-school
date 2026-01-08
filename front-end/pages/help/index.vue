@@ -322,15 +322,24 @@ export default {
       font-weight: 500;
 
       &.notice-tag {
-        color: #007AFF;
+        color: #FF9500;
+        background-color: #FFF3E0;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
 
       &.activity-tag {
         color: #333333;
+        background-color: #E8F4F8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
 
       &.recommend-tag {
         color: #333333;
+        background-color: #E8F8E8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
       }
     }
 
@@ -371,7 +380,7 @@ export default {
 
       .countdown {
         font-size: 32rpx;
-        color: #333333;
+        color: #FF3B30;
         font-weight: 600;
         font-family: monospace;
       }

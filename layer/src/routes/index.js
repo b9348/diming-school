@@ -55,12 +55,14 @@ router.get('/post/detail/:id', postController.getDetail)
 router.post('/post/saveOrUpdate', postController.saveOrUpdate)
 router.post('/post/like/:id', postController.like)
 router.post('/post/collect/:id', postController.collect)
+router.post('/post/comment/:id', postController.comment)
 
 // ==================== 投票 ====================
 router.get('/vote/list', voteController.getList)
 router.get('/vote/detail/:id', voteController.getDetail)
 router.post('/vote/saveOrUpdate', voteController.saveOrUpdate)
 router.post('/vote/submit', voteController.submit)
+router.post('/vote/comment/:id', voteController.comment)
 
 // ==================== 跑腿 ====================
 router.get('/errand/data', errandController.getData)
@@ -82,6 +84,7 @@ router.get('/love/list', loveController.getList)
 router.get('/love/detail/:id', loveController.getDetail)
 router.post('/love/saveOrUpdate', loveController.saveOrUpdate)
 router.post('/love/like/:id', loveController.like)
+router.post('/love/comment/:id', loveController.comment)
 
 // ==================== 互助拍卖 ====================
 router.get('/help/data', helpController.getData)
