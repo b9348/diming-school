@@ -1,5 +1,98 @@
 const { successResponse, errorResponse } = require('../utils/response')
 
+// 互助拍卖公告数据配置
+const HELP_NOTICE_CONFIG = {
+  '竞价中': {
+    noticeInfo: {
+      id: 1,
+      type: 'notice',
+      content: '互助拍卖功能上线，支持多种拍品类型，快来体验吧',
+      url: '/pages/notice/detail?id=1'
+    },
+    activityInfo: {
+      id: 2,
+      type: 'activity',
+      content: '首拍免手续费，快来发布你的第一个拍品',
+      url: '/pages/activity/detail?id=2'
+    },
+    recommendInfo: {
+      id: 3,
+      type: 'recommend',
+      tag: '推荐',
+      content: '热门拍品：数码产品、书籍、运动装备，等你来拍',
+      url: '/pages/recommend/detail?id=3'
+    }
+  },
+  '已结束': {
+    noticeInfo: {
+      id: 4,
+      type: 'notice',
+      content: '拍卖结束后，竞得者需在规定时间内完成付款',
+      url: '/pages/notice/detail?id=4'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '我出价的': {
+    noticeInfo: {
+      id: 5,
+      type: 'notice',
+      content: '您出价的拍品，如有出价会被系统通知',
+      url: '/pages/notice/detail?id=5'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '我发的': {
+    noticeInfo: {
+      id: 6,
+      type: 'notice',
+      content: '拍品发布后，请及时查看出价情况',
+      url: '/pages/notice/detail?id=6'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '竞标的': {
+    noticeInfo: {
+      id: 7,
+      type: 'notice',
+      content: '竞拍正在进行中，密切关注拍品动态',
+      url: '/pages/notice/detail?id=7'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '被竞标的': {
+    noticeInfo: {
+      id: 8,
+      type: 'notice',
+      content: '您的拍品正在竞拍中，及时关注出价情况',
+      url: '/pages/notice/detail?id=8'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  }
+}
+
+// 获取互助拍卖数据
+const getData = (req, res) => {
+  const { tab } = req.query
+  const config = HELP_NOTICE_CONFIG[tab] || HELP_NOTICE_CONFIG['竞价中']
+
+  const data = {
+    bannerList: [
+      { id: 1, image: 'https://iph.href.lu/750x300?text=互助轮播图1', url: '' },
+      { id: 2, image: 'https://iph.href.lu/750x300?text=互助轮播图2', url: '' }
+    ],
+    noticeInfo: config.noticeInfo,
+    activityInfo: config.activityInfo,
+    recommendInfo: config.recommendInfo
+  }
+
+  successResponse(res, data)
+}
+
 // 生成互助拍卖列表数据
 const generateHelpList = (page, pageSize) => {
   const startId = (page - 1) * pageSize
@@ -180,6 +273,7 @@ const getBidList = (req, res) => {
 }
 
 module.exports = {
+  getData,
   getList,
   getDetail,
   saveOrUpdate,

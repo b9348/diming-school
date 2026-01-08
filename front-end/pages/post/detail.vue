@@ -72,7 +72,7 @@
           <text class="interact-item">{{ postData.shareCount }} 转发</text>
         </view>
         <view class="admin-btn" v-if="isAdmin" @click="showPostAdminMenu">
-          <uni-icons type="gear" size="16" color="#FF6B6B"></uni-icons>
+          <uni-icons type="settings" size="16" color="#FFFFFF"></uni-icons>
           <text>管理</text>
         </view>
       </view>

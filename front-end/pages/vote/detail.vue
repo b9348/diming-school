@@ -26,11 +26,25 @@
           <text class="vote-title">{{ data.title }}</text>
           <!-- 管理按钮 -->
           <view class="admin-btn" v-if="isAdmin" @click="showAdminMenu = true">
-            <uni-icons type="gear" size="16" color="#FF6B6B"></uni-icons>
+            <uni-icons type="settings" size="16" color="#FFFFFF"></uni-icons>
             <text>管理</text>
           </view>
         </view>
         <text class="vote-deadline">截止时间：{{ data.deadline }}</text>
+      </view>
+
+      <!-- 投票图片 -->
+      <view class="vote-images" v-if="data.images && data.images.length > 0">
+        <view class="images-grid" :class="'grid-' + data.images.length">
+          <image
+            v-for="(img, index) in data.images"
+            :key="index"
+            class="vote-image"
+            :src="img"
+            mode="aspectFill"
+            @click="previewImage(index)"
+          ></image>
+        </view>
       </view>
 
       <!-- 投票选项 -->
@@ -43,6 +57,7 @@
               <view class="check-icon" v-if="opt.voted">
                 <uni-icons type="checkmarkempty" size="14" color="#007AFF"></uni-icons>
               </view>
+              <image v-if="opt.image" class="option-image" :src="opt.image" mode="aspectFill"></image>
               <text class="option-text">{{ opt.text }}</text>
             </view>
             <text class="option-percent">{{ opt.percent }}%</text>
@@ -104,6 +119,7 @@ export default {
       data: {
         title: '',
         deadline: '',
+        images: [],
         options: [],
         totalVotes: 0,
         viewCount: 0,
@@ -197,6 +213,12 @@ export default {
     },
     handleShare() {
       uni.share && uni.share({ title: this.data.title })
+    },
+    previewImage(index) {
+      uni.previewImage({
+        current: index,
+        urls: this.data.images
+      })
     }
   }
 }
@@ -220,6 +242,14 @@ export default {
   }
   .vote-deadline { display: block; margin-top: 12rpx; font-size: 24rpx; color: #FF9500; }
 }
+.vote-images { padding: 0 24rpx 24rpx; background: #FFF;
+  .images-grid { display: grid; gap: 8rpx;
+    &.grid-1 { grid-template-columns: 1fr; .vote-image { height: 400rpx; } }
+    &.grid-2, &.grid-4 { grid-template-columns: repeat(2, 1fr); .vote-image { height: 200rpx; } }
+    &.grid-3, &.grid-5, &.grid-6, &.grid-7, &.grid-8, &.grid-9 { grid-template-columns: repeat(3, 1fr); .vote-image { height: 200rpx; } }
+    .vote-image { width: 100%; border-radius: 8rpx; }
+  }
+}
 .vote-options { padding: 24rpx; background: #FFF; margin-top: 20rpx;
   .option-item { position: relative; padding: 24rpx; margin-bottom: 16rpx; background: #F5F5F5; border-radius: 12rpx; overflow: hidden;
     &:last-child { margin-bottom: 0; }
@@ -227,6 +257,7 @@ export default {
     .option-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center;
       .option-left { display: flex; align-items: center; gap: 12rpx; }
       .check-icon { width: 36rpx; height: 36rpx; background: #007AFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+      .option-image { width: 60rpx; height: 60rpx; border-radius: 8rpx; }
       .option-text { font-size: 28rpx; color: #333; }
       .option-percent { font-size: 28rpx; color: #007AFF; font-weight: 500; }
     }

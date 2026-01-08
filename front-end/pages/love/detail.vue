@@ -26,7 +26,7 @@
         <text class="profile-name">{{ data.nickname }}</text>
         <!-- 管理按钮 -->
         <view class="admin-btn" v-if="isAdmin" @click="showAdminMenu = true">
-          <uni-icons type="gear" size="16" color="#FF6B6B"></uni-icons>
+          <uni-icons type="settings" size="16" color="#FFFFFF"></uni-icons>
           <text>管理</text>
         </view>
       </view>

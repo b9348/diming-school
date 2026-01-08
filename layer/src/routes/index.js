@@ -14,6 +14,7 @@ const helpController = require('../controllers/helpController')
 const messageController = require('../controllers/messageController')
 const searchController = require('../controllers/searchController')
 const userController = require('../controllers/userController')
+const groupController = require('../controllers/groupController')
 
 // 管理后台控制器
 const adminController = require('../controllers/adminController')
@@ -62,6 +63,7 @@ router.post('/vote/saveOrUpdate', voteController.saveOrUpdate)
 router.post('/vote/submit', voteController.submit)
 
 // ==================== 跑腿 ====================
+router.get('/errand/data', errandController.getData)
 router.get('/errand/list', errandController.getList)
 router.get('/errand/detail/:id', errandController.getDetail)
 router.post('/errand/saveOrUpdate', errandController.saveOrUpdate)
@@ -82,6 +84,7 @@ router.post('/love/saveOrUpdate', loveController.saveOrUpdate)
 router.post('/love/like/:id', loveController.like)
 
 // ==================== 互助拍卖 ====================
+router.get('/help/data', helpController.getData)
 router.get('/help/list', helpController.getList)
 router.get('/help/detail/:id', helpController.getDetail)
 router.post('/help/saveOrUpdate', helpController.saveOrUpdate)
@@ -93,6 +96,10 @@ router.get('/message/list', messageController.getList)
 router.get('/chat/list/:targetId', messageController.getChatList)
 router.post('/chat/send', messageController.send)
 router.post('/message/markRead', messageController.markRead)
+
+// ==================== 互助群 ====================
+router.get('/group/messages', groupController.getMessages)
+router.post('/group/message/send', groupController.sendMessage)
 
 // ==================== 用户中心 ====================
 // 我的帖子

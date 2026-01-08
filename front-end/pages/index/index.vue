@@ -18,7 +18,7 @@
     <scroll-view
       class="scroll-container"
       scroll-y
-      :style="{ height: scrollHeight + 'px' }"
+      :style="{ height: actualScrollHeight + 'px' }"
       @scrolltolower="loadMore"
     >
       <!-- 轮播图 -->
@@ -62,8 +62,25 @@
       <!-- 内容分类Tabs -->
       <dm-tabs :list="tabList" :current="currentTab" @change="handleTabChange" />
 
+      <!-- 互助群消息列表 -->
+      <view v-if="currentTabName === '互助群'" class="group-message-list">
+        <view
+          v-for="(item, index) in groupMessages"
+          :key="index"
+          :class="['message-item', { 'mine': item.isSelf }]"
+        >
+          <image v-if="!item.isSelf" class="msg-avatar" :src="item.avatar" mode="aspectFill" />
+          <view class="msg-bubble">
+            <text class="msg-text">{{ item.content }}</text>
+          </view>
+          <image v-if="item.isSelf" class="msg-avatar" :src="item.avatar" mode="aspectFill" />
+        </view>
+        <!-- 底部留白 -->
+        <view class="message-list-bottom"></view>
+      </view>
+
       <!-- 帖子列表 -->
-      <view class="post-list">
+      <view v-else class="post-list">
         <dm-card
           v-for="(item, index) in postList"
           :key="index"
@@ -73,12 +90,31 @@
       </view>
 
       <!-- 加载更多 -->
-      <view class="load-more">
+      <view v-if="currentTabName !== '互助群'" class="load-more">
         <text v-if="loading">加载中...</text>
         <text v-else-if="noMore">没有更多了</text>
         <text v-else>上拉加载更多</text>
       </view>
     </scroll-view>
+
+    <!-- 互助群输入框 -->
+    <view v-if="currentTabName === '互助群'" class="group-input-bar">
+      <view class="input-wrapper">
+        <input
+          v-model="groupInputText"
+          type="text"
+          placeholder="请输入消息"
+          confirm-type="send"
+          @confirm="sendGroupMessage"
+        />
+      </view>
+      <view class="image-btn" @click="chooseImage">
+        <uni-icons type="image" size="24" color="#999999"></uni-icons>
+      </view>
+      <view class="send-btn" @click="sendGroupMessage">
+        <text>发送</text>
+      </view>
+    </view>
 
     <!-- 筛选弹窗 -->
     <dm-filter
@@ -94,7 +130,7 @@
 </template>
 
 <script>
-import { homeApi, postApi, voteApi, idleApi, errandApi, loveApi, helpApi } from '@/api/index.js'
+import { homeApi, postApi, voteApi, idleApi, errandApi, loveApi, helpApi, groupApi } from '@/api/index.js'
 
 // 各tab的筛选配置
 const FILTER_CONFIG = {
@@ -163,6 +199,8 @@ export default {
       recommendInfo: null,
       tabList: [],
       postList: [],
+      groupMessages: [],
+      groupInputText: '',
       filterValue: {},
       showFilter: false
     }
@@ -185,6 +223,14 @@ export default {
         unit: f.unit,
         step: f.step
       }))
+    },
+    actualScrollHeight() {
+      // 如果是互助群tab，需要减去输入框的高度
+      if (this.currentTabName === '互助群') {
+        const inputBarHeight = uni.upx2px(100) // 输入框高度约100rpx
+        return this.scrollHeight - inputBarHeight
+      }
+      return this.scrollHeight
     }
   },
   onLoad() {
@@ -210,9 +256,15 @@ export default {
       this.recommendInfo = data.recommendInfo || null
       this.tabList = data.tabList || ['最新']
 
-      // 初始化全局tab状态
       getApp().globalData = getApp().globalData || {}
       getApp().globalData.currentIndexTab = this.tabList[this.currentTab]
+    },
+    async loadNoticeInfo() {
+      const tabName = this.currentTabName
+      const data = await homeApi.getData({ tab: tabName })
+      this.noticeInfo = data.noticeInfo || null
+      this.activityInfo = data.activityInfo || null
+      this.recommendInfo = data.recommendInfo || null
     },
     async loadPostList() {
       if (this.loading || this.noMore) return
@@ -294,9 +346,18 @@ export default {
       this.postList = []
       this.noMore = false
       this.filterValue = {}
-      this.loadPostList()
 
       const tabName = this.tabList[index]
+
+      // 如果是互助群tab，加载群消息
+      if (tabName === '互助群') {
+        this.loadGroupMessages()
+      } else {
+        this.loadPostList()
+      }
+
+      this.loadNoticeInfo()
+
       getApp().globalData = getApp().globalData || {}
       getApp().globalData.currentIndexTab = tabName
     },
@@ -323,6 +384,57 @@ export default {
       }
       const detailUrl = detailPageMap[this.currentTabName] || '/pages/post/detail'
       uni.navigateTo({ url: detailUrl + '?id=' + item.id })
+    },
+    async loadGroupMessages() {
+      try {
+        const data = await groupApi.getMessages()
+        this.groupMessages = data.list || []
+      } catch (e) {
+        console.error('加载群消息失败', e)
+      }
+    },
+    async sendGroupMessage() {
+      if (!this.groupInputText.trim()) {
+        return
+      }
+
+      const content = this.groupInputText
+      this.groupInputText = ''
+
+      // 立即添加到消息列表
+      const newMessage = {
+        id: Date.now(),
+        nickname: '我',
+        avatar: 'https://iph.href.lu/100x100?text=我',
+        content: content,
+        time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+        isSelf: true
+      }
+      this.groupMessages.push(newMessage)
+
+      try {
+        await groupApi.sendMessage({ content: content })
+      } catch (e) {
+        console.error('发送消息失败', e)
+        uni.showToast({ title: '发送失败', icon: 'none' })
+        // 发送失败，移除刚添加的消息
+        const index = this.groupMessages.findIndex(msg => msg.id === newMessage.id)
+        if (index > -1) {
+          this.groupMessages.splice(index, 1)
+        }
+      }
+    },
+    chooseImage() {
+      uni.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+        success: (res) => {
+          const tempFilePath = res.tempFilePaths[0]
+          // 这里可以上传图片并发送
+          uni.showToast({ title: '图片功能开发中', icon: 'none' })
+        }
+      })
     }
   }
 }
@@ -440,6 +552,101 @@ export default {
 
 .post-list {
   padding-bottom: 20rpx;
+}
+
+.group-message-list {
+  padding: 20rpx 24rpx;
+
+  .message-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 24rpx;
+
+    &.mine {
+      justify-content: flex-end;
+
+      .msg-bubble {
+        background: #95EC69;
+      }
+    }
+
+    .msg-avatar {
+      width: 72rpx;
+      height: 72rpx;
+      border-radius: 50%;
+    }
+
+    .msg-bubble {
+      max-width: 500rpx;
+      margin: 0 16rpx;
+      padding: 20rpx;
+      background: #FFFFFF;
+      border-radius: 16rpx;
+
+      .msg-text {
+        font-size: 28rpx;
+        color: #333333;
+        line-height: 1.5;
+        word-break: break-all;
+      }
+    }
+  }
+
+  .message-list-bottom {
+    height: 80rpx;
+  }
+}
+
+.group-input-bar {
+  position: fixed;
+  bottom: 100rpx;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  border-top: 1rpx solid #F5F5F5;
+  z-index: 998;
+  box-sizing: content-box;
+
+  .input-wrapper {
+    flex: 1;
+    height: 72rpx;
+    padding: 0 24rpx;
+    background: #F5F5F5;
+    border-radius: 36rpx;
+    border: 1rpx solid #E5E5E5;
+
+    input {
+      height: 100%;
+      font-size: 28rpx;
+      color: #333333;
+
+      &::placeholder {
+        color: #999999;
+      }
+    }
+  }
+
+  .image-btn {
+    margin-left: 16rpx;
+    padding: 10rpx;
+  }
+
+  .send-btn {
+    margin-left: 16rpx;
+    padding: 16rpx 32rpx;
+    background: #007AFF;
+    border-radius: 36rpx;
+
+    text {
+      font-size: 28rpx;
+      color: #FFFFFF;
+    }
+  }
 }
 
 .load-more {

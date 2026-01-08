@@ -23,6 +23,24 @@
         </view>
       </view>
 
+      <!-- 投票主图片 -->
+      <view class="form-section">
+        <text class="section-title">投票图片（最多9张）</text>
+        <view class="input-box">
+          <view class="image-upload-area">
+            <view v-for="(img, index) in formData.images" :key="index" class="image-item">
+              <image class="preview-image" :src="img" mode="aspectFill"></image>
+              <view class="delete-btn" @click="removeImage(index)">
+                <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+              </view>
+            </view>
+            <view v-if="formData.images.length < 9" class="add-image" @click="chooseImages">
+              <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- 投票选项 -->
       <view class="form-section">
         <text class="section-title">投票选项</text>
@@ -158,6 +176,7 @@ export default {
       scrollHeight: 0,
       formData: {
         title: '',
+        images: [],
         options: [
           { text: '', image: '' },
           { text: '', image: '' },
@@ -204,6 +223,21 @@ export default {
       } else {
         uni.showToast({ title: '至少保留2个选项', icon: 'none' })
       }
+    },
+    chooseImages() {
+      const remaining = 9 - this.formData.images.length
+      if (remaining <= 0) return
+      uni.chooseImage({
+        count: remaining,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+        success: (res) => {
+          this.formData.images = [...this.formData.images, ...res.tempFilePaths]
+        }
+      })
+    },
+    removeImage(index) {
+      this.formData.images.splice(index, 1)
     },
     chooseOptionImage(index) {
       uni.chooseImage({

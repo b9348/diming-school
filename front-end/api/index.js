@@ -67,6 +67,9 @@ export const voteApi = {
  * 跑腿相关 API
  */
 export const errandApi = {
+  // 获取跑腿数据（轮播图、公告等）
+  getData: (params) => get('/errand/data', params),
+
   // 获取跑腿列表
   getList: (params) => get('/errand/list', params),
 
@@ -120,10 +123,13 @@ export const loveApi = {
   like: (id) => post(`/love/like/${id}`)
 }
 
-/**
+ /**
  * 互助拍卖相关 API
  */
 export const helpApi = {
+  // 获取互助拍卖数据（轮播图、公告等）
+  getData: (params) => get('/help/data', params),
+
   // 获取互助拍卖列表
   getList: (params) => get('/help/list', params),
 
@@ -160,6 +166,17 @@ export const chatApi = {
 
   // 发送消息
   send: (data) => post('/chat/send', data)
+}
+
+/**
+ * 互助群相关 API
+ */
+export const groupApi = {
+  // 获取群消息
+  getMessages: (params) => get('/group/messages', params),
+
+  // 发送群消息
+  sendMessage: (data) => post('/group/message/send', data)
 }
 
 /**

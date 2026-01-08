@@ -24,8 +24,24 @@
       <!-- 轮播图 -->
       <dm-swiper :list="bannerList" @click="handleBannerClick" />
 
-      <!-- 公告栏 -->
-      <dm-notice :list="noticeList" @click="handleNoticeClick" />
+      <!-- 公告/活动/推荐 -->
+      <view class="info-section" v-if="noticeInfo || activityInfo || recommendInfo">
+        <view class="info-item notice-item" v-if="noticeInfo" @click="handleInfoClick(noticeInfo)">
+          <text class="info-tag notice-tag">公告</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ noticeInfo.content }}</text>
+        </view>
+        <view class="info-item activity-item" v-if="activityInfo" @click="handleInfoClick(activityInfo)">
+          <text class="info-tag activity-tag">活动</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ activityInfo.content }}</text>
+        </view>
+        <view class="info-item recommend-item" v-if="recommendInfo" @click="handleInfoClick(recommendInfo)">
+          <text class="info-tag recommend-tag">{{ recommendInfo.tag || '推荐' }}</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ recommendInfo.content }}</text>
+        </view>
+      </view>
 
       <!-- Tabs -->
       <dm-tabs :list="tabList" :current="currentTab" @change="handleTabChange" />
@@ -118,12 +134,10 @@ export default {
       noMore: false,
       page: 1,
       showFilter: false,
-      bannerList: [
-        { image: 'https://iph.href.lu/750x300?text=轮播图1', url: '' }
-      ],
-      noticeList: [
-        { tag: '公告', content: '显示公告前50字' }
-      ],
+      bannerList: [],
+      noticeInfo: null,
+      activityInfo: null,
+      recommendInfo: null,
       tabList: ['竞价中', '已结束', '我出价的', '我发的', '竞标的', '被竞标的'],
       helpList: [],
       filterOptions: [
@@ -178,6 +192,7 @@ export default {
   },
   onLoad() {
     this.getSystemInfo()
+    this.loadHelpData()
     this.loadHelpList()
   },
   methods: {
@@ -202,11 +217,27 @@ export default {
     handleNoticeClick({ item, index }) {
       uni.showToast({ title: item.content, icon: 'none' })
     },
+    handleInfoClick(item) {
+      if (item.url) {
+        uni.navigateTo({ url: item.url })
+      } else {
+        uni.showToast({ title: item.content, icon: 'none' })
+      }
+    },
+    async loadHelpData() {
+      const tabName = this.tabList[this.currentTab]
+      const data = await helpApi.getData({ tab: tabName })
+      this.bannerList = data.bannerList || []
+      this.noticeInfo = data.noticeInfo || null
+      this.activityInfo = data.activityInfo || null
+      this.recommendInfo = data.recommendInfo || null
+    },
     handleTabChange(index) {
       this.currentTab = index
       this.page = 1
       this.helpList = []
       this.noMore = false
+      this.loadHelpData()
       this.loadHelpList()
     },
     handleFilterConfirm(value) {
@@ -260,6 +291,61 @@ export default {
 
 .scroll-container {
   background-color: #F8F8F8;
+}
+
+.info-section {
+  margin: 20rpx 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 20rpx 20rpx;
+    position: relative;
+
+    &.notice-item {
+      border-bottom: 2rpx solid #007AFF;
+    }
+
+    &.activity-item {
+      border-bottom: 1rpx solid #F5F5F5;
+    }
+
+    &.recommend-item {
+      // 最后一项无边框
+    }
+
+    .info-tag {
+      flex-shrink: 0;
+      font-size: 26rpx;
+      font-weight: 500;
+
+      &.notice-tag {
+        color: #007AFF;
+      }
+
+      &.activity-tag {
+        color: #333333;
+      }
+
+      &.recommend-tag {
+        color: #333333;
+      }
+    }
+
+    .info-divider {
+      margin: 0 16rpx;
+      color: #CCCCCC;
+      font-size: 26rpx;
+    }
+
+    .info-text {
+      flex: 1;
+      font-size: 26rpx;
+      color: #666666;
+    }
+  }
 }
 
 .help-list {

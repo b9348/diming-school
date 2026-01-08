@@ -1,5 +1,88 @@
 const { successResponse, errorResponse } = require('../utils/response')
 
+// 跑腿公告数据配置
+const ERRAND_NOTICE_CONFIG = {
+  '新任务': {
+    noticeInfo: {
+      id: 1,
+      type: 'notice',
+      content: '跑腿服务全新升级，支持更多任务类型，快来体验吧',
+      url: '/pages/notice/detail?id=1'
+    },
+    activityInfo: {
+      id: 2,
+      type: 'activity',
+      content: '新用户首单免跑腿费，快来发布你的第一个任务',
+      url: '/pages/activity/detail?id=2'
+    },
+    recommendInfo: {
+      id: 3,
+      type: 'recommend',
+      tag: '推荐',
+      content: '热门任务：代取快递、代买东西、代送物品，收益多多',
+      url: '/pages/recommend/detail?id=3'
+    }
+  },
+  '我发布的': {
+    noticeInfo: {
+      id: 4,
+      type: 'notice',
+      content: '任务发布后，接单者会尽快联系您，请注意查收消息',
+      url: '/pages/notice/detail?id=4'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '我抢的': {
+    noticeInfo: {
+      id: 5,
+      type: 'notice',
+      content: '抢到任务后请尽快联系发布者，提高接单率可以获得更多任务',
+      url: '/pages/notice/detail?id=5'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '已被抢': {
+    noticeInfo: {
+      id: 6,
+      type: 'notice',
+      content: '任务已被抢，接单者正在为您服务中',
+      url: '/pages/notice/detail?id=6'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '被接单的': {
+    noticeInfo: {
+      id: 7,
+      type: 'notice',
+      content: '订单完成后请及时确认，评价接单者可以获得积分奖励',
+      url: '/pages/notice/detail?id=7'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  }
+}
+
+// 获取跑腿数据
+const getData = (req, res) => {
+  const { tab } = req.query
+  const config = ERRAND_NOTICE_CONFIG[tab] || ERRAND_NOTICE_CONFIG['新任务']
+
+  const data = {
+    bannerList: [
+      { id: 1, image: 'https://iph.href.lu/750x300?text=跑腿轮播图1', url: '' },
+      { id: 2, image: 'https://iph.href.lu/750x300?text=跑腿轮播图2', url: '' }
+    ],
+    noticeInfo: config.noticeInfo,
+    activityInfo: config.activityInfo,
+    recommendInfo: config.recommendInfo
+  }
+
+  successResponse(res, data)
+}
+
 // 生成跑腿列表数据
 const generateErrandList = (page, pageSize) => {
   const startId = (page - 1) * pageSize
@@ -147,6 +230,7 @@ const complete = (req, res) => {
 }
 
 module.exports = {
+  getData,
   getList,
   getDetail,
   saveOrUpdate,
