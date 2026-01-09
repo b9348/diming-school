@@ -9,13 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | 子项目 | 技术栈 | 说明 |
 |--------|--------|------|
 | **front-end/** | UniApp (Vue 3) | 前端小程序/H5/APP |
-| **layer/** | Express.js | 后端 API 服务 (端口 5102) |
+| **layer/** | Express.js | 中间层 - 前后端连接转发 (端口 5102) |
 | **admin/** | Vue 3 + Element Plus + Vite | 后台管理系统 (端口 5173) |
 
 ## 开发命令
 
 ```bash
-# 后端服务（带热重载）
+# 中间层服务（带热重载）
 cd layer && pnpm dev
 
 # 后台管理系统
@@ -39,7 +39,7 @@ store/user.js    # 用户状态管理
 pages.json       # 路由配置
 ```
 
-### 后端服务 (layer/)
+### 中间层 (layer/)
 ```
 src/
 ├── app.js              # 应用入口
@@ -91,8 +91,8 @@ SUPER_ADMIN > PLATFORM_ADMIN > PLATFORM_SUB_ADMIN > FORUM_ADMIN > SUB_ADMIN > NO
 |------|------|
 | `front-end/api/index.js` | 小程序 API 接口 |
 | `admin/src/api/index.js` | 后台管理 API 接口 |
-| `layer/src/routes/index.js` | 后端路由注册 |
-| `layer/src/controllers/admin*.js` | 后台管理控制器 |
+| `layer/src/routes/index.js` | 中间层路由注册 |
+| `layer/src/controllers/admin*.js` | 后台管理控制器（实际业务逻辑在独立后端服务） |
 
 ## 注意事项
 

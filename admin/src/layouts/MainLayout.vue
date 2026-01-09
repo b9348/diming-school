@@ -8,6 +8,7 @@
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
+        unique-opened
         router
         background-color="#304156"
         text-color="#bfcbd9"
