@@ -57,7 +57,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="发布时间" width="170" />
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" width="200">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleDetail(row)">详情</el-button>
             <template v-if="row.status === 'pending'">

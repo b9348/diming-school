@@ -1,4 +1,5 @@
 const { successResponse, errorResponse } = require('../utils/response')
+const bannerData = require('../data/bannerData')
 
 // 跑腿公告数据配置
 const ERRAND_NOTICE_CONFIG = {
@@ -71,10 +72,7 @@ const getData = (req, res) => {
   const config = ERRAND_NOTICE_CONFIG[tab] || ERRAND_NOTICE_CONFIG['新任务']
 
   const data = {
-    bannerList: [
-      { id: 1, image: 'https://iph.href.lu/750x300?text=跑腿轮播图1', url: '' },
-      { id: 2, image: 'https://iph.href.lu/750x300?text=跑腿轮播图2', url: '' }
-    ],
+    bannerList: bannerData.getBannersByPosition('errand'),
     noticeInfo: config.noticeInfo,
     activityInfo: config.activityInfo,
     recommendInfo: config.recommendInfo

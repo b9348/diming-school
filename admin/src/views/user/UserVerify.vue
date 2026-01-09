@@ -42,7 +42,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="提交时间" width="170" />
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <template v-if="row.status === 'pending'">
               <el-button type="success" link @click="handleApprove(row)">通过</el-button>

@@ -45,7 +45,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="申请时间" width="170" />
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleDetail(row)">详情</el-button>
             <el-button v-if="row.status !== 'resolved'" type="success" link @click="handleProcess(row)">处理</el-button>

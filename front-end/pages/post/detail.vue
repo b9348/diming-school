@@ -61,17 +61,64 @@
             @click="previewImage(index)"
           ></image>
         </view>
-        <text class="post-location" v-if="postData.location">{{ postData.location }}</text>
       </view>
 
-      <!-- 互动数据和管理按钮 -->
-      <view class="interact-section">
-        <view class="interact-left">
-          <text class="interact-item">{{ postData.likeCount }} 赞</text>
-          <text class="interact-item">{{ postData.commentCount }} 评论</text>
-          <text class="interact-item">{{ postData.shareCount }} 转发</text>
+      <!-- 浏览量和校区 -->
+      <view class="view-campus-row">
+        <text class="view-count">{{ postData.viewCount || 0 }}人吃瓜</text>
+        <text class="campus-info">{{ postData.campus || '未知校区' }}</text>
+      </view>
+
+      <!-- 互动图标行 -->
+      <view class="icon-stats-row">
+        <view class="stat-item" @click="handleLike">
+          <text :class="postData.isLiked ? 'tn-icon-like-fill' : 'tn-icon-like'" :style="{ color: postData.isLiked ? '#FF3B30' : '#999' }"></text>
+          <text class="stat-num" :class="{ 'is-liked': postData.isLiked }">{{ postData.likeCount || 0 }}</text>
         </view>
-        <dm-manage-btn :show="isAdmin" @click="showPostAdminMenu" />
+        <view class="stat-item">
+          <text class="tn-icon-comment"></text>
+          <text class="stat-num">{{ postData.commentCount || 0 }}</text>
+        </view>
+        <view class="stat-item" @click="handleCollect">
+          <text class="tn-icon-star"></text>
+          <text class="stat-num">{{ postData.collectCount || 0 }}</text>
+        </view>
+        <view class="stat-item" @click="handleShare">
+          <text class="tn-icon-share"></text>
+          <text class="stat-num">{{ postData.shareCount || 0 }}</text>
+        </view>
+        <view class="stat-item">
+          <text class="tn-icon-down"></text>
+          <text class="stat-num">{{ postData.downloadCount || 0 }}</text>
+        </view>
+        <view class="stat-item">
+          <text class="tn-icon-up"></text>
+          <text class="stat-num">{{ postData.topCount || 0 }}</text>
+        </view>
+        <view class="stat-item" v-if="isAdmin">
+          <dm-manage-btn :show="isAdmin" @click="showPostAdminMenu" />
+        </view>
+      </view>
+
+      <!-- 加入群聊按钮 -->
+      <view class="join-group-btn" @click="handleJoinGroup">
+        <text>点击加入群聊</text>
+      </view>
+
+      <!-- 轮播图 -->
+      <dm-swiper :list="bannerList" @click="handleBannerClick" />
+
+      <!-- 今日热榜 -->
+      <view class="hot-section">
+        <text class="hot-title">今日热榜</text>
+        <swiper class="hot-swiper" vertical :autoplay="true" :interval="3000" circular>
+          <swiper-item v-for="(item, index) in hotList" :key="index" @click="goHotDetail(item)">
+            <view class="hot-item">
+              <text class="hot-rank">{{ index + 1 }}</text>
+              <text class="hot-text ellipsis">{{ item.title }}</text>
+            </view>
+          </swiper-item>
+        </swiper>
       </view>
 
       <!-- 评论列表 -->
@@ -107,28 +154,16 @@
             </view>
           </view>
           <view class="comment-like" @click="likeComment(item)">
-            <text class="tn-icon-like" style="font-size: 14px; color: #999999;"></text>
-            <text class="like-count">{{ item.likeCount }}</text>
+            <text :class="item.isLiked ? 'tn-icon-like-fill' : 'tn-icon-like'" :style="{ fontSize: '14px', color: item.isLiked ? '#FF3B30' : '#999999' }"></text>
+            <text class="like-count" :class="{ 'is-liked': item.isLiked }">{{ item.likeCount }}</text>
           </view>
         </view>
       </view>
     </scroll-view>
 
-    <!-- 底部操作栏 -->
+    <!-- 底部评论输入栏 -->
     <view class="bottom-bar">
       <input class="comment-input" placeholder="写评论..." @focus="showCommentInput" />
-      <view class="action-btns">
-        <view class="action-item" @click="handleLike">
-          <text class="tn-icon-like" style="font-size: 20px; color: #333333;"></text>
-          <text>{{ postData.likeCount }}</text>
-        </view>
-        <view class="action-item" @click="handleCollect">
-          <text class="tn-icon-star" style="font-size: 20px; color: #333333;"></text>
-        </view>
-        <view class="action-item" @click="handleShare">
-          <text class="tn-icon-redo" style="font-size: 20px; color: #333333;"></text>
-        </view>
-      </view>
     </view>
   </view>
 </template>
@@ -136,7 +171,7 @@
 <script>
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
-import { postApi } from '@/api/index.js'
+import { postApi, homeApi } from '@/api/index.js'
 
 export default {
   data() {
@@ -166,9 +201,14 @@ export default {
         content: '',
         images: [],
         location: '',
+        viewCount: 0,
+        campus: '',
         likeCount: 0,
         commentCount: 0,
         shareCount: 0,
+        collectCount: 0,
+        downloadCount: 0,
+        topCount: 0,
         isFollowed: false,
         isPinned: false,
         isRemoved: false,
@@ -181,7 +221,9 @@ export default {
           isAdmin: false
         }
       },
-      commentList: []
+      commentList: [],
+      bannerList: [],
+      hotList: []
     }
   },
   computed: {
@@ -202,6 +244,17 @@ export default {
       const data = await postApi.getDetail(this.postId)
       this.postData = data
       this.commentList = data.comments || []
+      // 优先使用首页传递的数据
+      const globalData = getApp().globalData || {}
+      if (globalData.bannerList && globalData.hotList) {
+        this.bannerList = globalData.bannerList
+        this.hotList = globalData.hotList
+      } else {
+        // 直接打开时单独获取
+        const homeData = await homeApi.getData()
+        this.bannerList = homeData.bannerList || []
+        this.hotList = homeData.hotList || []
+      }
     },
     goBack() {
       uni.navigateBack()
@@ -284,14 +337,18 @@ export default {
       uni.showToast({ title: '回复' + item.nickname, icon: 'none' })
     },
     likeComment(item) {
+      if (item.isLiked) return
       item.likeCount++
+      item.isLiked = true
     },
     showCommentInput() {
       uni.showToast({ title: '输入评论', icon: 'none' })
     },
     async handleLike() {
+      if (this.postData.isLiked) return
       await postApi.like(this.postId)
       this.postData.likeCount++
+      this.postData.isLiked = true
     },
     async handleCollect() {
       await postApi.collect(this.postId)
@@ -299,6 +356,30 @@ export default {
     },
     handleShare() {
       uni.showToast({ title: '分享', icon: 'none' })
+    },
+    handleJoinGroup() {
+      uni.showToast({ title: '加入群聊', icon: 'none' })
+    },
+    handleBannerClick({ item, index }) {
+      if (item.url) {
+        uni.navigateTo({ url: item.url })
+      }
+    },
+    goHotDetail(item) {
+      if (item.url) {
+        uni.navigateTo({ url: item.url })
+      } else {
+        const detailPageMap = {
+          'post': '/pages/post/detail',
+          'vote': '/pages/vote/detail',
+          'idle': '/pages/idle/detail',
+          'errand': '/pages/errand/detail',
+          'love': '/pages/love/detail',
+          'help': '/pages/help/detail'
+        }
+        const detailUrl = detailPageMap[item.postType] || '/pages/post/detail'
+        uni.navigateTo({ url: detailUrl + '?id=' + (item.postId || item.id) })
+      }
     },
     initPage(options) {
       this.postId = options.id
@@ -440,32 +521,113 @@ export default {
       border-radius: 8rpx;
     }
   }
+}
 
-  .post-location {
-    display: block;
-    margin-top: 16rpx;
-    font-size: 24rpx;
-    color: #999;
+.view-campus-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  margin-top: 10rpx;
+
+  .view-count {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .campus-info {
+    font-size: 28rpx;
+    color: #666;
   }
 }
 
-.interact-section {
+.icon-stats-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 20rpx 24rpx;
-  border-top: 1rpx solid #F5F5F5;
-  border-bottom: 1rpx solid #F5F5F5;
+  padding: 16rpx 24rpx;
+  gap: 32rpx;
 
-  .interact-left {
+  .stat-item {
     display: flex;
+    align-items: center;
+    gap: 8rpx;
+
+    text {
+      font-size: 28rpx;
+      color: #999;
+    }
+
+    .stat-num {
+      font-size: 24rpx;
+      color: #666;
+
+      &.is-liked {
+        color: #FF3B30;
+      }
+    }
+  }
+}
+
+.join-group-btn {
+  margin: 20rpx 24rpx;
+  padding: 24rpx;
+  background: #FFF;
+  border: 1rpx solid #E5E5E5;
+  border-radius: 12rpx;
+  text-align: center;
+
+  text {
+    font-size: 30rpx;
+    color: #333;
+  }
+}
+
+.hot-section {
+  margin: 20rpx 24rpx;
+  padding: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+
+  .hot-title {
+    flex-shrink: 0;
+    font-size: 28rpx;
+    color: #333333;
+    font-weight: 600;
+    margin-right: 20rpx;
   }
 
-  .interact-item {
-    margin-right: 32rpx;
-    font-size: 26rpx;
-    color: #666;
+  .hot-swiper {
+    flex: 1;
+    height: 40rpx;
+
+    .hot-item {
+      display: flex;
+      align-items: center;
+      height: 40rpx;
+
+      .hot-rank {
+        width: 36rpx;
+        font-size: 26rpx;
+        color: #FF9500;
+        font-weight: 600;
+      }
+
+      .hot-text {
+        flex: 1;
+        font-size: 26rpx;
+        color: #333333;
+      }
+    }
   }
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comment-section {
@@ -587,6 +749,10 @@ export default {
       .like-count {
         font-size: 22rpx;
         color: #999;
+
+        &.is-liked {
+          color: #FF3B30;
+        }
       }
     }
   }
@@ -599,13 +765,10 @@ export default {
   bottom: 0;
   display: flex;
   align-items: center;
-  padding-top: 16rpx;
-  padding-left: 24rpx;
-  padding-right: 24rpx;
+  padding: 16rpx 24rpx;
   padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
   background: #FFF;
   box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.05);
-  box-sizing: content-box;
 
   .comment-input {
     flex: 1;
@@ -614,23 +777,6 @@ export default {
     background: #F5F5F5;
     border-radius: 36rpx;
     font-size: 28rpx;
-  }
-
-  .action-btns {
-    display: flex;
-    margin-left: 20rpx;
-
-    .action-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 24rpx;
-
-      text {
-        font-size: 20rpx;
-        color: #999;
-      }
-    }
   }
 }
 </style>

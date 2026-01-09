@@ -58,7 +58,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="sort" label="排序" width="80" />
-        <el-table-column label="操作" width="180" fixed="right">
+        <el-table-column label="操作" width="180">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
             <el-button :type="row.status === 1 ? 'warning' : 'success'" link @click="handleToggleStatus(row)">

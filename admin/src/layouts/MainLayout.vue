@@ -1,6 +1,7 @@
 <template>
   <el-container class="layout-container">
-    <el-aside :width="isCollapse ? '64px' : '220px'" class="aside">
+    <div v-if="isMobile && showAside" class="mask" @click="showAside = false"></div>
+    <el-aside :width="isCollapse ? '64px' : '220px'" class="aside" :class="{ 'mobile-hidden': isMobile && !showAside }">
       <div class="logo">
         <span v-if="!isCollapse">递明校园</span>
         <span v-else>递</span>
@@ -37,6 +38,9 @@
           <el-menu-item index="/content/report">举报处理</el-menu-item>
           <el-menu-item index="/content/sensitive">敏感词库</el-menu-item>
           <el-menu-item index="/content/ai-config">AI审核配置</el-menu-item>
+          <el-menu-item index="/content/banner">轮播图管理</el-menu-item>
+          <el-menu-item index="/content/nav">导航分类管理</el-menu-item>
+          <el-menu-item index="/content/module-config">模块筛选配置</el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="trade">
@@ -70,6 +74,7 @@
           <el-menu-item index="/system/config">参数配置</el-menu-item>
           <el-menu-item index="/system/notice">公告发布</el-menu-item>
           <el-menu-item index="/system/version">版本管理</el-menu-item>
+          <el-menu-item index="/forum">论坛管理</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-aside>
@@ -77,8 +82,8 @@
     <el-container>
       <el-header class="header">
         <div class="header-left">
-          <el-icon class="collapse-btn" @click="isCollapse = !isCollapse">
-            <Fold v-if="!isCollapse" />
+          <el-icon class="collapse-btn" @click="toggleAside">
+            <Fold v-if="!isCollapse && !isMobile" />
             <Expand v-else />
           </el-icon>
           <el-breadcrumb separator="/">
@@ -109,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 
@@ -118,12 +123,41 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const isCollapse = ref(false)
+const isMobile = ref(false)
+const showAside = ref(false)
 const activeMenu = computed(() => route.path)
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    showAside.value = true
+    isCollapse.value = false
+  } else {
+    showAside.value = false
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 const handleCommand = (command) => {
   if (command === 'logout') {
     userStore.logout()
     router.push('/login')
+  }
+}
+
+const toggleAside = () => {
+  if (isMobile.value) {
+    showAside.value = !showAside.value
+  } else {
+    isCollapse.value = !isCollapse.value
   }
 }
 </script>
@@ -135,8 +169,34 @@ const handleCommand = (command) => {
 
 .aside {
   background-color: #304156;
-  transition: width 0.3s;
+  transition: all 0.3s;
   overflow: hidden;
+  position: relative;
+  z-index: 1001;
+}
+
+@media (max-width: 768px) {
+  .aside {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 220px !important;
+  }
+
+  .aside.mobile-hidden {
+    transform: translateX(-100%);
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
 .logo {
@@ -192,6 +252,6 @@ const handleCommand = (command) => {
 
 .main {
   background: #f0f2f5;
-  padding: 20px;
+  padding: 0;
 }
 </style>

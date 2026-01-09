@@ -402,6 +402,8 @@ export default {
 
       getApp().globalData = getApp().globalData || {}
       getApp().globalData.currentIndexTab = this.tabList[this.currentTab]
+      getApp().globalData.bannerList = this.bannerList
+      getApp().globalData.hotList = this.hotList
     },
     async loadNoticeInfo() {
       const tabName = this.currentTabName

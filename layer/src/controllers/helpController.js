@@ -1,4 +1,5 @@
 const { successResponse, errorResponse } = require('../utils/response')
+const bannerData = require('../data/bannerData')
 
 // 互助拍卖公告数据配置
 const HELP_NOTICE_CONFIG = {
@@ -81,10 +82,7 @@ const getData = (req, res) => {
   const config = HELP_NOTICE_CONFIG[tab] || HELP_NOTICE_CONFIG['竞价中']
 
   const data = {
-    bannerList: [
-      { id: 1, image: 'https://iph.href.lu/750x300?text=互助轮播图1', url: '' },
-      { id: 2, image: 'https://iph.href.lu/750x300?text=互助轮播图2', url: '' }
-    ],
+    bannerList: bannerData.getBannersByPosition('help'),
     noticeInfo: config.noticeInfo,
     activityInfo: config.activityInfo,
     recommendInfo: config.recommendInfo

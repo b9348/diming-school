@@ -57,7 +57,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="注册时间" width="170" />
-        <el-table-column label="操作" width="180" fixed="right">
+        <el-table-column label="操作" width="180">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleDetail(row)">详情</el-button>
             <el-button v-if="row.status === 'normal'" type="danger" link @click="handleBan(row)">封禁</el-button>

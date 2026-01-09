@@ -47,7 +47,7 @@
         </el-table-column>
         <el-table-column prop="replacement" label="替换词" width="120" />
         <el-table-column prop="createdAt" label="添加时间" width="170" />
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
             <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
