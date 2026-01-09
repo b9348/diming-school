@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">拍卖详情</text>
         <view class="nav-placeholder"></view>
@@ -47,7 +47,7 @@
           <text class="bid-title">出价记录</text>
           <view class="bid-more" @click="viewAllBids">
             <text class="bid-count">{{ data.bidCount }}次</text>
-            <uni-icons type="right" size="12" color="#999999"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 12px; color: #999999;"></text>
           </view>
         </view>
         <view class="bid-list">
@@ -94,10 +94,10 @@
         </view>
         <view class="action-row">
           <view class="action-item" @click="toggleFavorite">
-            <uni-icons :type="isFavorite ? 'star-filled' : 'star'" size="20" :color="isFavorite ? '#FF9500' : '#999999'"></uni-icons>
+            <text class="tn-icon-isFavorite ? 'star-filled' : 'star'"></text>
           </view>
           <view class="action-item" @click="shareItem">
-            <uni-icons type="redo" size="20" color="#999999"></uni-icons>
+            <text class="tn-icon-redo" style="font-size: 20px; color: #999999;"></text>
           </view>
         </view>
       </view>
@@ -105,7 +105,7 @@
       <!-- 查看联系方式 -->
       <view class="contact-section" @click="viewContact">
         <text class="contact-text">查看联系方式</text>
-        <uni-icons type="right" size="14" color="#999999"></uni-icons>
+        <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
       </view>
     </scroll-view>
 

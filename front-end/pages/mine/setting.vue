@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">设置</text>
         <view class="nav-placeholder"></view>
@@ -20,14 +20,14 @@
             <text class="item-title">手机号</text>
             <view class="item-right">
               <text class="item-value">{{ maskedPhone }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
           <view class="setting-item" @click="goModifyPassword">
             <text class="item-title">修改密码</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
@@ -35,7 +35,7 @@
             <text class="item-title">绑定微信</text>
             <view class="item-right">
               <text class="item-value" :class="{ bound: wechatBound }">{{ wechatBound ? '已绑定' : '未绑定' }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -80,7 +80,7 @@
             <text class="item-title">语言</text>
             <view class="item-right">
               <text class="item-value">简体中文</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
@@ -93,7 +93,7 @@
             <text class="item-title">字体大小</text>
             <view class="item-right">
               <text class="item-value">{{ fontSizeText }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
@@ -116,14 +116,14 @@
           <view class="setting-item" @click="goPrivacy">
             <text class="item-title">隐私设置</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
           <view class="setting-item" @click="goBlacklist">
             <text class="item-title">黑名单</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -137,28 +137,28 @@
             <text class="item-title">检查更新</text>
             <view class="item-right">
               <text class="item-value">v{{ appVersion }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
           <view class="setting-item" @click="goAbout">
             <text class="item-title">关于我们</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
           <view class="setting-item" @click="goAgreement">
             <text class="item-title">用户协议</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
           <view class="setting-item" @click="goPrivacyPolicy">
             <text class="item-title">隐私政策</text>
             <view class="item-right">
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -171,7 +171,7 @@
             <text class="item-title">清除缓存</text>
             <view class="item-right">
               <text class="item-value">{{ cacheSize }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>

@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">帖子详情</text>
         <view class="nav-placeholder"></view>
@@ -94,7 +94,7 @@
                 <text class="comment-author" v-if="item.isAuthor">作者</text>
               </view>
               <view class="comment-admin-btn" v-if="isAdmin" @click="showCommentMenu(item)">
-                <uni-icons type="more-filled" size="16" color="#999"></uni-icons>
+                <text class="tn-icon-more-circle-fill" style="font-size: 16px; color: #999;"></text>
               </view>
             </view>
             <view class="comment-body">
@@ -107,7 +107,7 @@
             </view>
           </view>
           <view class="comment-like" @click="likeComment(item)">
-            <uni-icons type="heart" size="14" color="#999999"></uni-icons>
+            <text class="tn-icon-like" style="font-size: 14px; color: #999999;"></text>
             <text class="like-count">{{ item.likeCount }}</text>
           </view>
         </view>
@@ -119,14 +119,14 @@
       <input class="comment-input" placeholder="写评论..." @focus="showCommentInput" />
       <view class="action-btns">
         <view class="action-item" @click="handleLike">
-          <uni-icons type="heart" size="20" color="#333333"></uni-icons>
+          <text class="tn-icon-like" style="font-size: 20px; color: #333333;"></text>
           <text>{{ postData.likeCount }}</text>
         </view>
         <view class="action-item" @click="handleCollect">
-          <uni-icons type="star" size="20" color="#333333"></uni-icons>
+          <text class="tn-icon-star" style="font-size: 20px; color: #333333;"></text>
         </view>
         <view class="action-item" @click="handleShare">
-          <uni-icons type="redo" size="20" color="#333333"></uni-icons>
+          <text class="tn-icon-redo" style="font-size: 20px; color: #333333;"></text>
         </view>
       </view>
     </view>

@@ -75,3 +75,28 @@ export const systemApi = {
   getVersionList: (params) => get('/admin/version/list', params),
   saveVersion: (data) => post('/admin/version/saveOrUpdate', data)
 }
+
+// 轮播图管理
+export const bannerApi = {
+  list: (params) => get('/admin/banner/list', params),
+  saveOrUpdate: (data) => post('/admin/banner/saveOrUpdate', data)
+}
+
+// 导航分类管理
+export const navApi = {
+  list: (params) => get('/admin/nav/list', params),
+  saveOrUpdate: (data) => post('/admin/nav/saveOrUpdate', data)
+}
+
+// 模块筛选配置
+export const moduleConfigApi = {
+  getConfig: (module) => get(`/admin/module-config/${module}`),
+  saveOrUpdate: (data) => post('/admin/module-config/saveOrUpdate', data)
+}
+
+// 论坛管理
+export const forumApi = {
+  list: (params) => get('/admin/forum/list', params),
+  saveOrUpdate: (data) => post('/admin/forum/saveOrUpdate', data),
+  addAdmins: (id, data) => post(`/admin/forum/${id}/admins`, data)
+}

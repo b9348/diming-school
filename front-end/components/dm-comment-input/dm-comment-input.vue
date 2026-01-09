@@ -2,6 +2,7 @@
   <view class="dm-comment-input" v-if="visible">
     <view class="input-wrapper">
       <input
+        class="comment-input"
         v-model="inputText"
         type="text"
         :placeholder="placeholder"
@@ -11,7 +12,7 @@
       />
     </view>
     <view class="send-btn" :class="{ disabled: !inputText.trim() }" @click="handleSend">
-      <text>发送</text>
+      <text class="send-text">发送</text>
     </view>
   </view>
 </template>
@@ -80,7 +81,7 @@ export default {
     border-radius: 36rpx;
     border: 1rpx solid #E5E5E5;
 
-    input {
+    .comment-input {
       height: 100%;
       font-size: 28rpx;
       color: #333333;
@@ -97,7 +98,7 @@ export default {
     background: #007AFF;
     border-radius: 36rpx;
 
-    text {
+    .send-text {
       font-size: 28rpx;
       color: #FFFFFF;
     }

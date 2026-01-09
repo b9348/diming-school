@@ -223,7 +223,7 @@
         />
       </view>
       <view class="image-btn" @click="chooseImage">
-        <uni-icons type="image" size="24" color="#999999"></uni-icons>
+        <text class="tn-icon-image" style="font-size: 24px; color: #999999;"></text>
       </view>
       <view class="send-btn" @click="sendGroupMessage">
         <text>发送</text>

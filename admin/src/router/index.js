@@ -57,6 +57,24 @@ const routes = [
         component: () => import('@/views/content/AIConfig.vue'),
         meta: { title: 'AI审核配置', icon: 'MagicStick' }
       },
+      {
+        path: 'content/banner',
+        name: 'BannerManage',
+        component: () => import('@/views/content/BannerManage.vue'),
+        meta: { title: '轮播图管理', icon: 'Picture' }
+      },
+      {
+        path: 'content/nav',
+        name: 'NavManage',
+        component: () => import('@/views/content/NavManage.vue'),
+        meta: { title: '导航分类管理', icon: 'Menu' }
+      },
+      {
+        path: 'content/module-config',
+        name: 'ModuleConfig',
+        component: () => import('@/views/content/ModuleConfig.vue'),
+        meta: { title: '模块筛选配置', icon: 'Setting' }
+      },
       // 交易管理
       {
         path: 'trade/order',
@@ -131,6 +149,12 @@ const routes = [
         name: 'VersionManage',
         component: () => import('@/views/system/VersionManage.vue'),
         meta: { title: '版本管理', icon: 'Upload' }
+      },
+      {
+        path: 'forum',
+        name: 'ForumManage',
+        component: () => import('@/views/system/ForumManage.vue'),
+        meta: { title: '论坛管理', icon: 'ChatLineSquare' }
       }
     ]
   }

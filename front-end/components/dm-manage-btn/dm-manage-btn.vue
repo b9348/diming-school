@@ -1,7 +1,7 @@
 <template>
   <view class="dm-manage-btn" v-if="show" @click="handleClick">
-    <uni-icons type="settings" size="16" color="#FFFFFF"></uni-icons>
-    <text>管理</text>
+    <text class="tn-icon-set" style="font-size: 16px; color: #FFFFFF;"></text>
+    <text class="manage-text">管理</text>
   </view>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   border-radius: 24rpx;
   flex-shrink: 0;
 
-  text {
+  .manage-text {
     font-size: 24rpx;
     color: #FFF;
   }

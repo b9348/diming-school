@@ -33,6 +33,10 @@ const adminRoleController = require('../controllers/adminRoleController')
 const adminSystemController = require('../controllers/adminSystemController')
 const adminNoticeController = require('../controllers/adminNoticeController')
 const adminVersionController = require('../controllers/adminVersionController')
+const adminBannerController = require('../controllers/adminBannerController')
+const adminNavController = require('../controllers/adminNavController')
+const adminModuleConfigController = require('../controllers/adminModuleConfigController')
+const adminForumController = require('../controllers/adminForumController')
 
 // 健康检查
 router.get('/health', (req, res) => {
@@ -206,5 +210,22 @@ router.get('/admin/notice/list', adminNoticeController.getList)
 router.post('/admin/notice/saveOrUpdate', adminNoticeController.saveOrUpdate)
 router.get('/admin/version/list', adminVersionController.getList)
 router.post('/admin/version/saveOrUpdate', adminVersionController.saveOrUpdate)
+
+// 轮播图管理
+router.get('/admin/banner/list', adminBannerController.getList)
+router.post('/admin/banner/saveOrUpdate', adminBannerController.saveOrUpdate)
+
+// 导航分类管理
+router.get('/admin/nav/list', adminNavController.getList)
+router.post('/admin/nav/saveOrUpdate', adminNavController.saveOrUpdate)
+
+// 模块筛选配置
+router.get('/admin/module-config/:module', adminModuleConfigController.getConfig)
+router.post('/admin/module-config/saveOrUpdate', adminModuleConfigController.saveOrUpdate)
+
+// 论坛管理
+router.get('/admin/forum/list', adminForumController.getList)
+router.post('/admin/forum/saveOrUpdate', adminForumController.saveOrUpdate)
+router.post('/admin/forum/:id/admins', adminForumController.addAdmins)
 
 module.exports = router

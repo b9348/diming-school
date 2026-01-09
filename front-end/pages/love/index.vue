@@ -125,7 +125,7 @@
 
     <!-- 发布按钮 -->
     <view class="publish-btn" @click="goPublish">
-      <uni-icons type="plusempty" size="28" color="#FFFFFF"></uni-icons>
+      <text class="tn-icon-add" style="font-size: 28px; color: #FFFFFF;"></text>
     </view>
   </view>
 </template>

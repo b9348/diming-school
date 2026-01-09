@@ -3,7 +3,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">投票详情</text>
         <view class="nav-placeholder"></view>
@@ -52,7 +52,7 @@
           <view class="option-content">
             <view class="option-left">
               <view class="check-icon" v-if="opt.voted">
-                <uni-icons type="checkmarkempty" size="14" color="#007AFF"></uni-icons>
+                <text class="tn-icon-checkmarkempty" style="font-size: 14px; color: #007AFF;"></text>
               </view>
               <image v-if="opt.image" class="option-image" :src="opt.image" mode="aspectFill"></image>
               <text class="option-text">{{ opt.text }}</text>
@@ -86,15 +86,15 @@
       </view>
       <view class="action-btns">
         <view class="action-item" @click="handleLike">
-          <uni-icons :type="data.isLiked ? 'heart-filled' : 'heart'" size="22" :color="data.isLiked ? '#FF6B6B' : '#666'"></uni-icons>
+          <text class="tn-icon-data.isLiked ? 'heart-filled' : 'heart'"></text>
           <text>{{ data.likeCount || 0 }}</text>
         </view>
         <view class="action-item">
-          <uni-icons type="chat" size="22" color="#666"></uni-icons>
+          <text class="tn-icon-comment" style="font-size: 22px; color: #666;"></text>
           <text>{{ data.commentCount || 0 }}</text>
         </view>
         <view class="action-item" @click="handleShare">
-          <uni-icons type="redo" size="22" color="#666"></uni-icons>
+          <text class="tn-icon-redo" style="font-size: 22px; color: #666;"></text>
           <text>分享</text>
         </view>
       </view>

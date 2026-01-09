@@ -18,7 +18,7 @@
       <!-- 展开/收起按钮（固定在第一行第6个位置） -->
       <view class="nav-item nav-toggle" @click="toggleExpand">
         <view class="nav-icon-box">
-          <uni-icons :type="isExpanded ? 'up' : 'down'" size="24" color="#666666"></uni-icons>
+          <text :class="isExpanded ? 'tn-icon-up' : 'tn-icon-down'" style="font-size: 24px; color: #666666;"></text>
         </view>
         <text class="nav-text">{{ isExpanded ? '收起' : '更多' }}</text>
       </view>

@@ -24,11 +24,11 @@
             <view v-for="(img, index) in formData.images" :key="index" class="image-item">
               <image class="preview-image" :src="img" mode="aspectFill"></image>
               <view class="delete-btn" @click="deleteImage('images', index)">
-                <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+                <text class="tn-icon-close" style="font-size: 14px; color: #FFFFFF;"></text>
               </view>
             </view>
             <view v-if="formData.images.length < 9" class="add-image" @click="chooseImage('images')">
-              <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-add" style="font-size: 32px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -48,11 +48,11 @@
             <view v-for="(img, index) in formData.hiddenImages" :key="index" class="image-item">
               <image class="preview-image" :src="img" mode="aspectFill"></image>
               <view class="delete-btn" @click="deleteImage('hiddenImages', index)">
-                <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+                <text class="tn-icon-close" style="font-size: 14px; color: #FFFFFF;"></text>
               </view>
             </view>
             <view v-if="formData.hiddenImages.length < 9" class="add-image" @click="chooseImage('hiddenImages')">
-              <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-add" style="font-size: 32px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -179,7 +179,7 @@
           <view class="top-value">
             <text v-if="formData.topHours">置顶{{ formData.topHours }}小时 ¥{{ getTopPrice(formData.topHours) }}</text>
             <text v-else class="placeholder">选择置顶时长（可选）</text>
-            <uni-icons type="right" size="14" color="#999999"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
           </view>
         </view>
       </view>
@@ -199,7 +199,7 @@
       <view class="popup-header">
         <text class="popup-title">选择置顶时长</text>
         <view class="popup-close" @click="showTopPopup = false">
-          <uni-icons type="close" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-close" style="font-size: 20px; color: #999999;"></text>
         </view>
       </view>
       <view class="top-options">

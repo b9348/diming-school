@@ -289,6 +289,8 @@ export default {
 
     .goods-info {
       padding: 16rpx;
+      display: flex;
+      flex-direction: column;
 
       .goods-title {
         font-size: 26rpx;
@@ -337,6 +339,7 @@ export default {
       .goods-location {
         font-size: 22rpx;
         color: #999999;
+        align-self: flex-end;
       }
     }
   }

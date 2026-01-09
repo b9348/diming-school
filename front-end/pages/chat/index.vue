@@ -3,14 +3,14 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content" :style="{ height: navBarHeight + 'px', paddingRight: rightSafeArea + 'px' }">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <view class="nav-center">
           <text class="nav-nickname">{{ targetUser.nickname }}</text>
           <text class="nav-location">{{ targetUser.location }}</text>
         </view>
         <view class="nav-more" @click="showMore">
-          <uni-icons type="more" size="20" color="#333333"></uni-icons>
+          <text class="tn-icon-more" style="font-size: 20px; color: #333333;"></text>
         </view>
       </view>
     </view>
@@ -44,7 +44,7 @@
     <view class="input-bar">
       <input class="msg-input" v-model="inputText" placeholder="输入消息..." @confirm="sendMessage" />
       <view class="image-btn" @click="chooseImage">
-        <uni-icons type="image" size="24" color="#999999"></uni-icons>
+        <text class="tn-icon-image" style="font-size: 24px; color: #999999;"></text>
       </view>
       <view class="send-btn" @click="sendMessage">
         <text>发送</text>

@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">编辑资料</text>
         <view class="nav-placeholder"></view>
@@ -18,7 +18,7 @@
         <text class="item-label">头像</text>
         <view class="item-right" @click="chooseAvatar">
           <image class="avatar-img" :src="userInfo.avatar" mode="aspectFill"></image>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -32,7 +32,7 @@
             placeholder="请输入昵称"
             maxlength="20"
           />
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -41,7 +41,7 @@
         <text class="item-label">性别</text>
         <view class="item-right">
           <text class="item-value">{{ genderText }}</text>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -52,7 +52,7 @@
           <picker mode="date" :value="userInfo.birthday" @change="onBirthdayChange">
             <view class="picker-view">
               <text class="item-value">{{ userInfo.birthday || '请选择' }}</text>
-              <uni-icons type="right" size="14" color="#999999"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
             </view>
           </picker>
         </view>
@@ -68,7 +68,7 @@
             placeholder="请输入学校"
             maxlength="30"
           />
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -82,7 +82,7 @@
             placeholder="请输入专业"
             maxlength="30"
           />
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -121,7 +121,7 @@
             @click="tempGender = item.value"
           >
             <text class="option-text">{{ item.label }}</text>
-            <uni-icons v-if="tempGender === item.value" type="checkmarkempty" size="20" color="#007AFF"></uni-icons>
+            <text v-if="tempGender === item.value" class="tn-icon-success" style="font-size: 20px; color: #007AFF;"></text>
           </view>
         </view>
       </view>

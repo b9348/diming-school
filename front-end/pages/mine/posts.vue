@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">我的帖子</text>
         <view class="nav-placeholder"></view>
@@ -56,18 +56,18 @@
         </view>
         <view class="post-actions">
           <view class="action-btn" @click.stop="editPost(item)">
-            <uni-icons type="compose" size="16" color="#666666"></uni-icons>
+            <text class="tn-icon-edit" style="font-size: 16px; color: #666666;"></text>
             <text>编辑</text>
           </view>
           <view class="action-btn delete" @click.stop="deletePost(item)">
-            <uni-icons type="trash" size="16" color="#FF3B30"></uni-icons>
+            <text class="tn-icon-delete" style="font-size: 16px; color: #FF3B30;"></text>
             <text>删除</text>
           </view>
         </view>
       </view>
 
       <view class="empty-tip" v-if="postList.length === 0 && !loading">
-        <uni-icons type="compose" size="48" color="#CCCCCC"></uni-icons>
+        <text class="tn-icon-edit" style="font-size: 48px; color: #CCCCCC;"></text>
         <text>暂无帖子</text>
       </view>
 

@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">我的收藏</text>
         <view class="nav-right" @click="toggleEdit">
@@ -39,7 +39,7 @@
       <view class="collect-item" v-for="(item, index) in collectList" :key="index" @click="goDetail(item)">
         <view class="select-box" v-if="isEdit" @click.stop="toggleSelect(item)">
           <view class="checkbox" :class="{ checked: selectedIds.includes(item.id) }">
-            <uni-icons v-if="selectedIds.includes(item.id)" type="checkmarkempty" size="14" color="#FFFFFF"></uni-icons>
+            <text v-if="selectedIds.includes(item.id)" class="tn-icon-success" style="font-size: 14px; color: #FFFFFF;"></text>
           </view>
         </view>
         <image class="item-image" :src="item.cover || (item.images && item.images[0]) || 'https://iph.href.lu/120x120?text=图'" mode="aspectFill"></image>
@@ -53,7 +53,7 @@
       </view>
 
       <view class="empty-tip" v-if="collectList.length === 0 && !loading">
-        <uni-icons type="star" size="48" color="#CCCCCC"></uni-icons>
+        <text class="tn-icon-star" style="font-size: 48px; color: #CCCCCC;"></text>
         <text>暂无收藏</text>
       </view>
 
@@ -68,7 +68,7 @@
     <view class="bottom-bar" v-if="isEdit">
       <view class="select-all" @click="toggleSelectAll">
         <view class="checkbox" :class="{ checked: isAllSelected }">
-          <uni-icons v-if="isAllSelected" type="checkmarkempty" size="14" color="#FFFFFF"></uni-icons>
+          <text v-if="isAllSelected" class="tn-icon-success" style="font-size: 14px; color: #FFFFFF;"></text>
         </view>
         <text>全选</text>
       </view>

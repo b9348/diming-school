@@ -35,7 +35,7 @@
               <text class="account-name">{{ item.nickname }}</text>
               <text class="account-role">{{ item.roleName }}</text>
             </view>
-            <uni-icons type="right" size="16" color="#FFFFFF"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 16px; color: #FFFFFF;"></text>
           </view>
         </view>
       </view>
@@ -54,7 +54,7 @@
               <text class="account-name">{{ item.nickname }}</text>
               <text class="account-id">ID: {{ item.id }}</text>
             </view>
-            <uni-icons type="right" size="16" color="#007AFF"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 16px; color: #007AFF;"></text>
           </view>
         </view>
       </view>

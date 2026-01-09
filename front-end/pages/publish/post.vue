@@ -28,11 +28,11 @@
           <view v-for="(img, index) in formData.images" :key="index" class="image-item">
             <image class="preview-image" :src="img" mode="aspectFill"></image>
             <view class="delete-btn" @click="deleteImage(index)">
-              <uni-icons type="close" size="18" color="#FFFFFF"></uni-icons>
+              <text class="tn-icon-close" style="font-size: 18px; color: #FFFFFF;"></text>
             </view>
           </view>
           <view v-if="formData.images.length < 9" class="add-image" @click="chooseImage">
-            <uni-icons type="plusempty" size="40" color="#999999"></uni-icons>
+            <text class="tn-icon-add" style="font-size: 40px; color: #999999;"></text>
             <text class="add-text">添加图片</text>
           </view>
         </view>
@@ -44,7 +44,7 @@
         <view class="item-value">
           <text v-if="formData.topic">{{ formData.topic }}</text>
           <text v-else class="placeholder">#选择话题</text>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -54,7 +54,7 @@
         <view class="item-value">
           <text v-if="formData.location">{{ formData.location }}</text>
           <text v-else class="placeholder">选择位置</text>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -63,7 +63,7 @@
         <text class="item-label">可见范围</text>
         <view class="item-value">
           <text>{{ visibleOptions[formData.visible] || '请选择' }}</text>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 
@@ -78,7 +78,7 @@
         <text class="item-label">置顶</text>
         <view class="item-value">
           <text>{{ topOptions[formData.topType] }}</text>
-          <uni-icons type="right" size="14" color="#999999"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
 

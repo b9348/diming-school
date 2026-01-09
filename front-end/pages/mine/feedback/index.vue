@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">意见反馈</text>
         <view class="nav-placeholder"></view>
@@ -49,11 +49,11 @@
           <view class="image-item" v-for="(img, index) in imageList" :key="index">
             <image :src="img" mode="aspectFill"></image>
             <view class="delete-btn" @click="deleteImage(index)">
-              <uni-icons type="close" size="12" color="#FFFFFF"></uni-icons>
+              <text class="tn-icon-close" style="font-size: 12px; color: #FFFFFF;"></text>
             </view>
           </view>
           <view class="add-image" @click="chooseImage" v-if="imageList.length < 4">
-            <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+            <text class="tn-icon-add" style="font-size: 32px; color: #CCCCCC;"></text>
           </view>
         </view>
       </view>

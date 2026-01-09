@@ -3,7 +3,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">个人详情</text>
         <view class="nav-placeholder"></view>
@@ -145,27 +145,27 @@
       <!-- 互动按钮 -->
       <view class="action-row">
         <view class="action-item" @click="handleAction('like')">
-          <uni-icons type="hand-up" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-caring" style="font-size: 20px; color: #999999;"></text>
           <text>{{ data.likeCount }}</text>
         </view>
         <view class="action-item" @click="handleAction('comment')">
-          <uni-icons type="chat" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-comment" style="font-size: 20px; color: #999999;"></text>
           <text>{{ data.commentCount }}</text>
         </view>
         <view class="action-item" @click="toggleFavorite">
-          <uni-icons :type="isFavorite ? 'star-filled' : 'star'" size="20" :color="isFavorite ? '#FF9500' : '#999999'"></uni-icons>
+          <text class="tn-icon-isFavorite ? 'star-filled' : 'star'"></text>
           <text>{{ data.favoriteCount }}</text>
         </view>
         <view class="action-item" @click="handleAction('share')">
-          <uni-icons type="redo" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-redo" style="font-size: 20px; color: #999999;"></text>
           <text>{{ data.shareCount }}</text>
         </view>
         <view class="action-item" @click="handleAction('reward')">
-          <uni-icons type="gift" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-gift" style="font-size: 20px; color: #999999;"></text>
           <text>{{ data.rewardCount }}</text>
         </view>
         <view class="action-item" @click="showMore">
-          <uni-icons type="more-filled" size="20" color="#999999"></uni-icons>
+          <text class="tn-icon-more-circle-fill" style="font-size: 20px; color: #999999;"></text>
         </view>
       </view>
     </scroll-view>
@@ -174,7 +174,7 @@
     <view class="bottom-bar">
       <view class="contact-btn" @click="viewContact">
         <text class="contact-text">查看联系方式</text>
-        <uni-icons type="right" size="14" color="#999999"></uni-icons>
+        <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
       </view>
     </view>
   </view>

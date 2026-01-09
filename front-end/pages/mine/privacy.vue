@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">隐私设置</text>
         <view class="nav-placeholder"></view>
@@ -60,7 +60,7 @@
             </view>
             <view class="item-right">
               <text class="item-value">{{ getOptionText('whoCanMessage', settings.whoCanMessage) }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
@@ -70,7 +70,7 @@
             </view>
             <view class="item-right">
               <text class="item-value">{{ getOptionText('whoCanComment', settings.whoCanComment) }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
 
@@ -80,7 +80,7 @@
             </view>
             <view class="item-right">
               <text class="item-value">{{ getOptionText('whoCanSeeCollects', settings.whoCanSeeCollects) }}</text>
-              <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -95,7 +95,7 @@
               <text class="item-title">黑名单</text>
               <text class="item-desc">已拉黑 {{ blacklistCount }} 人</text>
             </view>
-            <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
           </view>
         </view>
       </view>
@@ -109,7 +109,7 @@
               <text class="item-title">下载我的数据</text>
               <text class="item-desc">导出你在平台的所有数据</text>
             </view>
-            <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
           </view>
 
           <view class="setting-item" @click="deleteAccount">
@@ -117,7 +117,7 @@
               <text class="item-title delete">注销账号</text>
               <text class="item-desc">永久删除你的账号和所有数据</text>
             </view>
-            <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+            <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
           </view>
         </view>
       </view>
@@ -144,7 +144,7 @@
             @click="selectOption(option.value)"
           >
             <text>{{ option.label }}</text>
-            <uni-icons v-if="currentOptionValue === option.value" type="checkmarkempty" size="18" color="#007AFF"></uni-icons>
+            <text v-if="currentOptionValue === option.value" class="tn-icon-success" style="font-size: 18px; color: #007AFF;"></text>
           </view>
         </view>
         <view class="popup-cancel" @click="closePopup">取消</view>

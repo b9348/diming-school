@@ -1,6 +1,6 @@
 <template>
   <view class="dm-publish-btn" @click="handleClick">
-    <uni-icons type="plusempty" size="24" color="#FFFFFF"></uni-icons>
+    <text class="tn-icon-add" style="font-size: 24px; color: #FFFFFF;"></text>
   </view>
 </template>
 

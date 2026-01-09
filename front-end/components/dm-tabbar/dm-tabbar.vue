@@ -7,11 +7,11 @@
       class="tabbar-item"
       @click="switchTab(index)"
     >
-      <uni-icons
-        :type="current === index ? item.selectedIcon : item.icon"
-        :size="24"
-        :color="current === index ? selectedColor : color"
-      ></uni-icons>
+      <text
+        :class="'tn-icon-' + (current === index ? item.selectedIcon : item.icon)"
+        class="tabbar-icon"
+        :style="{ color: current === index ? selectedColor : color }"
+      ></text>
       <text
         class="tabbar-text"
         :style="{ color: current === index ? selectedColor : color }"
@@ -23,7 +23,7 @@
     <!-- 中间发布按钮 -->
     <view class="tabbar-item publish-item" @click="goPublish">
       <view class="publish-btn">
-        <uni-icons type="plusempty" size="28" color="#FFFFFF"></uni-icons>
+        <text class="tn-icon-add publish-icon"></text>
       </view>
     </view>
 
@@ -34,11 +34,11 @@
       class="tabbar-item"
       @click="switchTab(index + 3)"
     >
-      <uni-icons
-        :type="current === (index + 3) ? item.selectedIcon : item.icon"
-        :size="24"
-        :color="current === (index + 3) ? selectedColor : color"
-      ></uni-icons>
+      <text
+        :class="'tn-icon-' + (current === (index + 3) ? item.selectedIcon : item.icon)"
+        class="tabbar-icon"
+        :style="{ color: current === (index + 3) ? selectedColor : color }"
+      ></text>
       <text
         class="tabbar-text"
         :style="{ color: current === (index + 3) ? selectedColor : color }"
@@ -60,37 +60,37 @@ export default {
         {
           pagePath: '/pages/index/index',
           icon: 'home',
-          selectedIcon: 'home-filled',
+          selectedIcon: 'home-fill',
           text: '主页'
         },
         {
           pagePath: '/pages/help/index',
-          icon: 'hand-up',
-          selectedIcon: 'hand-up-filled',
+          icon: 'caring',
+          selectedIcon: 'caring-fill',
           text: '互助'
         },
         {
           pagePath: '/pages/errand/index',
-          icon: 'location',
-          selectedIcon: 'location-filled',
+          icon: 'errands',
+          selectedIcon: 'errands-fill',
           text: '跑腿'
         },
         {
           pagePath: '/pages/idle/index',
           icon: 'shop',
-          selectedIcon: 'shop-filled',
+          selectedIcon: 'shop-fill',
           text: '闲置'
         },
         {
           pagePath: '/pages/message/index',
-          icon: 'chat',
-          selectedIcon: 'chat-filled',
+          icon: 'message',
+          selectedIcon: 'message-fill',
           text: '消息'
         },
         {
           pagePath: '/pages/mine/index',
-          icon: 'contact',
-          selectedIcon: 'contact-filled',
+          icon: 'my',
+          selectedIcon: 'my-fill',
           text: '我'
         }
       ]
@@ -189,6 +189,10 @@ export default {
   box-sizing: border-box;
 }
 
+.tabbar-icon {
+  font-size: 24px;
+}
+
 .tabbar-text {
   font-size: 10px;
   margin-top: 2px;
@@ -211,6 +215,11 @@ export default {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .publish-icon {
+    font-size: 28px;
+    color: #FFFFFF;
   }
 }
 </style>

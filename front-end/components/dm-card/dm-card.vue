@@ -48,11 +48,11 @@
       </view>
       <view class="footer-right">
         <view class="action-item" v-if="showLike" @click.stop="handleLike">
-          <uni-icons :type="data.isLiked ? 'heart-filled' : 'heart'" size="16" :color="data.isLiked ? '#FF3B30' : '#999999'"></uni-icons>
+          <text :class="data.isLiked ? 'tn-icon-like-fill' : 'tn-icon-like'" :style="{ fontSize: '16px', color: data.isLiked ? '#FF3B30' : '#999999' }"></text>
           <text class="action-text" :class="{ 'is-liked': data.isLiked }">{{ data.likeCount || 0 }}</text>
         </view>
         <view class="action-item" v-if="showComment" @click.stop="handleComment">
-          <uni-icons type="chat" size="16" color="#999999"></uni-icons>
+          <text class="tn-icon-comment" style="font-size: 16px; color: #999999;"></text>
           <text class="action-text">{{ data.commentCount || 0 }}</text>
         </view>
       </view>

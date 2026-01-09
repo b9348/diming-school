@@ -4,7 +4,7 @@
     <view class="navbar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="navbar-inner">
         <view class="navbar-left" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="navbar-title">身份认证</text>
         <view class="navbar-right"></view>
@@ -70,7 +70,7 @@
             >
               <image class="upload-img" :src="item" mode="aspectFill"></image>
               <view class="delete-btn" @click.stop="deleteImage(index)" v-if="!isVerified">
-                <uni-icons type="close" size="12" color="#FFFFFF"></uni-icons>
+                <text class="tn-icon-close" style="font-size: 12px; color: #FFFFFF;"></text>
               </view>
             </view>
             <view
@@ -78,7 +78,7 @@
               @click="chooseImage"
               v-if="studentCardImages.length === 0 && !isVerified"
             >
-              <uni-icons type="plus" size="40" color="#999999"></uni-icons>
+              <text class="tn-icon-plus" style="font-size: 40px; color: #999999;"></text>
             </view>
           </view>
           <text class="upload-tip">仅支持学生证（塑料卡）、毕业证、录取通知书认证</text>

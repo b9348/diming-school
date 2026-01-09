@@ -5,7 +5,7 @@
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingRight: navRightPadding + 'px' }">
       <view class="back-btn" @click="goBack">
-        <uni-icons type="left" size="20" color="#333333"></uni-icons>
+        <text class="tn-icon-left" style="font-size: 20px; color: #333333;"></text>
       </view>
       <text class="nav-title">切换校区</text>
     </view>
@@ -13,7 +13,7 @@
     <!-- 搜索栏 -->
     <view class="search-bar" :style="{ paddingRight: navRightPadding + 'px' }">
       <view class="search-box">
-        <uni-icons type="search" size="16" color="#999999"></uni-icons>
+        <text class="tn-icon-search" style="font-size: 16px; color: #999999;"></text>
         <input
           v-model="keyword"
           type="text"

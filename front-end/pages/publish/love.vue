@@ -184,11 +184,11 @@
           <view v-for="(img, index) in formData.images" :key="index" class="image-item">
             <image class="preview-image" :src="img" mode="aspectFill"></image>
             <view class="delete-btn" @click="deleteImage(index)">
-              <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+              <text class="tn-icon-close" style="font-size: 14px; color: #FFFFFF;"></text>
             </view>
           </view>
           <view v-if="formData.images.length < 9" class="add-image" @click="chooseImage">
-            <uni-icons type="plusempty" size="32" color="#999999"></uni-icons>
+            <text class="tn-icon-add" style="font-size: 32px; color: #999999;"></text>
           </view>
         </view>
         <text class="image-tip">展示前9张，可以发100张</text>

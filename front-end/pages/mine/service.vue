@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">客服中心</text>
         <view class="nav-placeholder"></view>
@@ -16,35 +16,35 @@
       <view class="service-card">
         <view class="service-item" @click="contactOnline">
           <view class="item-icon online">
-            <uni-icons type="chatbubble-filled" size="28" color="#FFFFFF"></uni-icons>
+            <text class="tn-icon-chatbubble-filled" style="font-size: 28px; color: #FFFFFF;"></text>
           </view>
           <view class="item-info">
             <text class="item-title">在线客服</text>
             <text class="item-desc">工作时间：9:00-22:00</text>
           </view>
-          <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
         </view>
 
         <view class="service-item" @click="callPhone">
           <view class="item-icon phone">
-            <uni-icons type="phone-filled" size="28" color="#FFFFFF"></uni-icons>
+            <text class="tn-icon-phone-filled" style="font-size: 28px; color: #FFFFFF;"></text>
           </view>
           <view class="item-info">
             <text class="item-title">电话客服</text>
             <text class="item-desc">{{ servicePhone }}</text>
           </view>
-          <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
         </view>
 
         <view class="service-item" @click="goFeedback">
           <view class="item-icon feedback">
-            <uni-icons type="compose" size="28" color="#FFFFFF"></uni-icons>
+            <text class="tn-icon-edit" style="font-size: 28px; color: #FFFFFF;"></text>
           </view>
           <view class="item-info">
             <text class="item-title">意见反馈</text>
             <text class="item-desc">提交问题或建议</text>
           </view>
-          <uni-icons type="right" size="16" color="#CCCCCC"></uni-icons>
+          <text class="tn-icon-right" style="font-size: 16px; color: #CCCCCC;"></text>
         </view>
       </view>
 
@@ -60,11 +60,7 @@
           >
             <view class="faq-question">
               <text class="question-text">{{ item.question }}</text>
-              <uni-icons
-                :type="expandedIndex === index ? 'up' : 'down'"
-                size="16"
-                color="#999999"
-              ></uni-icons>
+              <text class="tn-icon-expandedIndex === index ? 'up' : 'down'"></text>
             </view>
             <view class="faq-answer" v-if="expandedIndex === index">
               <text>{{ item.answer }}</text>
@@ -84,7 +80,7 @@
             @click="goCategoryDetail(item)"
           >
             <view class="category-icon" :style="{ backgroundColor: item.bgColor }">
-              <uni-icons :type="item.icon" size="24" :color="item.iconColor"></uni-icons>
+              <text class="tn-icon-item.icon"></text>
             </view>
             <text class="category-name">{{ item.name }}</text>
           </view>

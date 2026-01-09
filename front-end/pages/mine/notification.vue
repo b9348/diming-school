@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">消息通知</text>
         <view class="nav-right" @click="markAllRead" v-if="hasUnread">
@@ -43,7 +43,7 @@
         @click="goNotifyDetail(item)"
       >
         <view class="notify-icon" :style="{ backgroundColor: getIconBg(item.type) }">
-          <uni-icons :type="getIcon(item.type)" size="24" color="#FFFFFF"></uni-icons>
+          <text class="tn-icon-getIcon(item.type)"></text>
         </view>
         <view class="notify-content">
           <view class="notify-header">
@@ -65,7 +65,7 @@
       </view>
 
       <view class="empty-tip" v-if="notifyList.length === 0 && !loading">
-        <uni-icons type="notification" size="48" color="#CCCCCC"></uni-icons>
+        <text class="tn-icon-notification" style="font-size: 48px; color: #CCCCCC;"></text>
         <text>暂无消息</text>
       </view>
 

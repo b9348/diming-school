@@ -1,7 +1,7 @@
 <template>
   <view class="dm-search" :style="{ backgroundColor: bgColor, paddingRight: rightSafeArea + 'px' }">
     <view class="search-box" @click="handleClick">
-      <uni-icons type="search" size="16" color="#999999" class="search-icon"></uni-icons>
+      <text class="tn-icon-search search-icon" style="font-size: 16px; color: #999999;"></text>
       <input
         v-if="!disabled"
         class="search-input"
@@ -15,10 +15,10 @@
       <text v-else class="search-placeholder">{{ placeholder }}</text>
     </view>
     <view v-if="showFilter" class="filter-btn" @click="$emit('filter')">
-      <uni-icons type="tune" size="20" color="#333333" class="filter-icon"></uni-icons>
+      <text class="tn-icon-filter filter-icon" style="font-size: 20px; color: #333333;"></text>
     </view>
     <view v-if="showSwitch" class="switch-btn" @click="$emit('switch')">
-      <uni-icons type="location-filled" size="20" color="#333333" class="switch-icon"></uni-icons>
+      <text class="tn-icon-location-fill switch-icon" style="font-size: 20px; color: #333333;"></text>
     </view>
   </view>
 </template>

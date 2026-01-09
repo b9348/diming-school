@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">浏览历史</text>
         <view class="nav-right" @click="clearHistory">
@@ -40,13 +40,13 @@
             </view>
           </view>
           <view class="item-delete" @click.stop="deleteHistory(item, gIndex, index)">
-            <uni-icons type="close" size="16" color="#999999"></uni-icons>
+            <text class="tn-icon-close" style="font-size: 16px; color: #999999;"></text>
           </view>
         </view>
       </view>
 
       <view class="empty-tip" v-if="historyList.length === 0 && !loading">
-        <uni-icons type="eye" size="48" color="#CCCCCC"></uni-icons>
+        <text class="tn-icon-eye" style="font-size: 48px; color: #CCCCCC;"></text>
         <text>暂无浏览记录</text>
       </view>
 

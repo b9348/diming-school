@@ -8,7 +8,7 @@
       <view class="menu-header">
         <text class="menu-title">管理操作</text>
         <view class="close-btn" @click="close">
-          <uni-icons type="close" size="18" color="#999"></uni-icons>
+          <text class="tn-icon-close" style="font-size: 18px; color: #999999;"></text>
         </view>
       </view>
 

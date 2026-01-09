@@ -3,6 +3,8 @@ const { successResponse, errorResponse } = require('../utils/response')
 // 生成闲置列表数据
 const generateIdleList = (page, pageSize) => {
   const startId = (page - 1) * pageSize
+  // 配送类型映射: 0-不包邮, 1-包邮, 2-自提
+  const deliveryTypes = ['不包邮', '包邮', '自提']
   return Array(pageSize).fill(null).map((_, i) => ({
     id: startId + i + 1,
     image: 'https://iph.href.lu/400x400?text=商品图片',
@@ -10,8 +12,8 @@ const generateIdleList = (page, pageSize) => {
     content: ['全新的书籍，买来一直没看过', '正品苹果耳机，未拆封', '代步神器，性能良好', '9成新台灯，光线柔和', '商务风格，适合笔记本'][i % 5],
     price: [50, 150, 200, 35, 80][i % 5],
     originalPrice: [99, 299, 500, 79, 159][i % 5],
-    freeShipping: i % 2 === 0,
-    deliveryType: 'hours',
+    freeShipping: i % 3 !== 0,  // 约2/3包邮
+    deliveryType: deliveryTypes[i % 3],  // 循环返回 [不包邮, 包邮, 自提]
     deliveryHours: [24, 48, 12, 24, 72][i % 5],
     wantCount: Math.floor(Math.random() * 100) + 10,
     location: ['徐汇校区', '闵行校区', '海定校区', '杨浦校区'][i % 4],
@@ -88,34 +90,77 @@ const getDetail = (req, res) => {
 
   const detail = {
     id: parseInt(id),
-    content: '全新的书籍，买来一直没看过，现在不需要了，便宜出给有需要的同学。书本保存完好，无折痕无笔记。',
-    images: [
-      'https://iph.href.lu/400x400?text=商品图1',
-      'https://iph.href.lu/400x400?text=商品图2',
-      'https://iph.href.lu/400x400?text=商品图3'
-    ],
+    content: '出售我心爱的鞋子，它长这样。今天天气晴朗，我今天的心，此为测试文本的内容，显示帖子内容的前两百字',
+    images: Array(12).fill(null).map((_, i) => `https://iph.href.lu/400x400?text=图片${i + 1}`),
     hiddenInfo: '取货地点：图书馆一楼大厅，联系我获取取货码',
     hiddenImages: [],
-    price: 50,
-    freeShipping: true,
-    deliveryType: 'hours',
+    price: 1000,
+    freeShipping: false,
+    deliveryType: '自提',
     deliveryHours: 24,
     deliveryDeadline: null,
-    contactType: 'phone',
-    contactValue: '138****8888',
+    contact: '微信号：zhangsan123',
+    contactType: 'wechat',
+    contactValue: 'zhangsan123',
     visibilityType: 'campus',
     visibilityValue: 'current',
     location: '徐汇校区',
-    wantCount: 97,
+    wantCount: 56,
     viewCount: 328,
     avatar: 'https://iph.href.lu/100x100?text=头像',
     nickname: '张三',
     time: '2天前',
     isFollowed: false,
+    isCollected: false,
     status: '在售',
     isTop: false,
     topHours: 0,
     topExpireTime: null,
+    commentCount: 78,
+    comments: [
+      {
+        id: 'c1',
+        avatar: 'https://iph.href.lu/100x100?text=头像',
+        nickname: '张三',
+        title: '头衔',
+        time: '4分钟前',
+        content: '你这个图配得很好看的，我很喜欢你发的图片。',
+        likeCount: 467,
+        isPinned: true,
+        replies: [
+          {
+            id: 'r1',
+            avatar: 'https://iph.href.lu/100x100?text=头像',
+            nickname: '李四',
+            time: '2天前',
+            content: '你说的很对！',
+            likeCount: 467,
+            isAuthor: true
+          }
+        ]
+      },
+      {
+        id: 'c2',
+        avatar: 'https://iph.href.lu/100x100?text=头像',
+        nickname: '王五',
+        time: '1小时前',
+        content: '这个价格可以小刀吗？',
+        likeCount: 23,
+        isPinned: false,
+        replies: []
+      },
+      {
+        id: 'c3',
+        avatar: 'https://iph.href.lu/100x100?text=头像',
+        nickname: '赵六',
+        title: '活跃用户',
+        time: '3小时前',
+        content: '鞋子是什么码数的？',
+        likeCount: 15,
+        isPinned: false,
+        replies: []
+      }
+    ],
     userInfo: {
       id: 'idle_user_1',
       nickname: '张三',

@@ -4,7 +4,7 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
-          <uni-icons type="left" size="18" color="#333333"></uni-icons>
+          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
         </view>
         <text class="nav-title">我的订单</text>
         <view class="nav-placeholder"></view>
@@ -36,7 +36,7 @@
       <view class="order-card" v-for="(order, index) in orderList" :key="index" @click="goOrderDetail(order)">
         <view class="order-header">
           <view class="order-type">
-            <uni-icons :type="getOrderIcon(order.type)" size="16" :color="getOrderColor(order.type)"></uni-icons>
+            <text class="tn-icon-getOrderIcon(order.type)"></text>
             <text class="type-text">{{ getOrderTypeName(order.type) }}</text>
           </view>
           <text class="order-status" :style="{ color: getStatusColor(order.status) }">{{ getStatusText(order.status) }}</text>
@@ -71,7 +71,7 @@
       </view>
 
       <view class="empty-tip" v-if="orderList.length === 0 && !loading">
-        <uni-icons type="list" size="48" color="#CCCCCC"></uni-icons>
+        <text class="tn-icon-list" style="font-size: 48px; color: #CCCCCC;"></text>
         <text>暂无订单</text>
       </view>
 

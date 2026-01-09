@@ -31,11 +31,11 @@
             <view v-for="(img, index) in formData.images" :key="index" class="image-item">
               <image class="preview-image" :src="img" mode="aspectFill"></image>
               <view class="delete-btn" @click="removeImage(index)">
-                <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+                <text class="tn-icon-close" style="font-size: 14px; color: #FFFFFF;"></text>
               </view>
             </view>
             <view v-if="formData.images.length < 9" class="add-image" @click="chooseImages">
-              <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-add" style="font-size: 32px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
@@ -50,16 +50,16 @@
           </view>
           <view class="option-actions">
             <view class="action-btn" @click="deleteOption(index)">
-              <uni-icons type="minus" size="20" color="#999999"></uni-icons>
+              <text class="tn-icon-minus" style="font-size: 20px; color: #999999;"></text>
             </view>
             <view class="action-btn" @click="chooseOptionImage(index)">
               <image v-if="opt.image" :src="opt.image" class="option-image-preview" mode="aspectFill" />
-              <uni-icons v-else type="image" size="20" color="#999999"></uni-icons>
+              <text v-else class="tn-icon-image" style="font-size: 20px; color: #999999;"></text>
             </view>
           </view>
         </view>
         <view class="add-option" @click="addOption">
-          <uni-icons type="plusempty" size="24" color="#999999"></uni-icons>
+          <text class="tn-icon-add" style="font-size: 24px; color: #999999;"></text>
         </view>
       </view>
 
@@ -92,11 +92,11 @@
             <view v-for="(img, index) in formData.hiddenImages" :key="index" class="image-item">
               <image class="preview-image" :src="img" mode="aspectFill"></image>
               <view class="delete-btn" @click="removeHiddenImage(index)">
-                <uni-icons type="close" size="14" color="#FFFFFF"></uni-icons>
+                <text class="tn-icon-close" style="font-size: 14px; color: #FFFFFF;"></text>
               </view>
             </view>
             <view v-if="formData.hiddenImages.length < 9" class="add-image" @click="chooseHiddenImages">
-              <uni-icons type="plusempty" size="32" color="#CCCCCC"></uni-icons>
+              <text class="tn-icon-add" style="font-size: 32px; color: #CCCCCC;"></text>
             </view>
           </view>
         </view>
