@@ -255,12 +255,16 @@
 import { homeApi, postApi, voteApi, idleApi, errandApi, loveApi, helpApi, groupApi } from '@/api/index.js'
 
 // 各tab的筛选配置
+const COMMON_FILTER = [
+  { key: 'sort', title: '排序方式', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '点赞最多', value: 'most_likes' }, { label: '评论最多', value: 'most_comments' }] },
+  { key: 'contentType', title: '内容类型', items: [{ label: '不限', value: '' }, { label: '图文', value: 'image_text' }, { label: '文字', value: 'text' }, { label: '图片', value: 'image' }] },
+  { key: 'timeRange', title: '发布时间', items: [{ label: '不限', value: '' }, { label: '一天内', value: '1d' }, { label: '三天内', value: '3d' }, { label: '一周内', value: '1w' }, { label: '半个月内', value: '15d' }, { label: '一个月内', value: '1m' }, { label: '三个月内', value: '3m' }, { label: '六个月内', value: '6m' }] }
+]
+
 const FILTER_CONFIG = {
-  '最新': [
-    { key: 'sort', title: '排序方式', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }, { label: '点赞最多', value: 'most_likes' }, { label: '评论最多', value: 'most_comments' }] },
-    { key: 'contentType', title: '内容类型', items: [{ label: '不限', value: '' }, { label: '图文', value: 'image_text' }, { label: '文字', value: 'text' }, { label: '图片', value: 'image' }] },
-    { key: 'timeRange', title: '发布时间', items: [{ label: '不限', value: '' }, { label: '一天内', value: '1d' }, { label: '三天内', value: '3d' }, { label: '一周内', value: '1w' }, { label: '半个月内', value: '15d' }, { label: '一个月内', value: '1m' }, { label: '三个月内', value: '3m' }, { label: '六个月内', value: '6m' }] }
-  ],
+  '最新': COMMON_FILTER,
+  '树洞': COMMON_FILTER,
+  '失物招领': COMMON_FILTER,
   '帖子': [
     { key: 'sort', title: '排序', items: [{ label: '最新', value: 'latest' }, { label: '最热', value: 'hot' }] },
     { key: 'category', title: '分类', items: [{ label: '全部', value: '' }, { label: '吐槽', value: 'tucao' }, { label: '提问', value: 'question' }, { label: '分享', value: 'share' }, { label: '日常', value: 'daily' }, { label: '其他', value: 'other' }] }

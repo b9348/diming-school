@@ -163,7 +163,7 @@ router.post('/admin/user/verify/reject/:id', adminUserController.rejectVerify)
 router.get('/admin/content/audit/list', adminContentController.getAuditList)
 router.post('/admin/content/approve/:id', adminContentController.approve)
 router.post('/admin/content/reject/:id', adminContentController.reject)
-router.delete('/admin/content/:id', adminContentController.delete)
+router.post('/admin/content/saveOrUpdate', adminContentController.saveOrUpdate)
 
 // 举报管理
 router.get('/admin/report/list', adminReportController.getList)
@@ -171,9 +171,7 @@ router.post('/admin/report/handle/:id', adminReportController.handle)
 
 // 敏感词管理
 router.get('/admin/sensitive/list', adminSensitiveController.getList)
-router.post('/admin/sensitive/add', adminSensitiveController.add)
-router.put('/admin/sensitive/:id', adminSensitiveController.update)
-router.delete('/admin/sensitive/:id', adminSensitiveController.delete)
+router.post('/admin/sensitive/saveOrUpdate', adminSensitiveController.saveOrUpdate)
 router.post('/admin/sensitive/batch', adminSensitiveController.batchAdd)
 
 // AI审核配置
@@ -201,15 +199,12 @@ router.get('/admin/statistics/income', adminStatisticsController.getIncomeData)
 // 系统设置
 router.get('/admin/role/list', adminRoleController.getRoleList)
 router.get('/admin/permission/list', adminRoleController.getPermissions)
-router.put('/admin/role/:id', adminRoleController.updateRole)
+router.post('/admin/role/saveOrUpdate', adminRoleController.saveOrUpdate)
 router.get('/admin/system/config', adminSystemController.getConfig)
 router.post('/admin/system/config', adminSystemController.saveConfig)
 router.get('/admin/notice/list', adminNoticeController.getList)
-router.post('/admin/notice', adminNoticeController.add)
-router.put('/admin/notice/:id', adminNoticeController.update)
-router.delete('/admin/notice/:id', adminNoticeController.delete)
+router.post('/admin/notice/saveOrUpdate', adminNoticeController.saveOrUpdate)
 router.get('/admin/version/list', adminVersionController.getList)
-router.post('/admin/version', adminVersionController.add)
-router.put('/admin/version/:id', adminVersionController.update)
+router.post('/admin/version/saveOrUpdate', adminVersionController.saveOrUpdate)
 
 module.exports = router

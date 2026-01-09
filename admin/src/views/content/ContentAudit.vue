@@ -161,7 +161,7 @@ const confirmReject = async () => {
 
 const handleDelete = async (row) => {
   await ElMessageBox.confirm('确定删除该内容？此操作不可恢复', '警告', { type: 'warning' })
-  const res = await contentApi.delete(row.id)
+  const res = await contentApi.saveOrUpdate({ id: row.id, deleted: true })
   if (res.code === 200) { ElMessage.success('已删除'); fetchData() }
 }
 

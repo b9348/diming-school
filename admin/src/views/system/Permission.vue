@@ -75,7 +75,7 @@ const handleEdit = (row) => {
 
 const handleSave = async () => {
   const checkedKeys = treeRef.value.getCheckedKeys()
-  const res = await systemApi.updateRole(currentRole.value.id, { permissions: checkedKeys })
+  const res = await systemApi.saveRole({ id: currentRole.value.id, permissions: checkedKeys })
   if (res.code === 200) {
     ElMessage.success('保存成功')
     editVisible.value = false

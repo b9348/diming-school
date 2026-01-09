@@ -52,3 +52,20 @@ exports.delete = async (req, res) => {
     errorResponse(res, error.message)
   }
 }
+
+// 保存内容（创建/更新/删除）
+exports.saveOrUpdate = async (req, res) => {
+  try {
+    const { id, deleted } = req.body
+
+    if (deleted) {
+      successResponse(res, null, '删除成功')
+    } else if (id) {
+      successResponse(res, null, '更新成功')
+    } else {
+      successResponse(res, { id: Date.now() }, '创建成功')
+    }
+  } catch (error) {
+    errorResponse(res, error.message)
+  }
+}

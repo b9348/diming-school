@@ -169,10 +169,9 @@ const handleEdit = (row) => {
 
 const confirmSave = async () => {
   if (!form.word) { ElMessage.warning('请输入敏感词'); return }
-  const api = isEdit.value ? sensitiveApi.update(form.id, form) : sensitiveApi.add(form)
-  const res = await api
+  const res = await sensitiveApi.saveOrUpdate(form)
   if (res.code === 200) {
-    ElMessage.success('保存成功')
+    ElMessage.success(isEdit.value ? '更新成功' : '添加成功')
     formVisible.value = false
     fetchData()
   }
@@ -180,7 +179,7 @@ const confirmSave = async () => {
 
 const handleDelete = async (row) => {
   await ElMessageBox.confirm('确定删除该敏感词？', '提示')
-  const res = await sensitiveApi.delete(row.id)
+  const res = await sensitiveApi.saveOrUpdate({ id: row.id, deleted: true })
   if (res.code === 200) { ElMessage.success('删除成功'); fetchData() }
 }
 

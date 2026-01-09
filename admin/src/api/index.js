@@ -23,7 +23,7 @@ export const contentApi = {
   getAuditList: (params) => get('/admin/content/audit/list', params),
   approve: (id) => post(`/admin/content/approve/${id}`),
   reject: (id, data) => post(`/admin/content/reject/${id}`, data),
-  delete: (id) => del(`/admin/content/${id}`),
+  saveOrUpdate: (data) => post('/admin/content/saveOrUpdate', data),
   getReportList: (params) => get('/admin/report/list', params),
   handleReport: (id, data) => post(`/admin/report/handle/${id}`, data)
 }
@@ -31,9 +31,7 @@ export const contentApi = {
 // 敏感词管理
 export const sensitiveApi = {
   getList: (params) => get('/admin/sensitive/list', params),
-  add: (data) => post('/admin/sensitive/add', data),
-  update: (id, data) => put(`/admin/sensitive/${id}`, data),
-  delete: (id) => del(`/admin/sensitive/${id}`),
+  saveOrUpdate: (data) => post('/admin/sensitive/saveOrUpdate', data),
   batchAdd: (data) => post('/admin/sensitive/batch', data)
 }
 
@@ -69,14 +67,11 @@ export const statisticsApi = {
 export const systemApi = {
   getRoleList: () => get('/admin/role/list'),
   getPermissions: () => get('/admin/permission/list'),
-  updateRole: (id, data) => put(`/admin/role/${id}`, data),
+  saveRole: (data) => post('/admin/role/saveOrUpdate', data),
   getConfig: () => get('/admin/system/config'),
   saveConfig: (data) => post('/admin/system/config', data),
   getNoticeList: (params) => get('/admin/notice/list', params),
-  addNotice: (data) => post('/admin/notice', data),
-  updateNotice: (id, data) => put(`/admin/notice/${id}`, data),
-  deleteNotice: (id) => del(`/admin/notice/${id}`),
+  saveNotice: (data) => post('/admin/notice/saveOrUpdate', data),
   getVersionList: (params) => get('/admin/version/list', params),
-  addVersion: (data) => post('/admin/version', data),
-  updateVersion: (id, data) => put(`/admin/version/${id}`, data)
+  saveVersion: (data) => post('/admin/version/saveOrUpdate', data)
 }

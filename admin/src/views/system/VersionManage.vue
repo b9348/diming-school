@@ -130,10 +130,9 @@ const handleEdit = (row) => {
 
 const handleSave = async () => {
   if (!form.version) { ElMessage.warning('请填写版本号'); return }
-  const api = isEdit.value ? systemApi.updateVersion(form.id, form) : systemApi.addVersion(form)
-  const res = await api
+  const res = await systemApi.saveVersion(form)
   if (res.code === 200) {
-    ElMessage.success('保存成功')
+    ElMessage.success(isEdit.value ? '更新成功' : '发布成功')
     formVisible.value = false
     fetchData()
   }

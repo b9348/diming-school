@@ -44,10 +44,18 @@ exports.getPermissions = async (req, res) => {
   }
 }
 
-// 更新角色权限
-exports.updateRole = async (req, res) => {
+// 保存角色（创建/更新/删除）
+exports.saveOrUpdate = async (req, res) => {
   try {
-    successResponse(res, null, '更新成功')
+    const { id, name, code, description, permissions, deleted } = req.body
+
+    if (deleted) {
+      successResponse(res, null, '删除成功')
+    } else if (id) {
+      successResponse(res, null, '更新成功')
+    } else {
+      successResponse(res, { id: Date.now() }, '创建成功')
+    }
   } catch (error) {
     errorResponse(res, error.message)
   }

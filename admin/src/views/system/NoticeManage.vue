@@ -140,10 +140,9 @@ const handleSave = async () => {
     ElMessage.warning('请填写完整信息')
     return
   }
-  const api = isEdit.value ? systemApi.updateNotice(form.id, form) : systemApi.addNotice(form)
-  const res = await api
+  const res = await systemApi.saveNotice(form)
   if (res.code === 200) {
-    ElMessage.success('保存成功')
+    ElMessage.success(isEdit.value ? '更新成功' : '发布成功')
     formVisible.value = false
     fetchData()
   }
@@ -151,7 +150,7 @@ const handleSave = async () => {
 
 const handleDelete = async (row) => {
   await ElMessageBox.confirm('确定删除该公告？', '提示')
-  const res = await systemApi.deleteNotice(row.id)
+  const res = await systemApi.saveNotice({ id: row.id, deleted: true })
   if (res.code === 200) {
     ElMessage.success('删除成功')
     fetchData()

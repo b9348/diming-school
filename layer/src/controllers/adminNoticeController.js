@@ -19,25 +19,18 @@ exports.getList = async (req, res) => {
   }
 }
 
-exports.add = async (req, res) => {
+// 保存公告（创建/更新/删除）
+exports.saveOrUpdate = async (req, res) => {
   try {
-    successResponse(res, { id: Date.now() }, '发布成功')
-  } catch (error) {
-    errorResponse(res, error.message)
-  }
-}
+    const { id, title, type, content, status, deleted } = req.body
 
-exports.update = async (req, res) => {
-  try {
-    successResponse(res, null, '更新成功')
-  } catch (error) {
-    errorResponse(res, error.message)
-  }
-}
-
-exports.delete = async (req, res) => {
-  try {
-    successResponse(res, null, '删除成功')
+    if (deleted) {
+      successResponse(res, null, '删除成功')
+    } else if (id) {
+      successResponse(res, null, '更新成功')
+    } else {
+      successResponse(res, { id: Date.now() }, '发布成功')
+    }
   } catch (error) {
     errorResponse(res, error.message)
   }
