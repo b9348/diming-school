@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.5.11"
+    "@dcloudio/uni-ui": "^1.5.11",
+    "@tuniao/tn-icon": "^1.11.0"
   }
 }

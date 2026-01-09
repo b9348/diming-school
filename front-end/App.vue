@@ -54,6 +54,8 @@ export default {
 </script>
 
 <style>
+@import '@tuniao/tn-icon/dist/index.css';
+
 /* 全局样式 */
 page {
   background-color: #f8f8f8;

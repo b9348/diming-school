@@ -490,8 +490,20 @@ export default {
       uni.showToast({ title: '更多分类', icon: 'none' })
     },
     handleInfoClick(item) {
+      // 优先使用 url 跳转，否则根据 postType 跳转
       if (item.url) {
         this.navigateTo(item.url)
+      } else if (item.postId && item.postType) {
+        const detailPageMap = {
+          'post': '/pages/post/detail',
+          'vote': '/pages/vote/detail',
+          'idle': '/pages/idle/detail',
+          'errand': '/pages/errand/detail',
+          'love': '/pages/love/detail',
+          'help': '/pages/help/detail'
+        }
+        const detailUrl = detailPageMap[item.postType] || '/pages/post/detail'
+        uni.navigateTo({ url: detailUrl + '?id=' + item.postId })
       } else {
         uni.showToast({ title: item.content, icon: 'none' })
       }
@@ -528,7 +540,21 @@ export default {
       this.loadPostList()
     },
     goHotDetail(item) {
-      uni.navigateTo({ url: '/pages/post/detail?id=' + item.id })
+      // 根据 postType 跳转到对应的详情页
+      if (item.url) {
+        this.navigateTo(item.url)
+      } else {
+        const detailPageMap = {
+          'post': '/pages/post/detail',
+          'vote': '/pages/vote/detail',
+          'idle': '/pages/idle/detail',
+          'errand': '/pages/errand/detail',
+          'love': '/pages/love/detail',
+          'help': '/pages/help/detail'
+        }
+        const detailUrl = detailPageMap[item.postType] || '/pages/post/detail'
+        uni.navigateTo({ url: detailUrl + '?id=' + (item.postId || item.id) })
+      }
     },
     goPostDetail(item) {
       const detailPageMap = {
