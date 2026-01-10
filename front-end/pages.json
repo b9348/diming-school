@@ -169,6 +169,13 @@
       }
     },
     {
+      "path": "pages/publish/auction",
+      "style": {
+        "navigationBarTitleText": "发布拍卖",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/mine/profile",
       "style": {
         "navigationBarTitleText": "编辑资料",

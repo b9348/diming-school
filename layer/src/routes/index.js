@@ -16,6 +16,7 @@ const searchController = require('../controllers/searchController')
 const userController = require('../controllers/userController')
 const groupController = require('../controllers/groupController')
 const regionController = require('../controllers/regionController')
+const configController = require('../controllers/configController')
 
 // 管理后台控制器
 const adminController = require('../controllers/adminController')
@@ -37,6 +38,7 @@ const adminBannerController = require('../controllers/adminBannerController')
 const adminNavController = require('../controllers/adminNavController')
 const adminModuleConfigController = require('../controllers/adminModuleConfigController')
 const adminForumController = require('../controllers/adminForumController')
+const adminConfigController = require('../controllers/adminConfigController')
 
 // 健康检查
 router.get('/health', (req, res) => {
@@ -113,6 +115,10 @@ router.post('/group/message/send', groupController.sendMessage)
 router.get('/region/list', regionController.getList)
 router.get('/region/schools', regionController.getSchools)
 router.get('/region/visible-options', regionController.getVisibleOptions)
+
+// ==================== 配置 ====================
+router.get('/config/top-pricing', configController.getTopPricing)
+router.get('/config/default-hours', configController.getDefaultHours)
 
 // ==================== 用户中心 ====================
 // 我的帖子
@@ -227,5 +233,12 @@ router.post('/admin/module-config/saveOrUpdate', adminModuleConfigController.sav
 router.get('/admin/forum/list', adminForumController.getList)
 router.post('/admin/forum/saveOrUpdate', adminForumController.saveOrUpdate)
 router.post('/admin/forum/:id/admins', adminForumController.addAdmins)
+
+// 配置管理
+router.get('/admin/config/pricing', adminConfigController.getPricingList)
+router.post('/admin/config/pricing', adminConfigController.savePricing)
+router.get('/admin/config/region', adminConfigController.getRegionList)
+router.post('/admin/config/region', adminConfigController.saveRegion)
+router.post('/admin/config/region/:id/delete', adminConfigController.deleteRegion)
 
 module.exports = router

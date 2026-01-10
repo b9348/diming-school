@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { regionApi } from '@/api/index.js'
+import { regionApi, configApi } from '@/api/index.js'
 
 export default {
   data() {
@@ -112,7 +112,7 @@ export default {
         topType: 0
       },
       visibleOptions: [],
-      topOptions: ['不置顶', '置顶1天(¥5)', '置顶3天(¥12)', '置顶7天(¥25)'],
+      topOptions: [],
       showTopicPicker: false,
       showVisiblePicker: false,
       showTopPicker: false
@@ -124,6 +124,7 @@ export default {
     this.calcRightSafeArea()
     this.calcScrollHeight()
     this.loadVisibleOptions()
+    this.loadTopPricing()
   },
   methods: {
     async loadVisibleOptions() {
@@ -132,6 +133,17 @@ export default {
         this.visibleOptions = (data || []).map(item => item.name)
       } catch (e) {
         this.visibleOptions = ['全国可见', '本城市可见', '本校区可见']
+      }
+    },
+    async loadTopPricing() {
+      try {
+        const data = await configApi.getTopPricing('post')
+        this.topOptions = (data || []).map(item => {
+          if (item.days === 0) return item.label
+          return `${item.label}(¥${item.price})`
+        })
+      } catch (e) {
+        this.topOptions = ['不置顶', '置顶1天(¥5)', '置顶3天(¥12)', '置顶7天(¥25)']
       }
     },
     calcRightSafeArea() {

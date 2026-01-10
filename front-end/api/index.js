@@ -132,6 +132,26 @@ export const loveApi = {
   comment: (id, content) => post(`/love/comment/${id}`, { content })
 }
 
+/**
+ * 拍卖相关 API
+ */
+export const auctionApi = {
+  // 获取拍卖列表
+  getList: (params) => get('/auction/list', params),
+
+  // 获取拍卖详情
+  getDetail: (id) => get(`/auction/detail/${id}`),
+
+  // 创建/更新拍卖
+  saveOrUpdate: (data) => post('/auction/saveOrUpdate', data),
+
+  // 出价
+  bid: (data) => post('/auction/bid', data),
+
+  // 获取出价记录
+  getBidList: (id) => get(`/auction/bidList/${id}`)
+}
+
  /**
  * 互助拍卖相关 API
  */
@@ -206,6 +226,16 @@ export const regionApi = {
   getSchools: (regionId) => get('/region/schools', { regionId }),
   // 获取可见范围选项
   getVisibleOptions: () => get('/region/visible-options')
+}
+
+/**
+ * 配置相关 API
+ */
+export const configApi = {
+  // 获取置顶价格配置
+  getTopPricing: (type) => get('/config/top-pricing', { type }),
+  // 获取默认时间配置
+  getDefaultHours: (type) => get('/config/default-hours', { type })
 }
 
 /**

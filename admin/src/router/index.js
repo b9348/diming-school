@@ -155,6 +155,18 @@ const routes = [
         name: 'ForumManage',
         component: () => import('@/views/system/ForumManage.vue'),
         meta: { title: '论坛管理', icon: 'ChatLineSquare' }
+      },
+      {
+        path: 'system/pricing',
+        name: 'PricingConfig',
+        component: () => import('@/views/system/PricingConfig.vue'),
+        meta: { title: '价格配置', icon: 'PriceTag' }
+      },
+      {
+        path: 'system/region',
+        name: 'RegionConfig',
+        component: () => import('@/views/system/RegionConfig.vue'),
+        meta: { title: '地区配置', icon: 'Location' }
       }
     ]
   }

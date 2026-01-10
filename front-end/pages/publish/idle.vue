@@ -218,7 +218,7 @@
 </template>
 
 <script>
-import { idleApi } from '@/api/index.js'
+import { idleApi, configApi, regionApi } from '@/api/index.js'
 import userStore from '@/store/user.js'
 
 export default {
@@ -243,25 +243,8 @@ export default {
         visibilityValue: 'current',
         topHours: 0
       },
-      visibilityOptions: [
-        { label: '外校', value: 'other' },
-        { label: '全国', value: 'national' },
-        { label: '滴水湖大学城', value: 'dishui' },
-        { label: '指定', value: 'specified' },
-        { label: '全区', value: 'district' },
-        { label: '全市', value: 'city' },
-        { label: '全省', value: 'province' },
-        { label: '华东', value: 'east' },
-        { label: '华中', value: 'central' }
-      ],
-      topOptions: [
-        { hours: 1, price: 8.8 },
-        { hours: 2, price: 18.8 },
-        { hours: 4, price: 28.8 },
-        { hours: 6, price: 38.8 },
-        { hours: 8, price: 48.8 },
-        { hours: 12, price: 58.8 }
-      ]
+      visibilityOptions: [],
+      topOptions: []
     }
   },
   computed: {
@@ -277,6 +260,9 @@ export default {
   onLoad() {
     this.initPage()
     this.loadUserContact()
+    this.loadVisibilityOptions()
+    this.loadTopPricing()
+    this.loadDefaultHours()
   },
   methods: {
     initPage() {
@@ -292,6 +278,46 @@ export default {
       if (userInfo.phone) {
         this.formData.contactValue = userInfo.phone
         this.formData.contactType = 'phone'
+      }
+    },
+    async loadVisibilityOptions() {
+      try {
+        const data = await regionApi.getVisibleOptions()
+        this.visibilityOptions = (data || []).map(item => ({
+          label: item.label,
+          value: item.value
+        }))
+      } catch (e) {
+        this.visibilityOptions = [
+          { label: '外校', value: 'other' },
+          { label: '全国', value: 'all' },
+          { label: '本校', value: 'campus' }
+        ]
+      }
+    },
+    async loadTopPricing() {
+      try {
+        const data = await configApi.getTopPricing('idle')
+        this.topOptions = data || []
+      } catch (e) {
+        this.topOptions = [
+          { hours: 1, price: 8.8 },
+          { hours: 2, price: 18.8 },
+          { hours: 4, price: 28.8 },
+          { hours: 6, price: 38.8 },
+          { hours: 8, price: 48.8 },
+          { hours: 12, price: 58.8 }
+        ]
+      }
+    },
+    async loadDefaultHours() {
+      try {
+        const data = await configApi.getDefaultHours('idle')
+        if (data && data.hours) {
+          this.formData.deliveryHours = String(data.hours)
+        }
+      } catch (e) {
+        // 保持默认值
       }
     },
     goBack() {

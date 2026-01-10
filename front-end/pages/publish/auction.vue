@@ -4,20 +4,20 @@
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <text class="nav-cancel" @click="goBack">取消</text>
-        <text class="nav-title">发布互助</text>
+        <text class="nav-title">发布拍卖</text>
       </view>
     </view>
 
     <!-- 表单内容 -->
     <scroll-view class="form-scroll" scroll-y :style="{ height: scrollHeight + 'px' }">
-      <!-- 描述需要帮助的事情 -->
+      <!-- 写明要拍卖的物品 -->
       <view class="form-section">
-        <text class="section-title">描述需要帮助的事情</text>
+        <text class="section-title">写明要拍卖的物品</text>
         <view class="content-box">
           <textarea
             class="content-input"
             v-model="formData.content"
-            placeholder="详细描述你需要帮助的事情，如代取快递、代买东西、代排队等..."
+            placeholder="描述一下宝贝的品牌、型号、入手渠道、转手原因..."
             :maxlength="500"
           ></textarea>
           <view class="image-upload">
@@ -34,9 +34,9 @@
         </view>
       </view>
 
-      <!-- 隐藏信息（仅接单人可见） -->
+      <!-- 隐藏信息（仅竞标人可见） -->
       <view class="form-section">
-        <text class="section-title">隐藏信息（仅接单人可见）</text>
+        <text class="section-title">隐藏信息（仅竞标人可见）</text>
         <view class="content-box">
           <textarea
             class="content-input"
@@ -58,67 +58,107 @@
         </view>
       </view>
 
-      <!-- 价格设置 -->
+      <!-- 起始价和加价幅度 -->
       <view class="form-section">
-        <text class="section-title">价格设置</text>
-        <view class="price-group">
+        <view class="price-row">
           <view class="price-item">
-            <text class="price-label">起拍价</text>
+            <text class="price-label">起始价</text>
             <view class="price-input-box">
-              <text class="price-unit">¥</text>
               <input class="price-input" type="digit" v-model="formData.startPrice" placeholder="0.00" />
             </view>
           </view>
           <view class="price-item">
-            <text class="price-label">一口价（可选）</text>
+            <text class="price-label">加价幅度</text>
             <view class="price-input-box">
-              <text class="price-unit">¥</text>
-              <input class="price-input" type="digit" v-model="formData.buyNowPrice" placeholder="不设置" />
+              <input class="price-input" type="digit" v-model="formData.bidIncrement" placeholder="0.00" />
             </view>
           </view>
         </view>
-        <text class="price-tip">一口价：出价达到此价格直接成交，不设置则按竞拍结束时最低价成交</text>
       </view>
 
-      <!-- 竞拍截止时间 -->
+      <!-- 竞价周期和延时周期 -->
       <view class="form-section">
-        <text class="section-title">竞拍截止时间</text>
-        <view class="deadline-tabs">
-          <view
-            class="deadline-tab"
-            :class="{ active: formData.deadlineType === 'hours' }"
-            @click="formData.deadlineType = 'hours'"
-          >
-            <text>小时后</text>
+        <view class="price-row">
+          <view class="price-item">
+            <text class="price-label">竞价周期</text>
+            <view class="price-input-box with-unit">
+              <input class="price-input" type="digit" v-model="formData.biddingPeriod" placeholder="60" />
+              <text class="input-unit">分钟</text>
+            </view>
           </view>
-          <view
-            class="deadline-tab"
-            :class="{ active: formData.deadlineType === 'datetime' }"
-            @click="formData.deadlineType = 'datetime'"
-          >
-            <text>指定时间</text>
+          <view class="price-item">
+            <text class="price-label">延时周期</text>
+            <view class="price-input-box with-unit">
+              <input class="price-input" type="digit" v-model="formData.delayPeriod" placeholder="5" />
+              <text class="input-unit">分钟</text>
+            </view>
           </view>
         </view>
-        <view class="deadline-input-box">
+      </view>
+
+      <!-- 包邮开关 -->
+      <view class="form-section">
+        <view class="switch-row">
+          <text class="switch-label">包邮</text>
+          <switch :checked="formData.freeShipping" @change="onShippingChange" color="#007AFF" />
+          <text class="switch-tip">此按钮默认打开，关闭则显示自提</text>
+        </view>
+      </view>
+
+      <!-- 发货时间 -->
+      <view class="form-section">
+        <text class="section-title">发货时间（2选1）</text>
+        <view class="delivery-tabs">
+          <view
+            class="delivery-tab"
+            :class="{ active: formData.deliveryType === 'hours' }"
+            @click="formData.deliveryType = 'hours'"
+          >
+            <text>小时内</text>
+          </view>
+          <view
+            class="delivery-tab"
+            :class="{ active: formData.deliveryType === 'deadline' }"
+            @click="formData.deliveryType = 'deadline'"
+          >
+            <text>指定时间前</text>
+          </view>
+        </view>
+        <view class="delivery-input-box">
           <input
-            v-if="formData.deadlineType === 'hours'"
-            class="deadline-input"
+            v-if="formData.deliveryType === 'hours'"
+            class="delivery-input"
             type="digit"
-            v-model="formData.deadlineHours"
+            v-model="formData.deliveryHours"
             placeholder="24"
           />
           <picker
             v-else
             mode="date"
-            :value="formData.deadlineDatetime"
-            @change="onDeadlineChange"
+            :value="formData.deliveryDeadline"
+            @change="onDeliveryDeadlineChange"
           >
-            <view class="deadline-input picker-input">
-              {{ formData.deadlineDatetime || '选择日期' }}
+            <view class="delivery-input picker-input">
+              {{ formData.deliveryDeadline || '选择日期' }}
             </view>
           </picker>
         </view>
-        <text class="deadline-tip">竞拍结束后，出价最低者中标</text>
+        <text class="delivery-tip">默认选左边且默认值是24小时内，可为0，即拍中后自动线上发货，可为小数</text>
+      </view>
+
+      <!-- 预约开拍时间 -->
+      <view class="form-section">
+        <view class="schedule-header">
+          <text class="section-title">预约开拍时间</text>
+          <text class="schedule-hint">（默认发布后开拍）</text>
+        </view>
+        <picker mode="multiSelector" :value="scheduleIndex" :range="scheduleRange" @change="onScheduleChange">
+          <view class="schedule-input">
+            <text :class="{ placeholder: !formData.scheduleTime }">
+              {{ formData.scheduleTime || '默认不选择' }}
+            </text>
+          </view>
+        </picker>
       </view>
 
       <!-- 联系方式 -->
@@ -172,14 +212,16 @@
         </view>
       </view>
 
-      <!-- 置顶选项 -->
-      <view class="form-section" @click="showTopPopup = true">
-        <view class="top-option">
-          <text class="section-title">置顶推广</text>
-          <view class="top-value">
-            <text v-if="formData.topHours">置顶{{ formData.topHours }}小时 ¥{{ getTopPrice(formData.topHours) }}</text>
-            <text v-else class="placeholder">选择置顶时长（可选）</text>
-            <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
+      <!-- 匿名和置顶 -->
+      <view class="form-section">
+        <view class="bottom-switches">
+          <view class="switch-item">
+            <text class="switch-label">匿名</text>
+            <switch :checked="formData.anonymous" @change="onAnonymousChange" color="#007AFF" />
+          </view>
+          <view class="switch-item">
+            <text class="switch-label">置顶</text>
+            <switch :checked="formData.topHours > 0" @change="onTopChange" color="#007AFF" />
           </view>
         </view>
       </view>
@@ -225,7 +267,7 @@
 </template>
 
 <script>
-import { helpApi, configApi, regionApi } from '@/api/index.js'
+import { auctionApi, configApi, regionApi } from '@/api/index.js'
 import userStore from '@/store/user.js'
 
 export default {
@@ -240,18 +282,25 @@ export default {
         hiddenInfo: '',
         hiddenImages: [],
         startPrice: '',
-        buyNowPrice: '',
-        deadlineType: 'hours',
-        deadlineHours: '24',
-        deadlineDatetime: '',
+        bidIncrement: '',
+        biddingPeriod: '60',
+        delayPeriod: '5',
+        freeShipping: true,
+        deliveryType: 'hours',
+        deliveryHours: '24',
+        deliveryDeadline: '',
+        scheduleTime: '',
         contactType: 'phone',
         contactValue: '',
         visibilityType: 'campus',
         visibilityValue: 'current',
+        anonymous: false,
         topHours: 0
       },
       visibilityOptions: [],
-      topOptions: []
+      topOptions: [],
+      scheduleIndex: [0, 0],
+      scheduleRange: [[], []]
     }
   },
   computed: {
@@ -269,7 +318,8 @@ export default {
     this.loadUserContact()
     this.loadVisibilityOptions()
     this.loadTopPricing()
-    this.loadDefaultHours()
+    this.loadDefaultConfig()
+    this.initScheduleRange()
   },
   methods: {
     initPage() {
@@ -297,13 +347,24 @@ export default {
         this.visibilityOptions = [
           { label: '外校', value: 'other' },
           { label: '全国', value: 'all' },
-          { label: '本校', value: 'campus' }
+          { label: '滴水湖大学城', value: 'dishui' },
+          { label: '指定', value: 'specified' },
+          { label: '全区', value: 'district' },
+          { label: '全市', value: 'city' },
+          { label: '全省', value: 'province' },
+          { label: '华东', value: 'east' },
+          { label: '华中', value: 'central' },
+          { label: '西南', value: 'southwest' },
+          { label: '华南', value: 'south' },
+          { label: '东北', value: 'northeast' },
+          { label: '华北', value: 'north' },
+          { label: '西北', value: 'northwest' }
         ]
       }
     },
     async loadTopPricing() {
       try {
-        const data = await configApi.getTopPricing('help')
+        const data = await configApi.getTopPricing('auction')
         this.topOptions = data || []
       } catch (e) {
         this.topOptions = [
@@ -316,15 +377,34 @@ export default {
         ]
       }
     },
-    async loadDefaultHours() {
+    async loadDefaultConfig() {
       try {
-        const data = await configApi.getDefaultHours('help')
-        if (data && data.hours) {
-          this.formData.deadlineHours = String(data.hours)
+        const data = await configApi.getDefaultHours('auction')
+        if (data) {
+          if (data.deliveryHours) this.formData.deliveryHours = String(data.deliveryHours)
+          if (data.biddingPeriod) this.formData.biddingPeriod = String(data.biddingPeriod)
+          if (data.delayPeriod) this.formData.delayPeriod = String(data.delayPeriod)
         }
       } catch (e) {
         // 保持默认值
       }
+    },
+    initScheduleRange() {
+      const dates = []
+      const times = []
+      const now = new Date()
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(now.getTime() + i * 24 * 60 * 60 * 1000)
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        dates.push(`${month}月${day}日`)
+      }
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 30) {
+          times.push(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`)
+        }
+      }
+      this.scheduleRange = [dates, times]
     },
     goBack() {
       uni.navigateBack()
@@ -341,8 +421,28 @@ export default {
     deleteImage(field, index) {
       this.formData[field].splice(index, 1)
     },
-    onDeadlineChange(e) {
-      this.formData.deadlineDatetime = e.detail.value
+    onShippingChange(e) {
+      this.formData.freeShipping = e.detail.value
+    },
+    onDeliveryDeadlineChange(e) {
+      this.formData.deliveryDeadline = e.detail.value
+    },
+    onScheduleChange(e) {
+      const [dateIdx, timeIdx] = e.detail.value
+      this.scheduleIndex = [dateIdx, timeIdx]
+      const dateStr = this.scheduleRange[0][dateIdx]
+      const timeStr = this.scheduleRange[1][timeIdx]
+      this.formData.scheduleTime = `${dateStr} ${timeStr}`
+    },
+    onAnonymousChange(e) {
+      this.formData.anonymous = e.detail.value
+    },
+    onTopChange(e) {
+      if (e.detail.value) {
+        this.showTopPopup = true
+      } else {
+        this.formData.topHours = 0
+      }
     },
     getTopPrice(hours) {
       const option = this.topOptions.find(o => o.hours === hours)
@@ -356,10 +456,16 @@ export default {
     },
     async handleSubmit() {
       if (!this.formData.content.trim()) {
-        return uni.showToast({ title: '请描述需要帮助的事情', icon: 'none' })
+        return uni.showToast({ title: '请描述要拍卖的物品', icon: 'none' })
+      }
+      if (!this.formData.images.length) {
+        return uni.showToast({ title: '请上传商品图片', icon: 'none' })
       }
       if (!this.formData.startPrice) {
-        return uni.showToast({ title: '请输入起拍价', icon: 'none' })
+        return uni.showToast({ title: '请输入起始价', icon: 'none' })
+      }
+      if (!this.formData.bidIncrement) {
+        return uni.showToast({ title: '请输入加价幅度', icon: 'none' })
       }
       if (!this.formData.contactValue.trim()) {
         return uni.showToast({ title: '请填写联系方式', icon: 'none' })
@@ -368,20 +474,25 @@ export default {
       uni.showLoading({ title: '发布中...' })
 
       try {
-        await helpApi.saveOrUpdate({
+        await auctionApi.saveOrUpdate({
           content: this.formData.content,
           images: this.formData.images,
           hiddenInfo: this.formData.hiddenInfo,
           hiddenImages: this.formData.hiddenImages,
           startPrice: parseFloat(this.formData.startPrice),
-          buyNowPrice: this.formData.buyNowPrice ? parseFloat(this.formData.buyNowPrice) : null,
-          deadlineType: this.formData.deadlineType,
-          deadlineHours: this.formData.deadlineType === 'hours' ? parseFloat(this.formData.deadlineHours || 24) : null,
-          deadlineDatetime: this.formData.deadlineType === 'datetime' ? this.formData.deadlineDatetime : null,
+          bidIncrement: parseFloat(this.formData.bidIncrement),
+          biddingPeriod: parseInt(this.formData.biddingPeriod || 60),
+          delayPeriod: parseInt(this.formData.delayPeriod || 5),
+          freeShipping: this.formData.freeShipping,
+          deliveryType: this.formData.deliveryType,
+          deliveryHours: this.formData.deliveryType === 'hours' ? parseFloat(this.formData.deliveryHours || 24) : null,
+          deliveryDeadline: this.formData.deliveryType === 'deadline' ? this.formData.deliveryDeadline : null,
+          scheduleTime: this.formData.scheduleTime || null,
           contactType: this.formData.contactType,
           contactValue: this.formData.contactValue,
           visibilityType: this.formData.visibilityType,
           visibilityValue: this.formData.visibilityValue,
+          anonymous: this.formData.anonymous,
           topHours: this.formData.topHours
         })
 
@@ -521,7 +632,7 @@ export default {
   justify-content: center;
 }
 
-.price-group {
+.price-row {
   display: flex;
   gap: 24rpx;
 }
@@ -529,40 +640,50 @@ export default {
 .price-item {
   flex: 1;
   .price-label {
-    font-size: 26rpx;
-    color: #666666;
-    margin-bottom: 12rpx;
+    font-size: 28rpx;
+    color: #333333;
+    margin-bottom: 16rpx;
     display: block;
   }
 }
 
 .price-input-box {
-  display: flex;
-  align-items: center;
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
   padding: 16rpx 20rpx;
-  .price-unit {
-    font-size: 28rpx;
-    color: #333333;
-    margin-right: 8rpx;
+  display: flex;
+  align-items: center;
+  &.with-unit {
+    padding-right: 12rpx;
   }
   .price-input {
     flex: 1;
     font-size: 28rpx;
     color: #333333;
   }
+  .input-unit {
+    font-size: 26rpx;
+    color: #999999;
+    margin-left: 8rpx;
+  }
 }
 
-.price-tip {
-  font-size: 22rpx;
-  color: #999999;
-  margin-top: 16rpx;
-  display: block;
-  line-height: 1.6;
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  .switch-label {
+    font-size: 28rpx;
+    color: #333333;
+  }
+  .switch-tip {
+    font-size: 22rpx;
+    color: #999999;
+    flex: 1;
+  }
 }
 
-.deadline-tabs {
+.delivery-tabs {
   display: flex;
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
@@ -570,7 +691,7 @@ export default {
   margin-bottom: 20rpx;
 }
 
-.deadline-tab {
+.delivery-tab {
   flex: 1;
   padding: 20rpx;
   text-align: center;
@@ -587,11 +708,11 @@ export default {
   }
 }
 
-.deadline-input-box {
+.delivery-input-box {
   margin-bottom: 16rpx;
 }
 
-.deadline-input {
+.delivery-input {
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
   padding: 16rpx 20rpx;
@@ -605,9 +726,35 @@ export default {
   align-items: center;
 }
 
-.deadline-tip {
+.delivery-tip {
   font-size: 22rpx;
   color: #999999;
+  line-height: 1.6;
+}
+
+.schedule-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  .section-title {
+    margin-bottom: 0;
+  }
+  .schedule-hint {
+    font-size: 24rpx;
+    color: #999999;
+    margin-left: 8rpx;
+  }
+}
+
+.schedule-input {
+  border: 1rpx solid #E5E5E5;
+  border-radius: 8rpx;
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+  color: #333333;
+  .placeholder {
+    color: #999999;
+  }
 }
 
 .contact-header {
@@ -694,22 +841,19 @@ export default {
   }
 }
 
-.top-option {
+.bottom-switches {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  .section-title {
-    margin-bottom: 0;
-  }
-  .top-value {
-    display: flex;
-    align-items: center;
-    gap: 8rpx;
+  gap: 16rpx;
+  .switch-label {
     font-size: 28rpx;
     color: #333333;
-    .placeholder {
-      color: #999999;
-    }
   }
 }
 

@@ -172,6 +172,8 @@
 </template>
 
 <script>
+import { regionApi, configApi } from '@/api/index.js'
+
 export default {
   data() {
     return {
@@ -191,25 +193,35 @@ export default {
         visibilityType: 'campus',
         visibilityValue: 'all'
       },
-      visibilityOptions: [
-        { label: '外校', value: 'other' },
-        { label: '全国', value: 'all' },
-        { label: '滴水湖大学城', value: 'dishui' },
-        { label: '指定', value: 'specify' },
-        { label: '全区', value: 'district' },
-        { label: '全市', value: 'city' },
-        { label: '全省', value: 'province' },
-        { label: '华东', value: 'east' },
-        { label: '华中', value: 'central' },
-        { label: '西南', value: 'southwest' },
-        { label: '华南', value: 'south' },
-        { label: '东北', value: 'northeast' },
-        { label: '华北', value: 'north' },
-        { label: '西北', value: 'northwest' }
-      ]
+      visibilityOptions: []
     }
   },
   methods: {
+    async loadVisibilityOptions() {
+      try {
+        const data = await regionApi.getVisibleOptions()
+        this.visibilityOptions = (data || []).map(item => ({
+          label: item.label,
+          value: item.value
+        }))
+      } catch (e) {
+        this.visibilityOptions = [
+          { label: '外校', value: 'other' },
+          { label: '全国', value: 'all' },
+          { label: '本校', value: 'campus' }
+        ]
+      }
+    },
+    async loadDefaultHours() {
+      try {
+        const data = await configApi.getDefaultHours('errand')
+        if (data && data.hours) {
+          this.formData.hours = String(data.hours)
+        }
+      } catch (e) {
+        // 保持默认值
+      }
+    },
     calcRightSafeArea() {
       // #ifdef MP-WEIXIN
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
@@ -281,7 +293,9 @@ export default {
   },
   onLoad() {
     this.initPage()
-  }
+    this.loadVisibilityOptions()
+    this.loadDefaultHours()
+  },
 }
 </script>
 

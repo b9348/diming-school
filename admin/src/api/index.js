@@ -100,3 +100,12 @@ export const forumApi = {
   saveOrUpdate: (data) => post('/admin/forum/saveOrUpdate', data),
   addAdmins: (id, data) => post(`/admin/forum/${id}/admins`, data)
 }
+
+// 配置管理
+export const configApi = {
+  getPricingList: () => get('/admin/config/pricing'),
+  savePricing: (data) => post('/admin/config/pricing', data),
+  getRegionList: () => get('/admin/config/region'),
+  saveRegion: (data) => post('/admin/config/region', data),
+  deleteRegion: (id) => post(`/admin/config/region/${id}/delete`)
+}
