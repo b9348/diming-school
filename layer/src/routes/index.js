@@ -11,6 +11,7 @@ const errandController = require('../controllers/errandController')
 const idleController = require('../controllers/idleController')
 const loveController = require('../controllers/loveController')
 const helpController = require('../controllers/helpController')
+const auctionController = require('../controllers/auctionController')
 const messageController = require('../controllers/messageController')
 const searchController = require('../controllers/searchController')
 const userController = require('../controllers/userController')
@@ -39,6 +40,7 @@ const adminNavController = require('../controllers/adminNavController')
 const adminModuleConfigController = require('../controllers/adminModuleConfigController')
 const adminForumController = require('../controllers/adminForumController')
 const adminConfigController = require('../controllers/adminConfigController')
+const adminAuctionController = require('../controllers/adminAuctionController')
 
 // 健康检查
 router.get('/health', (req, res) => {
@@ -100,6 +102,13 @@ router.get('/help/detail/:id', helpController.getDetail)
 router.post('/help/saveOrUpdate', helpController.saveOrUpdate)
 router.post('/help/bid', helpController.bid)
 router.get('/help/bidList/:id', helpController.getBidList)
+
+// ==================== 拍卖 ====================
+router.get('/auction/list', auctionController.getList)
+router.get('/auction/detail/:id', auctionController.getDetail)
+router.post('/auction/saveOrUpdate', auctionController.saveOrUpdate)
+router.post('/auction/bid', auctionController.bid)
+router.get('/auction/bidList/:id', auctionController.getBidList)
 
 // ==================== 消息 ====================
 router.get('/message/list', messageController.getList)
@@ -240,5 +249,12 @@ router.post('/admin/config/pricing', adminConfigController.savePricing)
 router.get('/admin/config/region', adminConfigController.getRegionList)
 router.post('/admin/config/region', adminConfigController.saveRegion)
 router.post('/admin/config/region/:id/delete', adminConfigController.deleteRegion)
+
+// 拍卖管理
+router.get('/admin/auction/list', adminAuctionController.getList)
+router.get('/admin/auction/detail/:id', adminAuctionController.getDetail)
+router.post('/admin/auction/saveOrUpdate', adminAuctionController.saveOrUpdate)
+router.post('/admin/auction/delete/:id', adminAuctionController.delete)
+router.get('/admin/auction/bidList/:id', adminAuctionController.getBidList)
 
 module.exports = router

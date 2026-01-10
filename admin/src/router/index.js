@@ -100,6 +100,12 @@ const routes = [
         component: () => import('@/views/trade/FundFlow.vue'),
         meta: { title: '资金流水', icon: 'Money' }
       },
+      {
+        path: 'trade/auction',
+        name: 'AuctionList',
+        component: () => import('@/views/trade/AuctionList.vue'),
+        meta: { title: '拍卖管理', icon: 'Sell' }
+      },
       // 数据统计
       {
         path: 'statistics/user',

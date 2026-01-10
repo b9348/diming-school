@@ -109,3 +109,12 @@ export const configApi = {
   saveRegion: (data) => post('/admin/config/region', data),
   deleteRegion: (id) => post(`/admin/config/region/${id}/delete`)
 }
+
+// 拍卖管理
+export const auctionApi = {
+  getList: (params) => get('/admin/auction/list', params),
+  getDetail: (id) => get(`/admin/auction/detail/${id}`),
+  saveOrUpdate: (data) => post('/admin/auction/saveOrUpdate', data),
+  delete: (id) => post(`/admin/auction/delete/${id}`),
+  getBidList: (id) => get(`/admin/auction/bidList/${id}`)
+}
