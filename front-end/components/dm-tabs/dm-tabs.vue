@@ -1,5 +1,5 @@
 <template>
-  <view class="dm-tabs">
+  <view class="dm-tabs" :class="{ 'dark-mode': darkMode }">
     <scroll-view
       class="tabs-scroll"
       scroll-x
@@ -23,7 +23,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   props: {
     list: {
       type: Array,
@@ -53,6 +56,11 @@ export default {
 <style lang="scss" scoped>
 .dm-tabs {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #2a2a2a;
+  }
 
   .tabs-scroll {
     white-space: nowrap;
@@ -90,6 +98,16 @@ export default {
           }
         }
       }
+    }
+  }
+
+  &.dark-mode {
+    .tabs-scroll .tabs-wrapper .tab-item .tab-text {
+      color: #b0b0b0;
+    }
+
+    .tabs-scroll .tabs-wrapper .tab-item.active .tab-text {
+      color: #5a9fff;
     }
   }
 }

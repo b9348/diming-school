@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -117,11 +117,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { helpApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -285,10 +288,18 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .nav-content {
     display: flex;
@@ -305,6 +316,10 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .nav-placeholder {
@@ -315,6 +330,10 @@ export default {
 
 .content-scroll {
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .price-section {
@@ -325,10 +344,18 @@ export default {
   background-color: #FFFFFF;
   gap: 16rpx;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .countdown-box {
     padding: 16rpx 32rpx;
     background-color: #F5F5F5;
     border-radius: 8rpx;
+
+    .dark-mode & {
+      background-color: #3a3a3a;
+    }
 
     .countdown {
       font-size: 36rpx;
@@ -348,6 +375,10 @@ export default {
       font-size: 26rpx;
       color: #999999;
       margin-right: 8rpx;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
 
     .price-symbol {
@@ -385,10 +416,19 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+    border-top-color: #444444;
+  }
+
   .increment-label {
     font-size: 28rpx;
     color: #666666;
     margin-right: 16rpx;
+
+    .dark-mode & {
+      color: #b0b0b0;
+    }
   }
 
   .increment-value {
@@ -402,6 +442,10 @@ export default {
   margin-top: 20rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .bid-header {
     display: flex;
     align-items: center;
@@ -409,10 +453,18 @@ export default {
     padding: 24rpx;
     border-bottom: 1rpx solid #F5F5F5;
 
+    .dark-mode & {
+      border-bottom-color: #444444;
+    }
+
     .bid-title {
       font-size: 30rpx;
       color: #333333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .bid-more {
@@ -423,6 +475,10 @@ export default {
         font-size: 26rpx;
         color: #999999;
         margin-right: 8rpx;
+
+        .dark-mode & {
+          color: #808080;
+        }
       }
     }
   }
@@ -433,6 +489,10 @@ export default {
       align-items: center;
       padding: 20rpx 24rpx;
       border-bottom: 1rpx solid #F5F5F5;
+
+      .dark-mode & {
+        border-bottom-color: #444444;
+      }
 
       &:last-child {
         border-bottom: none;
@@ -449,12 +509,20 @@ export default {
         flex: 1;
         font-size: 28rpx;
         color: #333333;
+
+        .dark-mode & {
+          color: #e0e0e0;
+        }
       }
 
       .bid-time {
         font-size: 24rpx;
         color: #999999;
         margin-right: 24rpx;
+
+        .dark-mode & {
+          color: #808080;
+        }
       }
 
       .bid-price {
@@ -482,16 +550,28 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .desc-text {
     font-size: 30rpx;
     color: #333333;
     line-height: 1.6;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
 .image-section {
   padding: 0 24rpx 24rpx;
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .image-grid {
     display: flex;
@@ -511,6 +591,10 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .info-row {
     display: flex;
     align-items: center;
@@ -520,11 +604,19 @@ export default {
     .delivery-time {
       font-size: 26rpx;
       color: #666666;
+
+      .dark-mode & {
+        color: #b0b0b0;
+      }
     }
 
     .location {
       font-size: 26rpx;
       color: #999999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -543,6 +635,10 @@ export default {
     .user-name {
       font-size: 28rpx;
       color: #333333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
   }
 
@@ -565,9 +661,17 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .contact-text {
     font-size: 28rpx;
     color: #333333;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
@@ -583,6 +687,11 @@ export default {
   background-color: #FFFFFF;
   box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
   box-sizing: content-box;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
 
   .btn-bid {
     height: 88rpx;

@@ -41,6 +41,7 @@ const adminModuleConfigController = require('../controllers/adminModuleConfigCon
 const adminForumController = require('../controllers/adminForumController')
 const adminConfigController = require('../controllers/adminConfigController')
 const adminAuctionController = require('../controllers/adminAuctionController')
+const adminFeedbackController = require('../controllers/adminFeedbackController')
 
 // 健康检查
 router.get('/health', (req, res) => {
@@ -163,6 +164,9 @@ router.get('/user/privacy', userController.getPrivacySettings)
 router.post('/user/privacy/update', userController.updatePrivacySetting)
 router.post('/user/data/download', userController.requestDataDownload)
 
+// 意见反馈
+router.post('/user/feedback', userController.submitFeedback)
+
 // ==================== 管理后台 ====================
 // 管理员认证
 router.post('/admin/login', adminController.login)
@@ -256,5 +260,11 @@ router.get('/admin/auction/detail/:id', adminAuctionController.getDetail)
 router.post('/admin/auction/saveOrUpdate', adminAuctionController.saveOrUpdate)
 router.post('/admin/auction/delete/:id', adminAuctionController.delete)
 router.get('/admin/auction/bidList/:id', adminAuctionController.getBidList)
+
+// 意见反馈管理
+router.get('/admin/feedback/list', adminFeedbackController.getList)
+router.get('/admin/feedback/detail/:id', adminFeedbackController.getDetail)
+router.post('/admin/feedback/handle/:id', adminFeedbackController.handle)
+router.post('/admin/feedback/delete/:id', adminFeedbackController.delete)
 
 module.exports = router

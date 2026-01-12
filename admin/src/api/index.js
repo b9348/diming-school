@@ -118,3 +118,11 @@ export const auctionApi = {
   delete: (id) => post(`/admin/auction/delete/${id}`),
   getBidList: (id) => get(`/admin/auction/bidList/${id}`)
 }
+
+// 意见反馈管理
+export const feedbackApi = {
+  getList: (params) => get('/admin/feedback/list', params),
+  getDetail: (id) => get(`/admin/feedback/detail/${id}`),
+  handle: (id, data) => post(`/admin/feedback/handle/${id}`, data),
+  delete: (id) => post(`/admin/feedback/delete/${id}`)
+}

@@ -1,16 +1,16 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content" :style="{ height: navBarHeight + 'px', paddingRight: rightSafeArea + 'px' }">
         <view class="nav-back" @click="goBack">
-          <text class="tn-icon-left" style="font-size: 18px; color: #333333;"></text>
+          <text class="tn-icon-left" :style="{ fontSize: '18px', color: darkMode ? '#e0e0e0' : '#333333' }"></text>
         </view>
         <view class="nav-center">
           <text class="nav-nickname">{{ targetUser.nickname }}</text>
           <text class="nav-location">{{ targetUser.location }}</text>
         </view>
         <view class="nav-more" @click="showMore">
-          <text class="tn-icon-more" style="font-size: 20px; color: #333333;"></text>
+          <text class="tn-icon-more" :style="{ fontSize: '20px', color: darkMode ? '#e0e0e0' : '#333333' }"></text>
         </view>
       </view>
     </view>
@@ -54,10 +54,13 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { chatApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -194,26 +197,73 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-container { min-height: 100vh; background: #F5F5F5; }
-.nav-bar { background: #FFF;
+.page-container {
+  min-height: 100vh;
+  background: #F5F5F5;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background: #1a1a1a;
+  }
+}
+.nav-bar {
+  background: #FFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background: #2a2a2a;
+  }
   .nav-content { display: flex; align-items: center; justify-content: space-between; padding: 0 24rpx; box-sizing: border-box;
     .nav-back { padding: 10rpx; }
     .nav-center { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 20rpx;
-      .nav-nickname { font-size: 28rpx; color: #333; }
-      .nav-location { font-size: 24rpx; color: #999; }
+      .nav-nickname {
+        font-size: 28rpx;
+        color: #333;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+        }
+      }
+      .nav-location {
+        font-size: 24rpx;
+        color: #999;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #808080;
+        }
+      }
     }
     .nav-more { padding: 10rpx; }
   }
 }
 .goods-card {
-  display: flex; align-items: center; padding: 20rpx 24rpx; background: #FFF; margin-bottom: 2rpx;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: #FFF;
+  margin-bottom: 2rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background: #2a2a2a;
+  }
   .goods-image { width: 120rpx; height: 120rpx; border-radius: 8rpx; border: 1rpx solid #E5E5E5; }
   .goods-info { flex: 1; margin-left: 20rpx;
-    .goods-title { font-size: 28rpx; color: #333; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .goods-title { font-size: 28rpx; color: #333; transition: color 0.3s ease;
+
+      .page-container.dark-mode & { color: #e0e0e0; } display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
     .goods-price { display: flex; align-items: baseline; margin-top: 8rpx;
-      .price-symbol { font-size: 24rpx; color: #333; }
-      .price-value { font-size: 32rpx; color: #333; font-weight: 600; }
-      .delivery-tag { margin-left: 12rpx; font-size: 22rpx; color: #999; }
+      .price-symbol { font-size: 24rpx; color: #333; transition: color 0.3s ease;
+
+        .page-container.dark-mode & { color: #e0e0e0; } }
+      .price-value { font-size: 32rpx; color: #333; font-weight: 600; transition: color 0.3s ease;
+
+        .page-container.dark-mode & { color: #e0e0e0; } }
+      .delivery-tag { margin-left: 12rpx; font-size: 22rpx; color: #999; transition: color 0.3s ease;
+
+        .page-container.dark-mode & { color: #808080; } }
     }
   }
   .goods-buy-btn { padding: 12rpx 24rpx; border: 1rpx solid #333; border-radius: 8rpx; font-size: 26rpx; color: #333; }
@@ -222,13 +272,66 @@ export default {
 .message-item { display: flex; align-items: flex-start; margin-bottom: 24rpx;
   &.mine { justify-content: flex-end; .msg-bubble { background: #007AFF; .msg-text { color: #FFF; } } }
   .msg-avatar { width: 72rpx; height: 72rpx; border-radius: 50%; }
-  .msg-bubble { max-width: 500rpx; margin: 0 16rpx; padding: 20rpx; background: #FFF; border-radius: 16rpx;
-    .msg-text { font-size: 28rpx; color: #333; line-height: 1.5; }
+  .msg-bubble {
+    max-width: 500rpx;
+    margin: 0 16rpx;
+    padding: 20rpx;
+    background: #FFF;
+    border-radius: 16rpx;
+    transition: background-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background: #2a2a2a;
+    }
+    .msg-text { font-size: 28rpx; color: #333; transition: color 0.3s ease;
+
+      .page-container.dark-mode & { color: #e0e0e0; } line-height: 1.5; }
   }
 }
-.msg-time { text-align: center; font-size: 24rpx; color: #999; margin: 16rpx 0; }
-.input-bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + constant(safe-area-inset-bottom)); padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); background: #FFF; box-sizing: content-box;
-  .msg-input { flex: 1; height: 72rpx; padding: 0 24rpx; background: #F5F5F5; border-radius: 36rpx; font-size: 28rpx; border: 1rpx solid #E5E5E5; }
+.msg-time {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  margin: 16rpx 0;
+  transition: color 0.3s ease;
+
+  .page-container.dark-mode & {
+    color: #808080;
+  }
+}
+.input-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #FFF;
+  box-sizing: content-box;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background: #2a2a2a;
+  }
+  .msg-input {
+    flex: 1;
+    height: 72rpx;
+    padding: 0 24rpx;
+    background: #F5F5F5;
+    border-radius: 36rpx;
+    font-size: 28rpx;
+    border: 1rpx solid #E5E5E5;
+    transition: all 0.3s ease;
+
+    .page-container.dark-mode & {
+      background: #3a3a3a;
+      border-color: #444444;
+      color: #e0e0e0;
+    }
+  }
   .image-btn { margin-left: 16rpx; padding: 10rpx; }
   .send-btn { margin-left: 16rpx; padding: 16rpx 32rpx; background: #007AFF; border-radius: 36rpx;
     text { font-size: 28rpx; color: #FFF; }

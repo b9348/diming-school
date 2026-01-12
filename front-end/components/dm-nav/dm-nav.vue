@@ -1,5 +1,5 @@
 <template>
-  <view class="dm-nav">
+  <view class="dm-nav" :class="{ 'dark-mode': darkMode }">
     <view class="nav-wrapper" :class="{ expanded: isExpanded }">
       <!-- 第一行前5个导航项 -->
       <view
@@ -18,7 +18,7 @@
       <!-- 展开/收起按钮（固定在第一行第6个位置） -->
       <view class="nav-item nav-toggle" @click="toggleExpand">
         <view class="nav-icon-box">
-          <text :class="isExpanded ? 'tn-icon-up' : 'tn-icon-down'" style="font-size: 24px; color: #666666;"></text>
+          <text :class="isExpanded ? 'tn-icon-up' : 'tn-icon-down'" :style="{ fontSize: '24px', color: darkMode ? '#b0b0b0' : '#666666' }"></text>
         </view>
         <text class="nav-text">{{ isExpanded ? '收起' : '更多' }}</text>
       </view>
@@ -47,7 +47,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   props: {
     list: {
       type: Array,
@@ -100,6 +103,11 @@ export default {
   padding: 20rpx 0;
   background-color: #FFFFFF;
   overflow: hidden;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #2a2a2a;
+  }
 
   .nav-wrapper {
     display: flex;
@@ -148,7 +156,7 @@ export default {
         margin-bottom: 8rpx;
         background-color: #F5F5F5;
         border-radius: 16rpx;
-        transition: background-color 0.2s ease;
+        transition: background-color 0.3s ease;
 
         .nav-icon {
           width: 48rpx;
@@ -158,6 +166,7 @@ export default {
         .nav-icon-text {
           font-size: 24rpx;
           color: #666666;
+          transition: color 0.3s ease;
         }
       }
 
@@ -168,6 +177,7 @@ export default {
         text-align: center;
         line-height: 1.4;
         word-break: break-all;
+        transition: color 0.3s ease;
       }
 
       &.nav-toggle {
@@ -178,6 +188,26 @@ export default {
         .nav-icon-box {
           background-color: #F0F0F0;
         }
+      }
+    }
+  }
+
+  &.dark-mode {
+    .nav-item {
+      .nav-icon-box {
+        background-color: #3a3a3a;
+
+        .nav-icon-text {
+          color: #b0b0b0;
+        }
+      }
+
+      .nav-text {
+        color: #e0e0e0;
+      }
+
+      &.nav-toggle .nav-icon-box {
+        background-color: #3a3a3a;
       }
     }
   }

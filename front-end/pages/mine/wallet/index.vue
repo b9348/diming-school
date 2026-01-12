@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -84,9 +84,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -203,13 +206,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .nav-content {
     display: flex;
@@ -226,6 +239,9 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
 
     .nav-placeholder {
@@ -242,6 +258,11 @@ export default {
   gap: 24rpx;
   background-color: #FFFFFF;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 }
 
 .wallet-card {
@@ -252,6 +273,11 @@ export default {
   padding: 24rpx;
   background-color: #F8F8F8;
   border-radius: 12rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+  }
 
   .wallet-item {
     display: flex;
@@ -261,6 +287,9 @@ export default {
       font-size: 40rpx;
       font-weight: 600;
       color: #333333;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
 
       &::before {
         content: '¥';
@@ -272,6 +301,9 @@ export default {
       font-size: 24rpx;
       color: #999999;
       margin-top: 8rpx;
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
   }
 
@@ -282,6 +314,13 @@ export default {
     border-radius: 24rpx;
     font-size: 26rpx;
     color: #333333;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -292,12 +331,20 @@ export default {
   padding-right: calc(24rpx + env(safe-area-inset-right));
   padding-left: calc(24rpx + env(safe-area-inset-left));
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .section-title {
     font-size: 30rpx;
     font-weight: 600;
     color: #333333;
     margin-bottom: 20rpx;
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -316,10 +363,20 @@ export default {
     color: #666666;
     background-color: #F5F5F5;
     border-radius: 8rpx;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-secondary;
+      background-color: $dark-bg-tertiary;
+    }
 
     &.active {
       color: #007AFF;
       background-color: #E8F4FF;
+
+      .dark-mode & {
+        background-color: rgba(0, 122, 255, 0.15);
+      }
     }
   }
 }
@@ -339,10 +396,21 @@ export default {
     color: #999999;
     background-color: #F8F8F8;
     border-radius: 6rpx;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-tertiary;
+      background-color: $dark-bg-tertiary;
+    }
 
     &.active {
       color: #333333;
       background-color: #EEEEEE;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+        background-color: $dark-border;
+      }
     }
   }
 }
@@ -353,6 +421,11 @@ export default {
   padding-right: calc(24rpx + env(safe-area-inset-right));
   padding-left: calc(24rpx + env(safe-area-inset-left));
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 }
 
 .bill-item {
@@ -361,6 +434,11 @@ export default {
   justify-content: space-between;
   padding: 24rpx 0;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 
   &:last-child {
     border-bottom: none;
@@ -375,17 +453,26 @@ export default {
       font-size: 28rpx;
       color: #333333;
       margin-bottom: 8rpx;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
 
     .bill-desc {
       font-size: 24rpx;
       color: #999999;
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
 
     .bill-time {
       font-size: 24rpx;
       color: #999999;
       margin-top: 4rpx;
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
   }
 
@@ -393,6 +480,9 @@ export default {
     font-size: 32rpx;
     font-weight: 600;
     color: #999999;
+    .dark-mode & {
+      color: $dark-text-tertiary;
+    }
 
     &.income {
       color: #4CAF50;
@@ -408,6 +498,9 @@ export default {
   text {
     font-size: 28rpx;
     color: #999999;
+    .dark-mode & {
+      color: $dark-text-tertiary;
+    }
   }
 }
 </style>

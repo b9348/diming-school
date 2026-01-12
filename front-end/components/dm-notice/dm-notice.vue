@@ -23,7 +23,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   props: {
     list: {
       type: Array,
@@ -53,6 +56,11 @@ export default {
       padding: 0 20rpx;
       background-color: #FFF9E6;
       border-radius: 8rpx;
+      transition: background-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        background-color: #2a2a2a;
+      }
 
       .notice-tag {
         flex-shrink: 0;
@@ -62,12 +70,22 @@ export default {
         color: #FF9500;
         background-color: #FFF3E0;
         border-radius: 0;
+        transition: background-color 0.3s ease;
+
+        .page-container.dark-mode & {
+          background-color: rgba(255, 243, 224, 0.2);
+        }
       }
 
       .notice-text {
         flex: 1;
         font-size: 26rpx;
         color: #666666;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #b0b0b0;
+        }
       }
     }
   }

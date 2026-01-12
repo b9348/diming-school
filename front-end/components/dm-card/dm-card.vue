@@ -1,5 +1,5 @@
 <template>
-  <view class="dm-card" @click="handleClick">
+  <view class="dm-card" :class="{ 'dark-mode': darkMode }" @click="handleClick">
     <!-- 用户信息 -->
     <view class="card-header" v-if="showHeader">
       <image class="avatar" :src="data.avatar || 'https://iph.href.lu/100x100?text=头像'" mode="aspectFill"></image>
@@ -61,7 +61,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   props: {
     data: {
       type: Object,
@@ -109,6 +112,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   border-radius: 16rpx;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #2a2a2a;
+  }
 
   .card-header {
     display: flex;
@@ -133,6 +141,7 @@ export default {
           font-size: 28rpx;
           color: #333333;
           font-weight: 500;
+          transition: color 0.3s ease;
         }
 
         .user-title {
@@ -154,6 +163,7 @@ export default {
       .time {
         font-size: 22rpx;
         color: #999999;
+        transition: color 0.3s ease;
       }
 
       .top-tag {
@@ -173,6 +183,7 @@ export default {
       font-size: 28rpx;
       color: #333333;
       line-height: 1.6;
+      transition: color 0.3s ease;
     }
 
     .image-list {
@@ -199,6 +210,7 @@ export default {
     padding: 16rpx;
     background-color: #F8F8F8;
     border-radius: 8rpx;
+    transition: background-color 0.3s ease;
 
     .comment-item {
       display: flex;
@@ -220,6 +232,7 @@ export default {
         flex: 1;
         font-size: 24rpx;
         color: #666666;
+        transition: color 0.3s ease;
       }
     }
   }
@@ -231,6 +244,7 @@ export default {
     margin-top: 20rpx;
     padding-top: 20rpx;
     border-top: 1rpx solid #F5F5F5;
+    transition: border-color 0.3s ease;
 
     .footer-left {
       display: flex;
@@ -240,11 +254,13 @@ export default {
       .view-count {
         font-size: 24rpx;
         color: #BBBBBB;
+        transition: color 0.3s ease;
       }
 
       .location {
         font-size: 24rpx;
         color: #999999;
+        transition: color 0.3s ease;
       }
     }
 
@@ -261,11 +277,54 @@ export default {
         .action-text {
           font-size: 24rpx;
           color: #999999;
+          transition: color 0.3s ease;
 
           &.is-liked {
             color: #FF3B30;
           }
         }
+      }
+    }
+  }
+
+  &.dark-mode {
+    .card-header {
+      .user-info .user-top .nickname {
+        color: #e0e0e0;
+      }
+
+      .header-right .time {
+        color: #808080;
+      }
+    }
+
+    .card-content .desc {
+      color: #e0e0e0;
+    }
+
+    .comment-preview {
+      background-color: #3a3a3a;
+
+      .comment-item .comment-text {
+        color: #b0b0b0;
+      }
+    }
+
+    .card-footer {
+      border-top-color: #444444;
+
+      .footer-left {
+        .view-count {
+          color: #808080;
+        }
+
+        .location {
+          color: #808080;
+        }
+      }
+
+      .footer-right .action-item .action-text {
+        color: #808080;
       }
     }
   }

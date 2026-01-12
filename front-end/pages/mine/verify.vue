@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 自定义导航栏 -->
     <view class="navbar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="navbar-inner">
@@ -95,7 +95,10 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -234,14 +237,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .navbar {
   background-color: #FFFFFF;
   border-bottom: 1rpx solid #EEEEEE;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
 
   .navbar-inner {
     height: 88rpx;
@@ -260,6 +275,9 @@ export default {
       font-size: 32rpx;
       color: #333333;
       font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -279,32 +297,10 @@ export default {
   background-color: #FFFFFF;
   border-radius: 16rpx;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
 
-  .status-icon-box {
-    width: 120rpx;
-    height: 120rpx;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24rpx;
-
-    &.status-pending {
-      background-color: #FFF3E0;
-    }
-
-    &.status-approved {
-      background-color: #E8F5E9;
-    }
-
-    &.status-rejected {
-      background-color: #FFEBEE;
-    }
-
-    .status-icon {
-      width: 64rpx;
-      height: 64rpx;
-    }
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
   }
 
   .status-text {
@@ -312,6 +308,9 @@ export default {
     color: #333333;
     font-weight: 600;
     margin-bottom: 12rpx;
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .reject-reason {
@@ -332,6 +331,9 @@ export default {
     font-size: 26rpx;
     color: #666666;
     line-height: 1.8;
+    .dark-mode & {
+      color: $dark-text-secondary;
+    }
   }
 }
 
@@ -357,6 +359,13 @@ export default {
         border: 2rpx solid #E5E5E5;
         border-radius: 44rpx;
         box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+        .dark-mode & {
+          background-color: $dark-bg-secondary;
+          border-color: $dark-border;
+          color: $dark-text-primary;
+        }
       }
     }
 
@@ -366,6 +375,12 @@ export default {
       border-radius: 16rpx;
       padding: 0;
       overflow: hidden;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+
+      .dark-mode & {
+        background-color: $dark-bg-secondary;
+        border-color: $dark-border;
+      }
 
       .info-input {
         width: 100%;
@@ -375,12 +390,18 @@ export default {
         color: #333333;
         background-color: transparent;
         box-sizing: border-box;
+        .dark-mode & {
+          color: $dark-text-primary;
+        }
       }
 
       .divider {
         width: 100%;
         height: 1rpx;
         background-color: #E5E5E5;
+        .dark-mode & {
+          background-color: $dark-border;
+        }
       }
     }
 
@@ -400,11 +421,10 @@ export default {
           border: 2rpx solid #E5E5E5;
           border-radius: 16rpx;
           overflow: hidden;
+          transition: border-color 0.3s ease;
 
-          .upload-img {
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
+          .dark-mode & {
+            border-color: $dark-border;
           }
 
           .delete-btn {
@@ -427,6 +447,11 @@ export default {
           align-items: center;
           justify-content: center;
           background-color: #FFFFFF;
+          transition: background-color 0.3s ease;
+
+          .dark-mode & {
+            background-color: $dark-bg-secondary;
+          }
         }
       }
 
@@ -436,6 +461,9 @@ export default {
         color: #999999;
         text-align: center;
         margin-bottom: 12rpx;
+        .dark-mode & {
+          color: $dark-text-tertiary;
+        }
       }
 
       .example-link {
@@ -444,6 +472,9 @@ export default {
         color: #666666;
         text-align: center;
         text-decoration: none;
+        .dark-mode & {
+          color: $dark-text-secondary;
+        }
       }
     }
   }

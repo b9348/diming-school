@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <text class="nav-cancel" @click="goBack">取消</text>
@@ -206,7 +206,10 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,

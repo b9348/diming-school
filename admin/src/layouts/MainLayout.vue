@@ -27,6 +27,7 @@
           </template>
           <el-menu-item index="/user/list">用户列表</el-menu-item>
           <el-menu-item index="/user/verify">实名认证审核</el-menu-item>
+          <el-menu-item index="/user/feedback">意见反馈</el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="content">

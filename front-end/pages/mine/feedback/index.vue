@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -77,7 +77,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
+import { userApi } from '@/api/index.js'
+
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -86,6 +91,7 @@ export default {
       content: '',
       imageList: [],
       contact: '',
+      submitting: false,
       typeList: [
         { key: 'bug', name: '功能异常' },
         { key: 'suggest', name: '功能建议' },
@@ -121,7 +127,7 @@ export default {
     deleteImage(index) {
       this.imageList.splice(index, 1)
     },
-    handleSubmit() {
+    async handleSubmit() {
       if (!this.content.trim()) {
         uni.showToast({ title: '请输入反馈内容', icon: 'none' })
         return
@@ -130,25 +136,52 @@ export default {
         uni.showToast({ title: '反馈内容至少10个字', icon: 'none' })
         return
       }
+      if (this.submitting) return
+      this.submitting = true
+
       uni.showLoading({ title: '提交中...' })
-      setTimeout(() => {
+      try {
+        const res = await userApi.submitFeedback({
+          type: this.feedbackType,
+          content: this.content,
+          images: this.imageList,
+          contact: this.contact
+        })
         uni.hideLoading()
-        uni.showToast({ title: '提交成功', icon: 'success' })
-        setTimeout(() => uni.navigateBack(), 1500)
-      }, 1000)
+        if (res.code === 200) {
+          uni.showToast({ title: '提交成功', icon: 'success' })
+          setTimeout(() => uni.navigateBack(), 1500)
+        } else {
+          uni.showToast({ title: res.message || '提交失败', icon: 'none' })
+        }
+      } catch (e) {
+        uni.hideLoading()
+        uni.showToast({ title: '网络错误', icon: 'none' })
+      } finally {
+        this.submitting = false
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
   .nav-content {
     display: flex;
     align-items: center;
@@ -156,7 +189,14 @@ export default {
     height: 88rpx;
     padding: 0 24rpx;
     .nav-back { padding: 10rpx; }
-    .nav-title { font-size: 34rpx; color: #333333; font-weight: 600; }
+    .nav-title {
+      font-size: 34rpx;
+      color: #333333;
+      font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
+    }
     .nav-placeholder { width: 40rpx; }
   }
 }
@@ -173,11 +213,20 @@ export default {
   border-radius: 12rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+
   .section-title {
     font-size: 30rpx;
     font-weight: 600;
     color: #333333;
     margin-bottom: 20rpx;
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -192,10 +241,21 @@ export default {
     background-color: #F5F5F5;
     border-radius: 8rpx;
     border: 2rpx solid transparent;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-secondary;
+      background-color: $dark-bg-tertiary;
+    }
+
     &.active {
       color: #007AFF;
       background-color: #E8F4FF;
       border-color: #007AFF;
+
+      .dark-mode & {
+        background-color: rgba(0, 122, 255, 0.15);
+      }
     }
   }
 }
@@ -208,6 +268,12 @@ export default {
   background-color: #F8F8F8;
   border-radius: 8rpx;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    color: $dark-text-primary;
+  }
 }
 
 .word-count {
@@ -216,6 +282,9 @@ export default {
   font-size: 24rpx;
   color: #999999;
   margin-top: 8rpx;
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
 }
 
 .image-list {
@@ -254,6 +323,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+      border-color: $dark-border;
+    }
   }
 }
 
@@ -265,6 +340,12 @@ export default {
   background-color: #F8F8F8;
   border-radius: 8rpx;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    color: $dark-text-primary;
+  }
 }
 
 .submit-section {
@@ -276,6 +357,11 @@ export default {
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
   background-color: #FFFFFF;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
   .submit-btn {
     height: 88rpx;
     background-color: #007AFF;

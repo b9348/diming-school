@@ -273,7 +273,10 @@ export const userApi = {
   // 隐私设置
   getPrivacySettings: () => get('/user/privacy'),
   updatePrivacySetting: (data) => post('/user/privacy/update', data),
-  requestDataDownload: () => post('/user/data/download')
+  requestDataDownload: () => post('/user/data/download'),
+
+  // 意见反馈
+  submitFeedback: (data) => post('/user/feedback', data)
 }
 
 // 导出 setToken 供登录时使用

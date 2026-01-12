@@ -32,6 +32,12 @@ const routes = [
         component: () => import('@/views/user/UserVerify.vue'),
         meta: { title: '实名认证审核', icon: 'Checked' }
       },
+      {
+        path: 'user/feedback',
+        name: 'FeedbackList',
+        component: () => import('@/views/user/FeedbackList.vue'),
+        meta: { title: '意见反馈', icon: 'ChatLineRound' }
+      },
       // 内容管理
       {
         path: 'content/audit',

@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -85,9 +85,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import { userApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -341,13 +344,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
   .nav-content {
     display: flex;
     align-items: center;
@@ -355,7 +367,14 @@ export default {
     height: 88rpx;
     padding: 0 24rpx;
     .nav-back { padding: 10rpx; }
-    .nav-title { font-size: 34rpx; color: #333333; font-weight: 600; }
+    .nav-title {
+      font-size: 34rpx;
+      color: #333333;
+      font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
+    }
     .nav-placeholder { width: 40rpx; }
   }
 }
@@ -364,6 +383,12 @@ export default {
   display: flex;
   background-color: #FFFFFF;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
 
   .tab-item {
     flex: 1;
@@ -377,6 +402,11 @@ export default {
     .tab-text {
       font-size: 28rpx;
       color: #666666;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
     }
 
     .tab-badge {
@@ -420,6 +450,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   border-radius: 12rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .order-header {
     display: flex;
@@ -436,6 +471,9 @@ export default {
         font-size: 26rpx;
         color: #333333;
         font-weight: 500;
+        .dark-mode & {
+          color: $dark-text-primary;
+        }
       }
     }
 
@@ -450,6 +488,11 @@ export default {
     align-items: center;
     padding-bottom: 20rpx;
     border-bottom: 1rpx solid #F5F5F5;
+    transition: border-color 0.3s ease;
+
+    .dark-mode & {
+      border-color: $dark-border;
+    }
 
     .order-image {
       width: 140rpx;
@@ -469,11 +512,17 @@ export default {
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 12rpx;
+        .dark-mode & {
+          color: $dark-text-primary;
+        }
       }
 
       .order-desc {
         font-size: 24rpx;
         color: #999999;
+        .dark-mode & {
+          color: $dark-text-tertiary;
+        }
       }
     }
 
@@ -503,6 +552,9 @@ export default {
     .order-time {
       font-size: 24rpx;
       color: #999999;
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
 
     .order-actions {
@@ -515,6 +567,12 @@ export default {
         color: #666666;
         background-color: #F5F5F5;
         border-radius: 28rpx;
+        transition: all 0.3s ease;
+
+        .dark-mode & {
+          color: $dark-text-secondary;
+          background-color: $dark-bg-tertiary;
+        }
 
         &.primary {
           color: #FFFFFF;
@@ -535,6 +593,9 @@ export default {
     font-size: 28rpx;
     color: #999999;
     margin-top: 20rpx;
+    .dark-mode & {
+      color: $dark-text-tertiary;
+    }
   }
 }
 
@@ -543,6 +604,9 @@ export default {
   text-align: center;
   font-size: 26rpx;
   color: #999999;
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
 }
 
 .ellipsis {

@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -169,11 +169,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { postApi, homeApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -397,10 +400,18 @@ export default {
 .page-container {
   min-height: 100vh;
   background: #F8F8F8;
+
+  &.dark-mode {
+    background: #1a1a1a;
+  }
 }
 
 .nav-bar {
   background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
 
   .nav-content {
     display: flex;
@@ -417,6 +428,10 @@ export default {
       font-size: 34rpx;
       color: #333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .nav-placeholder {
@@ -427,12 +442,20 @@ export default {
 
 .content-scroll {
   background: #FFF;
+
+  .dark-mode & {
+    background: #1a1a1a;
+  }
 }
 
 .user-section {
   display: flex;
   align-items: center;
   padding: 24rpx;
+
+  .dark-mode & {
+    background: #1a1a1a;
+  }
 
   .user-avatar {
     width: 80rpx;
@@ -453,6 +476,10 @@ export default {
     .user-name {
       font-size: 30rpx;
       color: #333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .user-title {
@@ -461,11 +488,19 @@ export default {
       background: rgba(255,149,0,0.1);
       padding: 2rpx 8rpx;
       border-radius: 4rpx;
+
+      .dark-mode & {
+        background: rgba(255,149,0,0.2);
+      }
     }
 
     .post-time {
       font-size: 24rpx;
       color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -482,11 +517,19 @@ export default {
       &.pinned {
         color: #FF6B6B;
         background: rgba(255,107,107,0.1);
+
+        .dark-mode & {
+          background: rgba(255,107,107,0.2);
+        }
       }
 
       &.announcement {
         color: #FF9500;
         background: rgba(255,149,0,0.1);
+
+        .dark-mode & {
+          background: rgba(255,149,0,0.2);
+        }
       }
     }
   }
@@ -497,16 +540,30 @@ export default {
     color: #007AFF;
     border: 1rpx solid #007AFF;
     border-radius: 24rpx;
+
+    .dark-mode & {
+      color: #5a9fff;
+      border-color: #5a9fff;
+      background: rgba(90,159,255,0.1);
+    }
   }
 }
 
 .post-content {
   padding: 0 24rpx 24rpx;
 
+  .dark-mode & {
+    background: #1a1a1a;
+  }
+
   .content-text {
     font-size: 30rpx;
     color: #333;
     line-height: 1.8;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .image-list {
@@ -530,15 +587,27 @@ export default {
   padding: 20rpx 24rpx;
   margin-top: 10rpx;
 
+  .dark-mode & {
+    background: #1a1a1a;
+  }
+
   .view-count {
     font-size: 28rpx;
     color: #333;
     font-weight: 500;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .campus-info {
     font-size: 28rpx;
     color: #666;
+
+    .dark-mode & {
+      color: #b0b0b0;
+    }
   }
 }
 
@@ -548,6 +617,12 @@ export default {
   padding: 16rpx 24rpx;
   gap: 32rpx;
 
+  .dark-mode & {
+    background: #1a1a1a;
+    border-top: 1rpx solid #444444;
+    border-bottom: 1rpx solid #444444;
+  }
+
   .stat-item {
     display: flex;
     align-items: center;
@@ -556,11 +631,19 @@ export default {
     text {
       font-size: 28rpx;
       color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
 
     .stat-num {
       font-size: 24rpx;
       color: #666;
+
+      .dark-mode & {
+        color: #b0b0b0;
+      }
 
       &.is-liked {
         color: #FF3B30;
@@ -577,9 +660,18 @@ export default {
   border-radius: 12rpx;
   text-align: center;
 
+  .dark-mode & {
+    background: #2a2a2a;
+    border-color: #444444;
+  }
+
   text {
     font-size: 30rpx;
     color: #333;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
@@ -591,12 +683,20 @@ export default {
   display: flex;
   align-items: center;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .hot-title {
     flex-shrink: 0;
     font-size: 28rpx;
     color: #333333;
     font-weight: 600;
     margin-right: 20rpx;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .hot-swiper {
@@ -619,6 +719,10 @@ export default {
         flex: 1;
         font-size: 26rpx;
         color: #333333;
+
+        .dark-mode & {
+          color: #e0e0e0;
+        }
       }
     }
   }
@@ -633,6 +737,10 @@ export default {
 .comment-section {
   padding: 24rpx;
 
+  .dark-mode & {
+    background: #1a1a1a;
+  }
+
   .section-header {
     display: flex;
     align-items: center;
@@ -644,12 +752,20 @@ export default {
     font-size: 30rpx;
     color: #333;
     font-weight: 600;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .comment-item {
     display: flex;
     padding: 20rpx 0;
     border-bottom: 1rpx solid #F5F5F5;
+
+    .dark-mode & {
+      border-bottom-color: #444444;
+    }
 
     .comment-avatar {
       width: 64rpx;
@@ -679,6 +795,10 @@ export default {
         .comment-name {
           font-size: 26rpx;
           color: #333;
+
+          .dark-mode & {
+            color: #e0e0e0;
+          }
         }
 
         .comment-title {
@@ -687,6 +807,10 @@ export default {
           background: rgba(255,149,0,0.1);
           padding: 2rpx 6rpx;
           border-radius: 4rpx;
+
+          .dark-mode & {
+            background: rgba(255,149,0,0.2);
+          }
         }
 
         .comment-author {
@@ -695,6 +819,10 @@ export default {
           background: rgba(0,122,255,0.1);
           padding: 2rpx 6rpx;
           border-radius: 4rpx;
+
+          .dark-mode & {
+            background: rgba(0,122,255,0.2);
+          }
         }
 
         .comment-admin-btn {
@@ -714,12 +842,20 @@ export default {
           padding: 2rpx 6rpx;
           border-radius: 4rpx;
           flex-shrink: 0;
+
+          .dark-mode & {
+            background: rgba(255,107,107,0.2);
+          }
         }
 
         .comment-text {
           font-size: 28rpx;
           color: #333;
           line-height: 1.6;
+
+          .dark-mode & {
+            color: #e0e0e0;
+          }
         }
       }
 
@@ -731,11 +867,19 @@ export default {
           font-size: 22rpx;
           color: #999;
           margin-right: 24rpx;
+
+          .dark-mode & {
+            color: #808080;
+          }
         }
 
         .comment-reply {
           font-size: 22rpx;
           color: #007AFF;
+
+          .dark-mode & {
+            color: #5a9fff;
+          }
         }
       }
     }
@@ -749,6 +893,10 @@ export default {
       .like-count {
         font-size: 22rpx;
         color: #999;
+
+        .dark-mode & {
+          color: #808080;
+        }
 
         &.is-liked {
           color: #FF3B30;
@@ -770,6 +918,11 @@ export default {
   background: #FFF;
   box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.05);
 
+  .dark-mode & {
+    background: #2a2a2a;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
+
   .comment-input {
     flex: 1;
     height: 72rpx;
@@ -777,6 +930,11 @@ export default {
     background: #F5F5F5;
     border-radius: 36rpx;
     font-size: 28rpx;
+
+    .dark-mode & {
+      background: #3a3a3a;
+      color: #e0e0e0;
+    }
   }
 }
 </style>

@@ -1,0 +1,74 @@
+/**
+ * 全局夜间模式样式
+ * 可在任何页面中引入使用
+ */
+
+// 夜间模式颜色变量
+$dark-bg-primary: #1a1a1a;
+$dark-bg-secondary: #2a2a2a;
+$dark-bg-tertiary: #3a3a3a;
+$dark-border: #444444;
+$dark-text-primary: #e0e0e0;
+$dark-text-secondary: #b0b0b0;
+$dark-text-tertiary: #808080;
+$dark-link: #5a9fff;
+
+// 夜间模式基础样式 mixin
+@mixin dark-mode-base {
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
+}
+
+// 夜间模式卡片样式 mixin
+@mixin dark-mode-card {
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+}
+
+// 夜间模式文本样式 mixin
+@mixin dark-mode-text($level: 'primary') {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    @if $level == 'primary' {
+      color: $dark-text-primary;
+    } @else if $level == 'secondary' {
+      color: $dark-text-secondary;
+    } @else if $level == 'tertiary' {
+      color: $dark-text-tertiary;
+    }
+  }
+}
+
+// 夜间模式边框样式 mixin
+@mixin dark-mode-border {
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
+}
+
+// 夜间模式输入框样式 mixin
+@mixin dark-mode-input {
+  transition: all 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+  }
+}
+
+// 夜间模式链接样式 mixin
+@mixin dark-mode-link {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-link;
+  }
+}

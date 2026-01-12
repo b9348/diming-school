@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
@@ -103,11 +103,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { voteApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -232,10 +235,18 @@ export default {
   background: #F8F8F8;
   display: flex;
   flex-direction: column;
+
+  &.dark-mode {
+    background: #1a1a1a;
+  }
 }
 
 .nav-bar {
   background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
 
   .nav-content {
     display: flex;
@@ -252,6 +263,10 @@ export default {
       font-size: 34rpx;
       color: #333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .nav-placeholder {
@@ -263,11 +278,19 @@ export default {
 .content-scroll {
   flex: 1;
   padding-bottom: 120rpx;
+
+  .dark-mode & {
+    background: #1a1a1a;
+  }
 }
 
 .vote-header {
   padding: 24rpx;
   background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
 
   .vote-header-top {
     display: flex;
@@ -282,6 +305,10 @@ export default {
     color: #333;
     font-weight: 600;
     line-height: 1.6;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .vote-deadline {
@@ -295,6 +322,10 @@ export default {
 .vote-images {
   padding: 0 24rpx 24rpx;
   background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
 
   .images-grid {
     display: grid;
@@ -327,6 +358,10 @@ export default {
   background: #FFF;
   margin-top: 20rpx;
 
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
   .option-item {
     position: relative;
     padding: 24rpx;
@@ -335,12 +370,20 @@ export default {
     border-radius: 12rpx;
     overflow: hidden;
 
+    .dark-mode & {
+      background: #3a3a3a;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
 
     &.voted {
       background: rgba(0, 122, 255, 0.08);
+
+      .dark-mode & {
+        background: rgba(0, 122, 255, 0.15);
+      }
     }
 
     .option-content {
@@ -375,6 +418,10 @@ export default {
       .option-text {
         font-size: 28rpx;
         color: #333;
+
+        .dark-mode & {
+          color: #e0e0e0;
+        }
       }
 
       .option-percent {
@@ -391,6 +438,10 @@ export default {
       bottom: 0;
       background: rgba(0, 122, 255, 0.12);
       border-radius: 12rpx;
+
+      .dark-mode & {
+        background: rgba(0, 122, 255, 0.2);
+      }
     }
   }
 }
@@ -399,6 +450,11 @@ export default {
   padding: 24rpx;
   font-size: 26rpx;
   color: #999;
+
+  .dark-mode & {
+    color: #808080;
+    background: #1a1a1a;
+  }
 }
 
 .user-section {
@@ -407,6 +463,10 @@ export default {
   padding: 24rpx;
   background: #FFF;
   margin-top: 20rpx;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
 
   .user-avatar {
     width: 80rpx;
@@ -422,11 +482,19 @@ export default {
       display: block;
       font-size: 28rpx;
       color: #333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .user-time {
       font-size: 24rpx;
       color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -437,10 +505,22 @@ export default {
     border: 1rpx solid #007AFF;
     border-radius: 24rpx;
 
+    .dark-mode & {
+      color: #5a9fff;
+      border-color: #5a9fff;
+      background: rgba(90,159,255,0.1);
+    }
+
     &.followed {
       color: #999;
       border-color: #DDD;
       background: #F5F5F5;
+
+      .dark-mode & {
+        color: #808080;
+        border-color: #444444;
+        background: #3a3a3a;
+      }
     }
   }
 }
@@ -458,6 +538,12 @@ export default {
   background: #FFF;
   border-top: 1rpx solid #EAEAEA;
 
+  .dark-mode & {
+    background: #2a2a2a;
+    border-top-color: #444444;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
+
   .input-wrap {
     flex: 1;
     height: 64rpx;
@@ -467,9 +553,17 @@ export default {
     align-items: center;
     padding: 0 24rpx;
 
+    .dark-mode & {
+      background: #3a3a3a;
+    }
+
     .input-placeholder {
       font-size: 26rpx;
       color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -487,6 +581,10 @@ export default {
       text {
         font-size: 20rpx;
         color: #666;
+
+        .dark-mode & {
+          color: #b0b0b0;
+        }
       }
     }
   }

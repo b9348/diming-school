@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
@@ -78,11 +78,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { errandApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -202,40 +205,265 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-container { min-height: 100vh; background: #F8F8F8; }
-.nav-bar { background: #FFF;
-  .nav-content { display: flex; align-items: center; justify-content: space-between; height: 88rpx; padding: 0 24rpx;
-    .nav-back { padding: 10rpx; }
-    .nav-title { font-size: 34rpx; color: #333; font-weight: 600; }
-    .nav-placeholder { width: 60rpx; }
+.page-container {
+  min-height: 100vh;
+  background: #F8F8F8;
+
+  &.dark-mode {
+    background: #1a1a1a;
   }
 }
-.content-scroll { background: #F8F8F8; }
-.price-section { display: flex; align-items: center; justify-content: space-between; padding: 32rpx 24rpx; background: #FFF; margin-bottom: 20rpx; gap: 16rpx;
-  .price-box { .price-symbol { font-size: 28rpx; color: #FF3B30; } .price-value { font-size: 56rpx; color: #FF3B30; font-weight: 600; } }
-  .status-tag { padding: 8rpx 24rpx; font-size: 26rpx; color: #FF9500; background: rgba(255,149,0,0.1); border-radius: 20rpx; }
-  .admin-btn { display: flex; align-items: center; gap: 6rpx; padding: 12rpx 24rpx; background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); border-radius: 24rpx;
-    text { font-size: 24rpx; color: #FFF; }
+.nav-bar {
+  background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
+  .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 88rpx;
+    padding: 0 24rpx;
+
+    .nav-back {
+      padding: 10rpx;
+    }
+
+    .nav-title {
+      font-size: 34rpx;
+      color: #333;
+      font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
+    }
+
+    .nav-placeholder {
+      width: 60rpx;
+    }
   }
 }
-.info-section { padding: 24rpx; background: #FFF; margin-bottom: 20rpx;
-  .info-item { display: flex; justify-content: space-between; padding: 16rpx 0; border-bottom: 1rpx solid #F5F5F5;
-    &:last-child { border-bottom: none; }
-    .info-label { font-size: 28rpx; color: #999; }
-    .info-value { font-size: 28rpx; color: #333; }
+.content-scroll {
+  background: #F8F8F8;
+
+  .dark-mode & {
+    background: #1a1a1a;
   }
 }
-.desc-section { padding: 24rpx; background: #FFF; margin-bottom: 20rpx;
-  .section-title { font-size: 30rpx; color: #333; font-weight: 600; margin-bottom: 16rpx; }
-  .desc-text { font-size: 28rpx; color: #333; line-height: 1.6; }
-  .image-list { display: flex; gap: 12rpx; margin-top: 16rpx; .desc-image { width: 200rpx; height: 200rpx; border-radius: 8rpx; } }
+.price-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 24rpx;
+  background: #FFF;
+  margin-bottom: 20rpx;
+  gap: 16rpx;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
+  .price-box {
+    .price-symbol {
+      font-size: 28rpx;
+      color: #FF3B30;
+    }
+
+    .price-value {
+      font-size: 56rpx;
+      color: #FF3B30;
+      font-weight: 600;
+    }
+  }
+
+  .status-tag {
+    padding: 8rpx 24rpx;
+    font-size: 26rpx;
+    color: #FF9500;
+    background: rgba(255,149,0,0.1);
+    border-radius: 20rpx;
+  }
+
+  .admin-btn {
+    display: flex;
+    align-items: center;
+    gap: 6rpx;
+    padding: 12rpx 24rpx;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    border-radius: 24rpx;
+
+    text {
+      font-size: 24rpx;
+      color: #FFF;
+    }
+  }
 }
-.user-section { display: flex; align-items: center; padding: 24rpx; background: #FFF;
-  .user-avatar { width: 80rpx; height: 80rpx; border-radius: 50%; margin-right: 16rpx; }
-  .user-info { flex: 1; .user-name { display: block; font-size: 28rpx; color: #333; } .user-time { font-size: 24rpx; color: #999; } }
-  .contact-btn { padding: 12rpx 32rpx; font-size: 26rpx; color: #007AFF; border: 1rpx solid #007AFF; border-radius: 24rpx; }
+.info-section {
+  padding: 24rpx;
+  background: #FFF;
+  margin-bottom: 20rpx;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16rpx 0;
+    border-bottom: 1rpx solid #F5F5F5;
+
+    .dark-mode & {
+      border-bottom-color: #444444;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 28rpx;
+      color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
+    }
+
+    .info-value {
+      font-size: 28rpx;
+      color: #333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
+    }
+  }
 }
-.bottom-bar { position: fixed; left: 0; right: 0; bottom: 0; padding-top: 16rpx; padding-left: 24rpx; padding-right: 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); background: #FFF; box-sizing: content-box;
-  .btn-grab { height: 88rpx; background: #007AFF; border-radius: 44rpx; font-size: 32rpx; color: #FFF; display: flex; align-items: center; justify-content: center; }
+.desc-section {
+  padding: 24rpx;
+  background: #FFF;
+  margin-bottom: 20rpx;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
+  .section-title {
+    font-size: 30rpx;
+    color: #333;
+    font-weight: 600;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
+  }
+
+  .desc-text {
+    font-size: 28rpx;
+    color: #333;
+    line-height: 1.6;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
+  }
+
+  .image-list {
+    display: flex;
+    gap: 12rpx;
+    margin-top: 16rpx;
+
+    .desc-image {
+      width: 200rpx;
+      height: 200rpx;
+      border-radius: 8rpx;
+    }
+  }
+}
+.user-section {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #FFF;
+
+  .dark-mode & {
+    background: #2a2a2a;
+  }
+
+  .user-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    margin-right: 16rpx;
+  }
+
+  .user-info {
+    flex: 1;
+
+    .user-name {
+      display: block;
+      font-size: 28rpx;
+      color: #333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
+    }
+
+    .user-time {
+      font-size: 24rpx;
+      color: #999;
+
+      .dark-mode & {
+        color: #808080;
+      }
+    }
+  }
+
+  .contact-btn {
+    padding: 12rpx 32rpx;
+    font-size: 26rpx;
+    color: #007AFF;
+    border: 1rpx solid #007AFF;
+    border-radius: 24rpx;
+
+    .dark-mode & {
+      color: #5a9fff;
+      border-color: #5a9fff;
+      background: rgba(90,159,255,0.1);
+    }
+  }
+}
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 16rpx;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #FFF;
+  box-sizing: content-box;
+
+  .dark-mode & {
+    background: #2a2a2a;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-grab {
+    height: 88rpx;
+    background: #007AFF;
+    border-radius: 44rpx;
+    font-size: 32rpx;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>

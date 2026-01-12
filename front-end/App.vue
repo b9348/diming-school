@@ -1,4 +1,6 @@
 <script>
+import themeStore from '@/store/theme.js'
+
 /**
  * 检查登录状态并处理路由
  */
@@ -42,6 +44,8 @@ const checkLoginStatus = () => {
 export default {
   onLaunch() {
     console.log('App Launch')
+    // 初始化夜间模式
+    this.initDarkMode()
   },
   onShow() {
     console.log('App Show')
@@ -49,6 +53,15 @@ export default {
   },
   onHide() {
     console.log('App Hide')
+  },
+  methods: {
+    initDarkMode() {
+      // 监听主题变化
+      themeStore.addListener((darkMode) => {
+        // 主题变化时，所有页面会通过 mixin 自动更新
+        console.log('主题已切换:', darkMode ? '夜间模式' : '日间模式')
+      })
+    }
   }
 }
 </script>
@@ -63,6 +76,13 @@ page {
   font-size: 28rpx;
   color: #333333;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 夜间模式全局样式 */
+page.dark-mode {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
 }
 
 view, text, input, textarea, button, image {

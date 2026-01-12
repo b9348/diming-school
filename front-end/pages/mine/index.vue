@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 状态栏占位 -->
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
@@ -69,9 +69,13 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
+import themeStore from '@/store/theme.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -88,7 +92,7 @@ export default {
       baseFunctionList: [
         // 第一排
         { name: '我的发布', icon: 'edit', iconColor: '#4CAF50', bgColor: '#E8F5E9', path: '/pages/mine/posts' },
-        { name: '夜间模式', icon: 'sun', iconColor: '#FF9800', bgColor: '#FFF3E0', action: 'toggleDarkMode' },
+        { name: '夜间模式', icon: 'wea-sun', iconColor: '#FF9800', bgColor: '#FFF3E0', action: 'toggleDarkMode' },
         { name: '我的评论', icon: 'message', iconColor: '#2196F3', bgColor: '#E3F2FD', path: '/pages/mine/comments' },
         { name: '我的收藏', icon: 'star', iconColor: '#FF9800', bgColor: '#FFF3E0', path: '/pages/mine/collect' },
         // 第二排
@@ -126,7 +130,8 @@ export default {
   onLoad() {
     this.getSystemInfo()
     this.loadUserInfo()
-    this.darkMode = uni.getStorageSync('darkMode') || false
+    // 从全局主题管理获取夜间模式状态
+    this.darkMode = themeStore.getDarkMode()
   },
   onShow() {
     this.loadUserInfo()
@@ -164,8 +169,8 @@ export default {
       }
     },
     toggleDarkMode() {
-      this.darkMode = !this.darkMode
-      uni.setStorageSync('darkMode', this.darkMode)
+      // 使用全局主题管理切换夜间模式
+      this.darkMode = themeStore.toggleDarkMode()
       uni.showToast({ title: this.darkMode ? '夜间模式已开启' : '夜间模式已关闭', icon: 'none' })
     },
     switchForum() {
@@ -223,15 +228,30 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .status-bar {
   background-color: #007AFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1f4788;
+  }
 }
 
 .user-header {
   padding: 32rpx 24rpx;
   background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  transition: background 0.3s ease;
+
+  .page-container.dark-mode & {
+    background: linear-gradient(135deg, #1f4788 0%, #3d3b7a 100%);
+  }
 
   .user-info {
     display: flex;
@@ -289,6 +309,11 @@ export default {
 
 .scroll-container {
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .function-grid {
@@ -297,6 +322,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .function-item {
     width: 25%;
@@ -313,6 +343,11 @@ export default {
       align-items: center;
       justify-content: center;
       margin-bottom: 12rpx;
+      transition: opacity 0.3s ease;
+
+      .page-container.dark-mode & {
+        opacity: 0.9;
+      }
 
       .function-icon {
         width: 44rpx;
@@ -323,6 +358,11 @@ export default {
     .function-name {
       font-size: 24rpx;
       color: #333333;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #e0e0e0;
+      }
     }
   }
 }
@@ -331,6 +371,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .section-header {
     display: flex;
@@ -342,11 +387,21 @@ export default {
       font-size: 30rpx;
       color: #333333;
       font-weight: 600;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .section-more {
       font-size: 26rpx;
       color: #007AFF;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #5a9fff;
+      }
     }
   }
 
@@ -361,6 +416,12 @@ export default {
       color: #666666;
       background-color: #F5F5F5;
       border-radius: 24rpx;
+      transition: all 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #b0b0b0;
+        background-color: #3a3a3a;
+      }
     }
   }
 }
@@ -385,10 +446,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+    border-color: #444444;
+  }
 
   .placeholder-text {
     font-size: 26rpx;
     color: #999999;
+    transition: color 0.3s ease;
+
+    .page-container.dark-mode & {
+      color: #666666;
+    }
   }
 }
 
@@ -445,6 +517,13 @@ export default {
     font-size: 32rpx;
     color: #FF3B30;
     font-weight: 600;
+    transition: all 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #2a2a2a;
+      border-color: #444444;
+      color: #ff6b6b;
+    }
   }
 }
 

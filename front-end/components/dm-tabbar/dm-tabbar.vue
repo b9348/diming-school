@@ -1,5 +1,5 @@
 <template>
-  <view class="dm-tabbar">
+  <view class="dm-tabbar" :class="{ 'dark-mode': darkMode }">
     <!-- 左侧三个tab -->
     <view
       v-for="(item, index) in leftList"
@@ -50,12 +50,13 @@
 </template>
 
 <script>
+import themeStore from '@/store/theme.js'
+
 export default {
   data() {
     return {
       current: 0,
-      color: '#999999',
-      selectedColor: '#007AFF',
+      darkMode: false,
       list: [
         {
           pagePath: '/pages/index/index',
@@ -102,10 +103,28 @@ export default {
     },
     rightList() {
       return this.list.slice(3, 6)
+    },
+    color() {
+      return this.darkMode ? '#b0b0b0' : '#999999'
+    },
+    selectedColor() {
+      return this.darkMode ? '#5a9fff' : '#007AFF'
     }
   },
   mounted() {
     this.updateCurrent()
+    // 初始化夜间模式状态
+    this.darkMode = themeStore.getDarkMode()
+    // 监听主题变化
+    this.unsubscribe = themeStore.addListener((darkMode) => {
+      this.darkMode = darkMode
+    })
+  },
+  beforeDestroy() {
+    // 取消监听
+    if (this.unsubscribe) {
+      this.unsubscribe()
+    }
   },
   methods: {
     updateCurrent() {
@@ -176,6 +195,12 @@ export default {
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 999;
   box-sizing: content-box;
+  transition: all 0.3s ease;
+
+  &.dark-mode {
+    background-color: #2a2a2a;
+    border-top-color: #444444;
+  }
 }
 
 .tabbar-item {
@@ -215,11 +240,17 @@ export default {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
   }
 
   .publish-icon {
     font-size: 28px;
     color: #FFFFFF;
   }
+}
+
+.dm-tabbar.dark-mode .publish-item .publish-btn {
+  background-color: #007AFF;
+  box-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
 }
 </style>

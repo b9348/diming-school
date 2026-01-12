@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -111,11 +111,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { idleApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -328,10 +331,18 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .nav-content {
     display: flex;
@@ -348,6 +359,10 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .nav-placeholder {
@@ -358,6 +373,10 @@ export default {
 
 .content-scroll {
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .price-section {
@@ -368,6 +387,10 @@ export default {
   background-color: #FFFFFF;
   gap: 16rpx;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .price-left {
     display: flex;
     align-items: baseline;
@@ -375,12 +398,20 @@ export default {
     .price-symbol {
       font-size: 32rpx;
       color: #333333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .price-value {
       font-size: 56rpx;
       color: #333333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
   }
 
@@ -392,6 +423,10 @@ export default {
       display: block;
       font-size: 26rpx;
       color: #333333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .delivery-tag {
@@ -399,6 +434,10 @@ export default {
       font-size: 24rpx;
       color: #999999;
       margin-top: 8rpx;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 }
@@ -408,16 +447,28 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .desc-text {
     font-size: 30rpx;
     color: #333333;
     line-height: 1.6;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
 .image-section {
   padding: 0 24rpx 24rpx;
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .image-grid {
     display: flex;
@@ -437,12 +488,20 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .info-row {
     margin-bottom: 20rpx;
 
     .location {
       font-size: 26rpx;
       color: #999999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -461,6 +520,10 @@ export default {
     .user-name {
       font-size: 28rpx;
       color: #333333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
   }
 
@@ -483,9 +546,17 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+
   .contact-text {
     font-size: 28rpx;
     color: #333333;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
@@ -508,6 +579,11 @@ export default {
   box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
   box-sizing: content-box;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
+
   .btn-chat {
     flex: 1;
     height: 88rpx;
@@ -518,6 +594,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .dark-mode & {
+      color: #5a9fff;
+      border-color: #5a9fff;
+      background: rgba(90,159,255,0.1);
+    }
   }
 
   .btn-buy {

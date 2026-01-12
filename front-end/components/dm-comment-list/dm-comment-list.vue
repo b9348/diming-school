@@ -72,7 +72,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   name: 'dm-comment-list',
   props: {
     list: { type: Array, default: () => [] },

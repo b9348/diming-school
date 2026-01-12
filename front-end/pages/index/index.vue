@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 状态栏占位 -->
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
@@ -253,6 +253,7 @@
 
 <script>
 import { homeApi, postApi, voteApi, idleApi, errandApi, loveApi, helpApi, groupApi } from '@/api/index.js'
+import pageBaseMixin from '@/mixins/page-base.js'
 
 // 各tab的筛选配置
 const COMMON_FILTER = [
@@ -320,6 +321,7 @@ const TAB_BAR_PAGES = [
 ]
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -706,14 +708,29 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .status-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 }
 
 .scroll-container {
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .hot-section {
@@ -723,6 +740,11 @@ export default {
   border-radius: 12rpx;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .hot-title {
     flex-shrink: 0;
@@ -730,6 +752,11 @@ export default {
     color: #333333;
     font-weight: 600;
     margin-right: 20rpx;
+    transition: color 0.3s ease;
+
+    .page-container.dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .hot-swiper {
@@ -752,6 +779,11 @@ export default {
         flex: 1;
         font-size: 26rpx;
         color: #333333;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+        }
       }
     }
   }
@@ -761,6 +793,11 @@ export default {
   margin: 0 24rpx 20rpx;
   background-color: #FFFFFF;
   border-radius: 12rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .info-item {
     display: flex;
@@ -774,6 +811,11 @@ export default {
 
     &.activity-item {
       border-bottom: 1rpx solid #F5F5F5;
+      transition: border-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        border-bottom-color: #444444;
+      }
     }
 
     &.recommend-item {
@@ -797,6 +839,12 @@ export default {
         background-color: #E8F4F8;
         padding: 4rpx 12rpx;
         border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 244, 248, 0.2);
+        }
       }
 
       &.recommend-tag {
@@ -804,6 +852,12 @@ export default {
         background-color: #E8F8E8;
         padding: 4rpx 12rpx;
         border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 248, 232, 0.2);
+        }
       }
     }
 
@@ -811,12 +865,22 @@ export default {
       margin: 0 16rpx;
       color: #CCCCCC;
       font-size: 26rpx;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #666666;
+      }
     }
 
     .info-text {
       flex: 1;
       font-size: 26rpx;
       color: #666666;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #b0b0b0;
+      }
     }
   }
 }
@@ -839,6 +903,12 @@ export default {
     margin-bottom: 20rpx;
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
     position: relative;
+    transition: background-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #2a2a2a;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+    }
 
     .love-image {
       width: 100%;
@@ -887,6 +957,11 @@ export default {
           font-weight: 600;
           flex: 1;
           text-align: left;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #e0e0e0;
+          }
         }
 
         .info-height {
@@ -917,6 +992,11 @@ export default {
           color: #999999;
           flex: 1;
           text-align: center;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #808080;
+          }
 
           &:first-child {
             text-align: left;
@@ -939,6 +1019,11 @@ export default {
     padding: 24rpx;
     background-color: #FFFFFF;
     border-radius: 16rpx;
+    transition: background-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #2a2a2a;
+    }
 
     .vote-title {
       display: block;
@@ -947,6 +1032,11 @@ export default {
       line-height: 1.6;
       margin-bottom: 24rpx;
       word-break: break-all;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .vote-options {
@@ -957,6 +1047,11 @@ export default {
         background-color: #F8F8F8;
         border-radius: 12rpx;
         overflow: hidden;
+        transition: background-color 0.3s ease;
+
+        .page-container.dark-mode & {
+          background-color: #3a3a3a;
+        }
 
         .option-content {
           position: relative;
@@ -970,12 +1065,22 @@ export default {
             font-size: 28rpx;
             color: #333333;
             flex: 1;
+            transition: color 0.3s ease;
+
+            .page-container.dark-mode & {
+              color: #e0e0e0;
+            }
           }
           .option-count {
             font-size: 32rpx;
             color: #333333;
             font-weight: 600;
             margin-left: 16rpx;
+            transition: color 0.3s ease;
+
+            .page-container.dark-mode & {
+              color: #e0e0e0;
+            }
           }
         }
 
@@ -993,6 +1098,11 @@ export default {
           font-size: 24rpx;
           color: #666666;
           display: block;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #b0b0b0;
+          }
         }
 
         &:last-child {
@@ -1061,6 +1171,11 @@ export default {
       margin-top: 24rpx;
       padding-top: 20rpx;
       border-top: 1rpx solid #F0F0F0;
+      transition: border-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        border-top-color: #444444;
+      }
 
       .vote-info {
         display: flex;
@@ -1108,10 +1223,20 @@ export default {
             font-size: 24rpx;
             color: #666666;
             margin-right: 16rpx;
+            transition: color 0.3s ease;
+
+            .page-container.dark-mode & {
+              color: #b0b0b0;
+            }
           }
           .vote-time {
             font-size: 24rpx;
             color: #999999;
+            transition: color 0.3s ease;
+
+            .page-container.dark-mode & {
+              color: #808080;
+            }
           }
         }
       }
@@ -1178,6 +1303,11 @@ export default {
       .msg-nickname {
         font-size: 24rpx;
         color: #666666;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #b0b0b0;
+        }
       }
     }
 
@@ -1188,6 +1318,12 @@ export default {
       border-radius: 16rpx;
       box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
       margin-bottom: 8rpx;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+      .page-container.dark-mode & {
+        background-color: #2a2a2a;
+        box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+      }
 
       .msg-content {
         display: flex;
@@ -1198,6 +1334,11 @@ export default {
           color: #333333;
           font-weight: 600;
           flex-shrink: 0;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #e0e0e0;
+          }
         }
 
         .msg-text {
@@ -1206,6 +1347,11 @@ export default {
           color: #333333;
           line-height: 1.6;
           word-break: break-all;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #e0e0e0;
+          }
         }
       }
 
@@ -1254,6 +1400,11 @@ export default {
       text-align: center;
       font-size: 22rpx;
       color: #999999;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -1276,6 +1427,12 @@ export default {
   border-top: 1rpx solid #F5F5F5;
   z-index: 998;
   box-sizing: content-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+    border-top-color: #444444;
+  }
 
   .input-wrapper {
     flex: 1;
@@ -1284,14 +1441,30 @@ export default {
     background: #F5F5F5;
     border-radius: 36rpx;
     border: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #3a3a3a;
+      border-color: #444444;
+    }
 
     input {
       height: 100%;
       font-size: 28rpx;
       color: #333333;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #e0e0e0;
+      }
 
       &::placeholder {
         color: #999999;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #808080;
+        }
       }
     }
   }
@@ -1319,5 +1492,10 @@ export default {
   text-align: center;
   font-size: 26rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .page-container.dark-mode & {
+    color: #808080;
+  }
 }
 </style>

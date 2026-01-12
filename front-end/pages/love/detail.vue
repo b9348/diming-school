@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
         <view class="nav-back" @click="goBack">
@@ -181,11 +181,14 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import userStore from '@/store/user.js'
 import { AdminAction } from '@/utils/admin.js'
 import { loveApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -367,10 +370,18 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #FFFFFF;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .nav-content {
     display: flex;
@@ -387,6 +398,10 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
 
     .nav-placeholder {
@@ -397,6 +412,10 @@ export default {
 
 .content-scroll {
   background-color: #FFFFFF;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .profile-header {
@@ -405,6 +424,10 @@ export default {
   align-items: center;
   padding: 32rpx 0;
   position: relative;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
 
   .profile-avatar {
     width: 120rpx;
@@ -417,6 +440,10 @@ export default {
     font-size: 32rpx;
     color: #333333;
     font-weight: 600;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .admin-btn {
@@ -444,14 +471,31 @@ export default {
   padding: 16rpx 24rpx;
   border-bottom: 1rpx solid #F5F5F5;
 
+  .dark-mode & {
+    background-color: #1a1a1a;
+    border-bottom-color: #444444;
+  }
+
   text {
     font-size: 26rpx;
     color: #333333;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   &.detail {
+    .dark-mode & {
+      background-color: #2a2a2a;
+    }
+
     text {
       color: #666666;
+
+      .dark-mode & {
+        color: #b0b0b0;
+      }
     }
   }
 }
@@ -462,8 +506,17 @@ export default {
   padding: 20rpx 24rpx;
   border-bottom: 1rpx solid #F5F5F5;
 
+  .dark-mode & {
+    background-color: #1a1a1a;
+    border-bottom-color: #444444;
+  }
+
   &.highlight {
     background-color: #FAFAFA;
+
+    .dark-mode & {
+      background-color: #2a2a2a;
+    }
   }
 
   .intro-label {
@@ -471,6 +524,10 @@ export default {
     color: #999999;
     width: 140rpx;
     flex-shrink: 0;
+
+    .dark-mode & {
+      color: #808080;
+    }
   }
 
   .intro-value {
@@ -478,6 +535,10 @@ export default {
     font-size: 26rpx;
     color: #333333;
     line-height: 1.5;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
@@ -488,19 +549,36 @@ export default {
   padding: 20rpx 24rpx;
   border-bottom: 1rpx solid #F5F5F5;
 
+  .dark-mode & {
+    background-color: #1a1a1a;
+    border-bottom-color: #444444;
+  }
+
   .qa-question {
     font-size: 26rpx;
     color: #666666;
+
+    .dark-mode & {
+      color: #b0b0b0;
+    }
   }
 
   .qa-answer {
     font-size: 26rpx;
     color: #333333;
+
+    .dark-mode & {
+      color: #e0e0e0;
+    }
   }
 }
 
 .photo-section {
   padding: 24rpx;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
 
   .photo-grid {
     display: flex;
@@ -518,9 +596,17 @@ export default {
 .stats-row {
   padding: 16rpx 24rpx;
 
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
+
   .stats-text {
     font-size: 26rpx;
     color: #BBBBBB;
+
+    .dark-mode & {
+      color: #808080;
+    }
   }
 }
 
@@ -532,6 +618,11 @@ export default {
   gap: 32rpx;
   border-bottom: 1rpx solid #F5F5F5;
 
+  .dark-mode & {
+    background-color: #1a1a1a;
+    border-bottom-color: #444444;
+  }
+
   .action-item {
     display: flex;
     align-items: center;
@@ -540,6 +631,10 @@ export default {
     text {
       font-size: 24rpx;
       color: #999999;
+
+      .dark-mode & {
+        color: #808080;
+      }
     }
   }
 }
@@ -557,6 +652,11 @@ export default {
   box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
   box-sizing: content-box;
 
+  .dark-mode & {
+    background-color: #2a2a2a;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.3);
+  }
+
   .contact-btn {
     display: flex;
     align-items: center;
@@ -565,9 +665,17 @@ export default {
     background-color: #F8F8F8;
     border-radius: 12rpx;
 
+    .dark-mode & {
+      background-color: #3a3a3a;
+    }
+
     .contact-text {
       font-size: 28rpx;
       color: #333333;
+
+      .dark-mode & {
+        color: #e0e0e0;
+      }
     }
   }
 }

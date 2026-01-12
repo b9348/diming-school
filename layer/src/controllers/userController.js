@@ -375,6 +375,22 @@ const requestDataDownload = (req, res) => {
   successResponse(res, null, '数据导出申请已提交，我们将在1-3个工作日内发送到您的邮箱')
 }
 
+// ==================== 意见反馈 ====================
+
+// 提交意见反馈
+const submitFeedback = (req, res) => {
+  const { type, content, images, contact } = req.body
+
+  if (!type) {
+    return errorResponse(res, '请选择反馈类型', 400)
+  }
+  if (!content || content.trim().length < 10) {
+    return errorResponse(res, '反馈内容至少10个字', 400)
+  }
+
+  successResponse(res, null, '反馈提交成功，感谢您的宝贵意见')
+}
+
 module.exports = {
   // 我的帖子
   getMyPosts,
@@ -407,5 +423,8 @@ module.exports = {
   // 隐私设置
   getPrivacySettings,
   updatePrivacySetting,
-  requestDataDownload
+  requestDataDownload,
+
+  // 意见反馈
+  submitFeedback
 }

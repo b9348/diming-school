@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 状态栏占位 -->
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
@@ -24,8 +24,24 @@
       <!-- 轮播图 -->
       <dm-swiper :list="bannerList" @click="handleBannerClick" />
 
-      <!-- 公告栏 -->
-      <dm-notice :list="noticeList" @click="handleNoticeClick" />
+      <!-- 公告/活动/推荐 -->
+      <view class="info-section" v-if="noticeInfo || activityInfo || recommendInfo">
+        <view class="info-item notice-item" v-if="noticeInfo" @click="handleInfoClick(noticeInfo)">
+          <text class="info-tag notice-tag">公告</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ noticeInfo.content }}</text>
+        </view>
+        <view class="info-item activity-item" v-if="activityInfo" @click="handleInfoClick(activityInfo)">
+          <text class="info-tag activity-tag">活动</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ activityInfo.content }}</text>
+        </view>
+        <view class="info-item recommend-item" v-if="recommendInfo" @click="handleInfoClick(recommendInfo)">
+          <text class="info-tag recommend-tag">{{ recommendInfo.tag || '推荐' }}</text>
+          <text class="info-divider">|</text>
+          <text class="info-text ellipsis">{{ recommendInfo.content }}</text>
+        </view>
+      </view>
 
       <!-- Tabs -->
       <dm-tabs :list="tabList" :current="currentTab" @change="handleTabChange" />
@@ -100,9 +116,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import { idleApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -112,12 +131,10 @@ export default {
       noMore: false,
       page: 1,
       showFilter: false,
-      bannerList: [
-        { image: 'https://iph.href.lu/750x300?text=轮播图1', url: '' }
-      ],
-      noticeList: [
-        { tag: '公告', content: '显示公告前50字' }
-      ],
+      bannerList: [],
+      noticeInfo: null,
+      activityInfo: null,
+      recommendInfo: null,
       tabList: ['售卖中', '我发布的', '我买到的', '我卖出的', '聊过的'],
       goodsList: [],
       filterOptions: [
@@ -181,6 +198,7 @@ export default {
   },
   onLoad() {
     this.getSystemInfo()
+    this.loadIdleData()
     this.loadGoodsList()
   },
   methods: {
@@ -202,14 +220,27 @@ export default {
         uni.navigateTo({ url: item.url })
       }
     },
-    handleNoticeClick({ item, index }) {
-      uni.showToast({ title: item.content, icon: 'none' })
+    handleInfoClick(item) {
+      if (item.url) {
+        uni.navigateTo({ url: item.url })
+      } else {
+        uni.showToast({ title: item.content, icon: 'none' })
+      }
+    },
+    async loadIdleData() {
+      const tabName = this.tabList[this.currentTab]
+      const data = await idleApi.getData({ tab: tabName })
+      this.bannerList = data.bannerList || []
+      this.noticeInfo = data.noticeInfo || null
+      this.activityInfo = data.activityInfo || null
+      this.recommendInfo = data.recommendInfo || null
     },
     handleTabChange(index) {
       this.currentTab = index
       this.page = 1
       this.goodsList = []
       this.noMore = false
+      this.loadIdleData()
       this.loadGoodsList()
     },
     handleFilterConfirm(value) {
@@ -255,14 +286,125 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .status-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 }
 
 .scroll-container {
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1a1a1a;
+  }
+}
+
+.info-section {
+  margin: 20rpx 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 20rpx 20rpx;
+    position: relative;
+
+    &.notice-item {
+      border-bottom: 2rpx solid #007AFF;
+    }
+
+    &.activity-item {
+      border-bottom: 1rpx solid #F5F5F5;
+      transition: border-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        border-bottom-color: #444444;
+      }
+    }
+
+    &.recommend-item {
+      // 最后一项无边框
+    }
+
+    .info-tag {
+      flex-shrink: 0;
+      font-size: 26rpx;
+      font-weight: 500;
+
+      &.notice-tag {
+        color: #FF9500;
+        background-color: #FFF3E0;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
+      }
+
+      &.activity-tag {
+        color: #333333;
+        background-color: #E8F4F8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 244, 248, 0.2);
+        }
+      }
+
+      &.recommend-tag {
+        color: #333333;
+        background-color: #E8F8E8;
+        padding: 4rpx 12rpx;
+        border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 248, 232, 0.2);
+        }
+      }
+    }
+
+    .info-divider {
+      margin: 0 16rpx;
+      color: #CCCCCC;
+      font-size: 26rpx;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #666666;
+      }
+    }
+
+    .info-text {
+      flex: 1;
+      font-size: 26rpx;
+      color: #666666;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #b0b0b0;
+      }
+    }
+  }
 }
 
 .goods-list {
@@ -281,6 +423,11 @@ export default {
     background-color: #FFFFFF;
     border-radius: 16rpx;
     overflow: hidden;
+    transition: background-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #2a2a2a;
+    }
 
     .goods-image {
       width: 100%;
@@ -297,6 +444,11 @@ export default {
         color: #333333;
         line-height: 1.4;
         margin-bottom: 12rpx;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+        }
       }
 
       .goods-meta {
@@ -327,12 +479,23 @@ export default {
             padding: 2rpx 8rpx;
             background-color: #F5F5F5;
             border-radius: 4rpx;
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            .page-container.dark-mode & {
+              background-color: #3a3a3a;
+              color: #808080;
+            }
           }
         }
 
         .want-count {
           font-size: 22rpx;
           color: #999999;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #808080;
+          }
         }
       }
 
@@ -340,6 +503,11 @@ export default {
         font-size: 22rpx;
         color: #999999;
         align-self: flex-end;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #808080;
+        }
       }
     }
   }
@@ -350,5 +518,10 @@ export default {
   text-align: center;
   font-size: 26rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .page-container.dark-mode & {
+    color: #808080;
+  }
 }
 </style>

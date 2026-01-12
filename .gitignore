@@ -3,3 +3,4 @@ front-end/node_modules
 layer/node_modules
 admin/node_modules
 claude --dangerously-skip-permissions
+.ace-tool/

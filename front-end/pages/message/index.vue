@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 状态栏占位 -->
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
@@ -71,9 +71,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import { messageApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -147,15 +150,31 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .status-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 }
 
 .message-tabs {
   background-color: #FFFFFF;
   border-bottom: 1rpx solid #EEEEEE;
+  transition: all 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+    border-bottom-color: #444444;
+  }
 
   .tabs-scroll {
     white-space: nowrap;
@@ -172,6 +191,11 @@ export default {
         .tab-text {
           font-size: 28rpx;
           color: #666666;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #b0b0b0;
+          }
         }
 
         .tab-badge {
@@ -194,6 +218,10 @@ export default {
           .tab-text {
             color: #007AFF;
             font-weight: 600;
+
+            .page-container.dark-mode & {
+              color: #5a9fff;
+            }
           }
         }
       }
@@ -203,6 +231,11 @@ export default {
 
 .message-scroll {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .message-list {
@@ -211,6 +244,11 @@ export default {
     align-items: center;
     padding: 24rpx;
     border-bottom: 1rpx solid #F5F5F5;
+    transition: all 0.3s ease;
+
+    .page-container.dark-mode & {
+      border-bottom-color: #3a3a3a;
+    }
 
     .avatar-box {
       position: relative;
@@ -253,17 +291,32 @@ export default {
           font-size: 30rpx;
           color: #333333;
           font-weight: 500;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #e0e0e0;
+          }
         }
 
         .message-time {
           font-size: 24rpx;
           color: #999999;
+          transition: color 0.3s ease;
+
+          .page-container.dark-mode & {
+            color: #808080;
+          }
         }
       }
 
       .message-text {
         font-size: 26rpx;
         color: #999999;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #808080;
+        }
       }
     }
 

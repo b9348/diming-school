@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 状态栏占位 -->
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
@@ -122,9 +122,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import { helpApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -283,20 +286,40 @@ export default {
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
 }
 
 .status-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 }
 
 .scroll-container {
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #1a1a1a;
+  }
 }
 
 .info-section {
   margin: 20rpx 24rpx;
   background-color: #FFFFFF;
   border-radius: 12rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .info-item {
     display: flex;
@@ -310,6 +333,11 @@ export default {
 
     &.activity-item {
       border-bottom: 1rpx solid #F5F5F5;
+      transition: border-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        border-bottom-color: #444444;
+      }
     }
 
     &.recommend-item {
@@ -333,6 +361,12 @@ export default {
         background-color: #E8F4F8;
         padding: 4rpx 12rpx;
         border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 244, 248, 0.2);
+        }
       }
 
       &.recommend-tag {
@@ -340,6 +374,12 @@ export default {
         background-color: #E8F8E8;
         padding: 4rpx 12rpx;
         border-radius: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #e0e0e0;
+          background-color: rgba(232, 248, 232, 0.2);
+        }
       }
     }
 
@@ -347,12 +387,22 @@ export default {
       margin: 0 16rpx;
       color: #CCCCCC;
       font-size: 26rpx;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #666666;
+      }
     }
 
     .info-text {
       flex: 1;
       font-size: 26rpx;
       color: #666666;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #b0b0b0;
+      }
     }
   }
 }
@@ -366,6 +416,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   border-radius: 16rpx;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .help-header {
     display: flex;
@@ -377,6 +432,11 @@ export default {
       padding: 12rpx 24rpx;
       background-color: #F5F5F5;
       border-radius: 8rpx;
+      transition: background-color 0.3s ease;
+
+      .page-container.dark-mode & {
+        background-color: #3a3a3a;
+      }
 
       .countdown {
         font-size: 32rpx;
@@ -394,6 +454,11 @@ export default {
         font-size: 24rpx;
         color: #999999;
         margin-right: 8rpx;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #808080;
+        }
       }
 
       .price-symbol {
@@ -414,6 +479,11 @@ export default {
     color: #333333;
     line-height: 1.6;
     margin-bottom: 16rpx;
+    transition: color 0.3s ease;
+
+    .page-container.dark-mode & {
+      color: #e0e0e0;
+    }
   }
 
   .help-images {
@@ -437,11 +507,21 @@ export default {
     .delivery-time {
       font-size: 24rpx;
       color: #666666;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #b0b0b0;
+      }
     }
 
     .help-location {
       font-size: 24rpx;
       color: #999999;
+      transition: color 0.3s ease;
+
+      .page-container.dark-mode & {
+        color: #808080;
+      }
     }
   }
 
@@ -469,6 +549,11 @@ export default {
       .user-name {
         font-size: 24rpx;
         color: #666666;
+        transition: color 0.3s ease;
+
+        .page-container.dark-mode & {
+          color: #b0b0b0;
+        }
       }
     }
   }
@@ -482,6 +567,11 @@ export default {
   padding: 16rpx 24rpx;
   background-color: #FFFFFF;
   box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: #2a2a2a;
+  }
 
   .action-btn {
     height: 88rpx;
@@ -492,6 +582,12 @@ export default {
     color: #333333;
     background-color: #F5F5F5;
     border-radius: 44rpx;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: #3a3a3a;
+      color: #e0e0e0;
+    }
   }
 }
 
@@ -500,5 +596,10 @@ export default {
   text-align: center;
   font-size: 26rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .page-container.dark-mode & {
+    color: #808080;
+  }
 }
 </style>

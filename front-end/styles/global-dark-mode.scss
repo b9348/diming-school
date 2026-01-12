@@ -1,0 +1,97 @@
+/**
+ * 全局夜间模式样式
+ * 自动应用到所有页面
+ */
+
+/* 页面容器 */
+.page-container {
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: #1a1a1a;
+  }
+}
+
+/* 状态栏 */
+.status-bar {
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+}
+
+/* 滚动容器 */
+.scroll-container {
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: #1a1a1a;
+  }
+}
+
+/* 卡片/内容区域 */
+.content-card,
+.card,
+.item-card {
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: #2a2a2a;
+  }
+}
+
+/* 文本颜色 */
+.text-primary {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: #e0e0e0;
+  }
+}
+
+.text-secondary {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: #b0b0b0;
+  }
+}
+
+.text-tertiary {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: #808080;
+  }
+}
+
+/* 边框 */
+.border {
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: #444444;
+  }
+}
+
+/* 输入框 */
+input,
+textarea {
+  transition: all 0.3s ease;
+
+  .dark-mode & {
+    background-color: #3a3a3a;
+    border-color: #444444;
+    color: #e0e0e0;
+  }
+}
+
+/* 链接 */
+.link {
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: #5a9fff;
+  }
+}

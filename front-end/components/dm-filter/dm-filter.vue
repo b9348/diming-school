@@ -1,5 +1,5 @@
 <template>
-  <view class="dm-filter" :class="{ 'is-visible': visible }">
+  <view class="dm-filter" :class="{ 'is-visible': visible, 'dark-mode': darkMode }">
     <view class="filter-mask" @click="close"></view>
     <view class="filter-content">
       <!-- 状态栏占位 -->
@@ -126,7 +126,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   props: {
     visible: {
       type: Boolean,
@@ -261,6 +264,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .dm-filter {
   position: fixed;
   top: 0;
@@ -307,11 +312,7 @@ export default {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .filter-status-bar {
-    background-color: #FFFFFF;
-    flex-shrink: 0;
-  }
-
+  .filter-status-bar,
   .filter-capsule-bar {
     background-color: #FFFFFF;
     flex-shrink: 0;
@@ -323,6 +324,7 @@ export default {
     justify-content: space-between;
     padding: 32rpx 24rpx;
     border-bottom: 1rpx solid #EEEEEE;
+    transition: border-color 0.3s ease;
 
     .filter-title {
       font-size: 32rpx;
@@ -352,6 +354,7 @@ export default {
         color: #333333;
         font-weight: 500;
         margin-bottom: 20rpx;
+        transition: color 0.3s ease;
       }
 
       .range-wrapper {
@@ -396,6 +399,7 @@ export default {
           background-color: #F5F5F5;
           border-radius: 8rpx;
           padding: 16rpx 20rpx;
+          transition: background-color 0.3s ease;
           .range-input {
             width: 100%;
             font-size: 28rpx;
@@ -417,6 +421,7 @@ export default {
         padding: 20rpx 24rpx;
         background-color: #F5F5F5;
         border-radius: 8rpx;
+        transition: background-color 0.3s ease;
         .picker-value {
           font-size: 28rpx;
           color: #333;
@@ -443,6 +448,7 @@ export default {
           color: #666666;
           background-color: #F5F5F5;
           border-radius: 8rpx;
+          transition: all 0.3s ease;
 
           &.active {
             color: #007AFF;
@@ -457,6 +463,7 @@ export default {
     display: flex;
     padding: 24rpx;
     border-top: 1rpx solid #EEEEEE;
+    transition: border-color 0.3s ease;
 
     .btn-cancel,
     .btn-confirm {
@@ -473,6 +480,7 @@ export default {
       color: #666666;
       background-color: #F5F5F5;
       margin-right: 24rpx;
+      transition: all 0.3s ease;
     }
 
     .btn-confirm {
@@ -505,6 +513,7 @@ export default {
       bottom: 0;
       background-color: #fff;
       border-radius: 24rpx 24rpx 0 0;
+      transition: background-color 0.3s ease;
     }
 
     .picker-header {
@@ -513,6 +522,7 @@ export default {
       justify-content: space-between;
       padding: 24rpx 32rpx;
       border-bottom: 1rpx solid #eee;
+      transition: border-color 0.3s ease;
 
       .picker-cancel {
         font-size: 28rpx;
@@ -541,5 +551,73 @@ export default {
       color: #333;
     }
   }
+}
+
+// 夜间模式样式（不使用 :global，因为 WXSS 不支持）
+.dm-filter.dark-mode {
+  .filter-content,
+  .filter-status-bar,
+  .filter-capsule-bar,
+  .picker-panel {
+    background-color: $dark-bg-secondary;
+  }
+}
+
+.dm-filter.dark-mode {
+  .filter-header,
+  .filter-footer,
+  .picker-header {
+    border-color: $dark-border;
+  }
+}
+
+.dm-filter.dark-mode {
+  .filter-title,
+  .picker-value,
+  .picker-title,
+  .picker-item,
+  .range-input {
+    color: $dark-text-primary;
+  }
+}
+
+.dm-filter.dark-mode .group-title {
+  color: #b0b0b0 !important;
+}
+
+.dm-filter.dark-mode {
+  .filter-reset,
+  .check-icon,
+  .range-val,
+  .filter-item.active {
+    color: $dark-link;
+  }
+}
+
+.dm-filter.dark-mode {
+  .range-sep,
+  .range-label,
+  .input-sep,
+  .picker-arrow,
+  .picker-cancel {
+    color: $dark-text-tertiary;
+  }
+}
+
+.dm-filter.dark-mode {
+  .input-box,
+  .picker-wrapper,
+  .filter-item,
+  .btn-cancel {
+    background-color: $dark-bg-tertiary;
+  }
+}
+
+.dm-filter.dark-mode .filter-item {
+  color: $dark-text-primary;
+}
+
+.dm-filter.dark-mode .filter-item.active {
+  background-color: rgba(0, 122, 255, 0.15);
 }
 </style>

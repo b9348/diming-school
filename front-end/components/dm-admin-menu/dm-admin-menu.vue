@@ -64,10 +64,13 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 import { AdminAction } from '@/utils/admin.js'
 import userStore from '@/store/user.js'
 
 export default {
+  mixins: [componentBaseMixin],
   props: {
     show: {
       type: Boolean,

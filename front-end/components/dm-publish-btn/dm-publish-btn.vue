@@ -5,7 +5,10 @@
 </template>
 
 <script>
+import componentBaseMixin from '@/mixins/component-base.js'
+
 export default {
+  mixins: [componentBaseMixin],
   emits: ['click'],
   methods: {
     handleClick() {

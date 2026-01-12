@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <!-- 导航栏 -->
     <view class="nav-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
       <view class="nav-content">
@@ -130,7 +130,10 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -232,13 +235,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+
+  .dark-mode & {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
   .nav-content {
     display: flex;
     align-items: center;
@@ -246,7 +258,14 @@ export default {
     height: 88rpx;
     padding: 0 24rpx;
     .nav-back { padding: 10rpx; }
-    .nav-title { font-size: 34rpx; color: #333333; font-weight: 600; }
+    .nav-title {
+      font-size: 34rpx;
+      color: #333333;
+      font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
+    }
     .nav-placeholder { width: 40rpx; }
   }
 }
@@ -264,6 +283,12 @@ export default {
   padding-left: calc(24rpx + env(safe-area-inset-left));
   background-color: #FFFFFF;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
 
   &.textarea-item {
     flex-direction: column;
@@ -274,6 +299,9 @@ export default {
     font-size: 30rpx;
     color: #333333;
     flex-shrink: 0;
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .item-right {
@@ -298,6 +326,9 @@ export default {
       color: #333333;
       text-align: right;
       min-width: 200rpx;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
 
     .item-textarea {
@@ -306,11 +337,17 @@ export default {
       font-size: 28rpx;
       color: #333333;
       line-height: 1.6;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
 
     .item-value {
       font-size: 28rpx;
       color: #999999;
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
 
     .picker-view {
@@ -337,6 +374,11 @@ export default {
 .gender-picker {
   background-color: #FFFFFF;
   border-radius: 32rpx 32rpx 0 0;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .picker-header {
     display: flex;
@@ -344,6 +386,11 @@ export default {
     justify-content: space-between;
     padding: 32rpx 24rpx;
     border-bottom: 1rpx solid #F5F5F5;
+    transition: border-color 0.3s ease;
+
+    .dark-mode & {
+      border-color: $dark-border;
+    }
 
     .picker-cancel, .picker-confirm {
       font-size: 28rpx;
@@ -354,6 +401,9 @@ export default {
       font-size: 32rpx;
       color: #333333;
       font-weight: 600;
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 
@@ -364,6 +414,11 @@ export default {
       justify-content: space-between;
       padding: 32rpx 24rpx;
       border-bottom: 1rpx solid #F5F5F5;
+      transition: border-color 0.3s ease;
+
+      .dark-mode & {
+        border-color: $dark-border;
+      }
 
       &.active {
         .option-text {
@@ -374,6 +429,9 @@ export default {
       .option-text {
         font-size: 30rpx;
         color: #333333;
+        .dark-mode & {
+          color: $dark-text-primary;
+        }
       }
     }
   }

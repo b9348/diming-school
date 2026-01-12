@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="page-container" :class="{ 'dark-mode': darkMode }">
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
 
     <!-- 导航栏 -->
@@ -39,9 +39,12 @@
 </template>
 
 <script>
+import pageBaseMixin from '@/mixins/page-base.js'
+
 import { regionApi } from '@/api/index.js'
 
 export default {
+  mixins: [pageBaseMixin],
   data() {
     return {
       statusBarHeight: 0,
@@ -105,13 +108,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .status-bar {
   background-color: #FFFFFF;
+  .page-container.dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 }
 
 .nav-bar {
@@ -120,6 +133,11 @@ export default {
   height: 88rpx;
   padding: 0 24rpx;
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .page-container.dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .back-btn {
     padding: 10rpx;
@@ -130,6 +148,9 @@ export default {
     font-size: 32rpx;
     font-weight: 600;
     color: #333333;
+    .page-container.dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -144,12 +165,21 @@ export default {
     background-color: #F5F5F5;
     border-radius: 36rpx;
     border: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .page-container.dark-mode & {
+      background-color: $dark-bg-tertiary;
+      border-color: $dark-border;
+    }
 
     input {
       flex: 1;
       margin-left: 16rpx;
       font-size: 28rpx;
       color: #333333;
+      .page-container.dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -166,11 +196,22 @@ export default {
     border-radius: 8rpx;
     font-size: 28rpx;
     color: #333333;
+    transition: all 0.3s ease;
+
+    .page-container.dark-mode & {
+      color: $dark-text-primary;
+      border-color: $dark-border;
+      background-color: $dark-bg-secondary;
+    }
 
     &.active {
       border-color: #007AFF;
       color: #007AFF;
       background-color: rgba(0, 122, 255, 0.05);
+
+      .page-container.dark-mode & {
+        background-color: rgba(0, 122, 255, 0.15);
+      }
     }
 
     &.fixed {
