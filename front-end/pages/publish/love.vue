@@ -177,6 +177,38 @@
         </view>
       </view>
 
+      <!-- 可见范围 -->
+      <view class="form-group">
+        <text class="group-title">可见范围</text>
+        <view class="visibility-tabs">
+          <view
+            class="visibility-tab"
+            :class="{ active: formData.visibilityType === 'campus' }"
+            @click="formData.visibilityType = 'campus'"
+          >
+            <text>可见校区</text>
+          </view>
+          <view
+            class="visibility-tab"
+            :class="{ active: formData.visibilityType === 'school' }"
+            @click="formData.visibilityType = 'school'"
+          >
+            <text>可见学校</text>
+          </view>
+        </view>
+        <view class="visibility-tags">
+          <view
+            v-for="tag in visibilityOptions"
+            :key="tag.value"
+            class="visibility-tag"
+            :class="{ active: formData.visibilityValue === tag.value }"
+            @click="formData.visibilityValue = tag.value"
+          >
+            <text>{{ tag.label }}</text>
+          </view>
+        </view>
+      </view>
+
       <!-- 照片上传 -->
       <view class="form-group">
         <text class="group-title">个人形象生活照片</text>
@@ -207,6 +239,7 @@
 
 <script>
 import pageBaseMixin from '@/mixins/page-base.js'
+import { regionApi } from '@/api/index.js'
 
 export default {
   mixins: [pageBaseMixin],
@@ -246,16 +279,35 @@ export default {
         q1: '',
         q2: '',
         q3: '',
-        images: []
-      }
+        images: [],
+        visibilityType: 'campus',
+        visibilityValue: 'all'
+      },
+      visibilityOptions: []
     }
   },
   onLoad() {
     this.statusBarHeight = uni.getWindowInfo().statusBarHeight
     this.calcRightSafeArea()
     this.calcScrollHeight()
+    this.loadVisibilityOptions()
   },
   methods: {
+    async loadVisibilityOptions() {
+      try {
+        const data = await regionApi.getVisibleOptions()
+        this.visibilityOptions = (data || []).map(item => ({
+          label: item.label,
+          value: item.value
+        }))
+      } catch (e) {
+        this.visibilityOptions = [
+          { label: '外校', value: 'other' },
+          { label: '全国', value: 'all' },
+          { label: '本校', value: 'campus' }
+        ]
+      }
+    },
     calcRightSafeArea() {
       // #ifdef MP-WEIXIN
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
@@ -306,13 +358,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .nav-content {
     position: relative;
@@ -325,6 +389,11 @@ export default {
       font-size: 30rpx;
       color: #666666;
       z-index: 10;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
     }
 
     .nav-title {
@@ -334,6 +403,11 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -348,6 +422,12 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-top-color: $dark-border;
+  }
 
   .submit-btn {
     width: 100%;
@@ -372,21 +452,36 @@ export default {
   background-color: #FFFFFF;
   margin-bottom: 20rpx;
   padding: 0 24rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .group-title {
     display: block;
     padding: 24rpx 0 16rpx;
     font-size: 28rpx;
     color: #333333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
 .form-row {
   display: flex;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
   }
 }
 
@@ -405,6 +500,11 @@ export default {
     color: #333333;
     margin-right: 16rpx;
     white-space: nowrap;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .item-value {
@@ -415,6 +515,12 @@ export default {
     background-color: #F5F5F5;
     border-radius: 8rpx;
     text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+      color: $dark-text-primary;
+    }
   }
 
   .item-input {
@@ -427,21 +533,37 @@ export default {
     background-color: #F5F5F5;
     border-radius: 8rpx;
     text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+      color: $dark-text-primary;
+    }
   }
 
   .item-unit {
     font-size: 26rpx;
     color: #666666;
     margin-left: 8rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-secondary;
+    }
   }
 }
 
 .form-section {
   padding: 20rpx 0;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
   }
 
   .section-label {
@@ -449,6 +571,11 @@ export default {
     font-size: 28rpx;
     color: #333333;
     margin-bottom: 12rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .section-input {
@@ -461,6 +588,12 @@ export default {
     background-color: #F5F5F5;
     border-radius: 8rpx;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+      color: $dark-text-primary;
+    }
   }
 
   .section-textarea {
@@ -472,6 +605,12 @@ export default {
     background-color: #F5F5F5;
     border-radius: 8rpx;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -514,11 +653,85 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+    }
   }
 }
 
 .image-tip {
   font-size: 24rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
+}
+
+.visibility-tabs {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.visibility-tab {
+  flex: 1;
+  height: 64rpx;
+  background-color: #F5F5F5;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666666;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &.active {
+    background-color: #333333;
+    color: #FFFFFF;
+  }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    color: $dark-text-secondary;
+
+    &.active {
+      background-color: $dark-link;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.visibility-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.visibility-tag {
+  padding: 12rpx 24rpx;
+  background-color: #F5F5F5;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #666666;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+  &.active {
+    background-color: #333333;
+    color: #FFFFFF;
+  }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    color: $dark-text-secondary;
+
+    &.active {
+      background-color: $dark-link;
+      color: #FFFFFF;
+    }
+  }
 }
 </style>

@@ -107,7 +107,10 @@ export const configApi = {
   savePricing: (data) => post('/admin/config/pricing', data),
   getRegionList: () => get('/admin/config/region'),
   saveRegion: (data) => post('/admin/config/region', data),
-  deleteRegion: (id) => post(`/admin/config/region/${id}/delete`)
+  deleteRegion: (id) => post(`/admin/config/region/${id}/delete`),
+  getSchoolList: () => get('/admin/config/school'),
+  saveSchool: (data) => post('/admin/config/school', data),
+  deleteSchool: (id) => post(`/admin/config/school/${id}/delete`)
 }
 
 // 拍卖管理

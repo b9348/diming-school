@@ -303,13 +303,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .nav-content {
     position: relative;
@@ -322,6 +334,11 @@ export default {
       font-size: 30rpx;
       color: #666666;
       z-index: 10;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
     }
 
     .nav-title {
@@ -331,6 +348,11 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -350,6 +372,12 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-top-color: $dark-border;
+  }
 
   .submit-btn {
     width: 100%;
@@ -376,6 +404,11 @@ export default {
     font-size: 28rpx;
     color: #333;
     margin-bottom: 16rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -384,12 +417,23 @@ export default {
   border-radius: 8rpx;
   padding: 20rpx;
   background: #FFFFFF;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
 
   .content-input {
     width: 100%;
     min-height: 120rpx;
     font-size: 28rpx;
     color: #333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -432,6 +476,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: border-color 0.3s ease;
+
+    .dark-mode & {
+      border-color: $dark-border;
+    }
   }
 }
 
@@ -440,6 +489,11 @@ export default {
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
   overflow: hidden;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 
   .time-option {
     flex: 1;
@@ -451,14 +505,24 @@ export default {
     color: #666;
     background: #FFFFFF;
     border-right: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 
     &:last-child {
       border-right: none;
     }
 
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-right-color: $dark-border;
+    }
+
     &.active {
       color: #333;
       font-weight: 500;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -476,6 +540,13 @@ export default {
     color: #999;
     background: #FFFFFF;
     box-sizing: border-box;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+    }
   }
 
   .picker-input {
@@ -493,6 +564,11 @@ export default {
     font-size: 28rpx;
     color: #333;
     margin-right: 20rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .contact-types {
@@ -502,9 +578,22 @@ export default {
     .contact-type {
       font-size: 26rpx;
       color: #999;
+      transition: color 0.3s ease;
 
       &.active {
         color: #333;
+
+        .dark-mode & {
+          color: $dark-text-primary;
+        }
+      }
+
+      .dark-mode & {
+        color: $dark-text-tertiary;
+
+        &.active {
+          color: $dark-link;
+        }
       }
     }
   }
@@ -521,6 +610,13 @@ export default {
     color: #999;
     background: #FFFFFF;
     box-sizing: border-box;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -530,6 +626,11 @@ export default {
   border-radius: 8rpx;
   overflow: hidden;
   margin-bottom: 20rpx;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 
   .visibility-tab {
     flex: 1;
@@ -541,14 +642,24 @@ export default {
     color: #666;
     background: #FFFFFF;
     border-right: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 
     &:last-child {
       border-right: none;
     }
 
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-right-color: $dark-border;
+    }
+
     &.active {
       color: #333;
       font-weight: 500;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -565,10 +676,23 @@ export default {
     font-size: 26rpx;
     color: #666;
     background: #FFFFFF;
+    transition: all 0.3s ease;
 
     &.active {
       border-color: #007AFF;
       color: #007AFF;
+    }
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-secondary;
+
+      &.active {
+        border-color: $dark-link;
+        color: $dark-link;
+        background-color: rgba(90, 159, 255, 0.1);
+      }
     }
   }
 }

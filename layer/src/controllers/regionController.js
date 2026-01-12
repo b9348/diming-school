@@ -9,8 +9,13 @@ exports.getList = async (req, res, next) => {
     const regions = [
       { id: 0, name: '全国', type: 'all', is_fixed: true },
       { id: 10, name: '上海', type: 'city', is_fixed: false },
-      { id: 11, name: '天津', type: 'city', is_fixed: false },
-      { id: 99, name: '南京大学城', type: 'zone', is_fixed: false }
+      { id: 11, name: '北京', type: 'city', is_fixed: false },
+      { id: 12, name: '广州', type: 'city', is_fixed: false },
+      { id: 13, name: '深圳', type: 'city', is_fixed: false },
+      { id: 14, name: '天津', type: 'city', is_fixed: false },
+      { id: 15, name: '南京', type: 'city', is_fixed: false },
+      { id: 99, name: '滴水湖大学城', type: 'zone', is_fixed: false },
+      { id: 100, name: '南京大学城', type: 'zone', is_fixed: false }
     ]
     successResponse(res, regions)
   } catch (error) {
@@ -29,9 +34,18 @@ exports.getSchools = async (req, res, next) => {
     let schools = [
       { id: 1, name: '上海交通大学', region_id: 10, region_name: '上海' },
       { id: 2, name: '复旦大学', region_id: 10, region_name: '上海' },
-      { id: 3, name: '南开大学', region_id: 11, region_name: '天津' },
-      { id: 4, name: '天津大学', region_id: 11, region_name: '天津' },
-      { id: 5, name: '南京大学', region_id: 99, region_name: '南京大学城' }
+      { id: 3, name: '同济大学', region_id: 10, region_name: '上海' },
+      { id: 4, name: '北京大学', region_id: 11, region_name: '北京' },
+      { id: 5, name: '清华大学', region_id: 11, region_name: '北京' },
+      { id: 6, name: '中国人民大学', region_id: 11, region_name: '北京' },
+      { id: 7, name: '中山大学', region_id: 12, region_name: '广州' },
+      { id: 8, name: '华南理工大学', region_id: 12, region_name: '广州' },
+      { id: 9, name: '深圳大学', region_id: 13, region_name: '深圳' },
+      { id: 10, name: '南方科技大学', region_id: 13, region_name: '深圳' },
+      { id: 11, name: '南开大学', region_id: 14, region_name: '天津' },
+      { id: 12, name: '天津大学', region_id: 14, region_name: '天津' },
+      { id: 13, name: '南京大学', region_id: 15, region_name: '南京' },
+      { id: 14, name: '东南大学', region_id: 15, region_name: '南京' }
     ]
     if (regionId && regionId !== '0') {
       schools = schools.filter(s => s.region_id === parseInt(regionId))

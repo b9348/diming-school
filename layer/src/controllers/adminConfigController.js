@@ -50,27 +50,21 @@ exports.savePricing = async (req, res, next) => {
 }
 
 /**
- * 获取地区配置列表
+ * 获取地区配置列表（用于后台管理）
  */
 exports.getRegionList = async (req, res, next) => {
   try {
     // TODO: 从数据库获取配置
     const regions = [
-      { id: 0, name: '全国可见', label: '全国', value: 'all', type: 'all', enabled: true },
-      { id: 1, name: '本城市可见', label: '全市', value: 'city', type: 'city', enabled: true },
-      { id: 2, name: '本校区可见', label: '本校', value: 'campus', type: 'school', enabled: true },
-      { id: 3, name: '外校可见', label: '外校', value: 'other', type: 'other', enabled: true },
-      { id: 4, name: '滴水湖大学城', label: '滴水湖大学城', value: 'dishui', type: 'zone', enabled: true },
-      { id: 5, name: '指定范围', label: '指定', value: 'specify', type: 'specify', enabled: true },
-      { id: 6, name: '全区可见', label: '全区', value: 'district', type: 'district', enabled: true },
-      { id: 7, name: '全省可见', label: '全省', value: 'province', type: 'province', enabled: true },
-      { id: 8, name: '华东地区', label: '华东', value: 'east', type: 'region', enabled: true },
-      { id: 9, name: '华中地区', label: '华中', value: 'central', type: 'region', enabled: true },
-      { id: 10, name: '西南地区', label: '西南', value: 'southwest', type: 'region', enabled: true },
-      { id: 11, name: '华南地区', label: '华南', value: 'south', type: 'region', enabled: true },
-      { id: 12, name: '东北地区', label: '东北', value: 'northeast', type: 'region', enabled: true },
-      { id: 13, name: '华北地区', label: '华北', value: 'north', type: 'region', enabled: true },
-      { id: 14, name: '西北地区', label: '西北', value: 'northwest', type: 'region', enabled: true }
+      { id: 0, name: '全国', type: 'all', enabled: true },
+      { id: 10, name: '上海', type: 'city', enabled: true },
+      { id: 11, name: '北京', type: 'city', enabled: true },
+      { id: 12, name: '广州', type: 'city', enabled: true },
+      { id: 13, name: '深圳', type: 'city', enabled: true },
+      { id: 14, name: '天津', type: 'city', enabled: true },
+      { id: 15, name: '南京', type: 'city', enabled: true },
+      { id: 99, name: '滴水湖大学城', type: 'zone', enabled: true },
+      { id: 100, name: '南京大学城', type: 'zone', enabled: true }
     ]
     successResponse(res, regions)
   } catch (error) {
@@ -95,6 +89,56 @@ exports.saveRegion = async (req, res, next) => {
  * 删除地区配置
  */
 exports.deleteRegion = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    // TODO: 从数据库删除
+    successResponse(res, null, '删除成功')
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * 获取校区列表（用于后台管理）
+ */
+exports.getSchoolList = async (req, res, next) => {
+  try {
+    // TODO: 从数据库获取配置
+    const schools = [
+      { id: 1, name: '上海交通大学', region_id: 10, region_name: '上海', enabled: true },
+      { id: 2, name: '复旦大学', region_id: 10, region_name: '上海', enabled: true },
+      { id: 3, name: '同济大学', region_id: 10, region_name: '上海', enabled: true },
+      { id: 4, name: '北京大学', region_id: 11, region_name: '北京', enabled: true },
+      { id: 5, name: '清华大学', region_id: 11, region_name: '北京', enabled: true },
+      { id: 6, name: '中山大学', region_id: 12, region_name: '广州', enabled: true },
+      { id: 7, name: '深圳大学', region_id: 13, region_name: '深圳', enabled: true },
+      { id: 8, name: '南开大学', region_id: 14, region_name: '天津', enabled: true },
+      { id: 9, name: '天津大学', region_id: 14, region_name: '天津', enabled: true },
+      { id: 10, name: '南京大学', region_id: 15, region_name: '南京', enabled: true }
+    ]
+    successResponse(res, schools)
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * 保存校区配置
+ */
+exports.saveSchool = async (req, res, next) => {
+  try {
+    const { id, name, region_id, enabled } = req.body
+    // TODO: 保存到数据库
+    successResponse(res, { id, name, region_id, enabled }, '保存成功')
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * 删除校区配置
+ */
+exports.deleteSchool = async (req, res, next) => {
   try {
     const { id } = req.params
     // TODO: 从数据库删除

@@ -17,26 +17,46 @@ const generatePostList = (page, pageSize, tab) => {
   const startId = (page - 1) * pageSize
   const titles = ['头衔', '学长', '学姐', '校友', '']
 
-  return Array(pageSize).fill(null).map((_, i) => ({
-    id: startId + i + 1,
-    avatar: 'https://iph.href.lu/100x100?text=头像',
-    nickname: ['张三', '李四', '王五', '赵六', '钱七'][i % 5],
-    title: titles[i % 5],
-    time: ['2分钟前', '5分钟前', '10分钟前', '30分钟前', '1小时前'][i % 5],
-    isTop: i === 0,
-    content: '今天天气很好，测试文本的代价弟弟得到好的好的环境的基督教弟弟弟弟等级地方法的那段艰难的大家都降低看到，这里显示帖子里的文字前200字',
-    images: i % 3 === 0 ? [] : [
-      'https://iph.href.lu/400x300?text=图片1',
-      'https://iph.href.lu/400x300?text=图片2',
-      'https://iph.href.lu/400x300?text=图片3'
-    ].slice(0, (i % 3) + 1),
-    comments: generateCommentPreview(i),
-    viewCount: Math.floor(Math.random() * 900) + 100,
-    location: ['闵行校区', '徐汇校区', '海定校区', '杨浦校区'][i % 4],
-    likeCount: Math.floor(Math.random() * 100) + 10,
-    commentCount: Math.floor(Math.random() * 50) + 5,
-    isLiked: false
-  }))
+  // 不同地区的帖子数据
+  const regionData = {
+    10: { schools: ['上海交通大学', '复旦大学', '同济大学'], city: '上海' },
+    11: { schools: ['北京大学', '清华大学', '中国人民大学'], city: '北京' },
+    12: { schools: ['中山大学', '华南理工大学'], city: '广州' },
+    13: { schools: ['深圳大学', '南方科技大学'], city: '深圳' },
+    14: { schools: ['南开大学', '天津大学'], city: '天津' },
+    15: { schools: ['南京大学', '东南大学'], city: '南京' }
+  }
+
+  return Array(pageSize).fill(null).map((_, i) => {
+    const regionId = [10, 11, 12, 13, 14, 15][i % 6]
+    const region = regionData[regionId]
+    const schoolIndex = i % region.schools.length
+
+    return {
+      id: startId + i + 1,
+      avatar: 'https://iph.href.lu/100x100?text=头像',
+      nickname: ['张三', '李四', '王五', '赵六', '钱七'][i % 5],
+      title: titles[i % 5],
+      time: ['2分钟前', '5分钟前', '10分钟前', '30分钟前', '1小时前'][i % 5],
+      isTop: i === 0,
+      content: '今天天气很好，测试文本的代价弟弟得到好的好的环境的基督教弟弟弟弟等级地方法的那段艰难的大家都降低看到，这里显示帖子里的文字前200字',
+      images: i % 3 === 0 ? [] : [
+        'https://iph.href.lu/400x300?text=图片1',
+        'https://iph.href.lu/400x300?text=图片2',
+        'https://iph.href.lu/400x300?text=图片3'
+      ].slice(0, (i % 3) + 1),
+      comments: generateCommentPreview(i),
+      viewCount: Math.floor(Math.random() * 900) + 100,
+      location: region.schools[schoolIndex],
+      region_id: regionId,
+      region_name: region.city,
+      school_id: schoolIndex + 1,
+      visibility: ['all', 'city', 'school'][i % 3],
+      likeCount: Math.floor(Math.random() * 100) + 10,
+      commentCount: Math.floor(Math.random() * 50) + 5,
+      isLiked: false
+    }
+  })
 }
 
 // 获取帖子列表
@@ -47,7 +67,9 @@ const getList = (req, res) => {
     tab = '最新',
     sort = 'latest',
     contentType = '',
-    timeRange = ''
+    timeRange = '',
+    regionId = '0',
+    schoolId = ''
   } = req.query
   const pageNum = parseInt(page)
   const size = parseInt(pageSize)
@@ -61,6 +83,20 @@ const getList = (req, res) => {
   }
 
   let list = generatePostList(pageNum, size, tab)
+
+  // 按地区筛选
+  if (regionId && regionId !== '0') {
+    const rid = parseInt(regionId)
+    list = list.filter(post => {
+      // 全国可见的帖子
+      if (post.visibility === 'all') return true
+      // 本城市可见的帖子
+      if (post.visibility === 'city' && post.region_id === rid) return true
+      // 本校区可见的帖子
+      if (post.visibility === 'school' && post.region_id === rid && (!schoolId || post.school_id === parseInt(schoolId))) return true
+      return false
+    })
+  }
 
   // 根据排序方式排序
   switch (sort) {

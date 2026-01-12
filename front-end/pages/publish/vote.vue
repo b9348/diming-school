@@ -170,6 +170,7 @@
 
 <script>
 import pageBaseMixin from '@/mixins/page-base.js'
+import { regionApi } from '@/api/index.js'
 
 export default {
   mixins: [pageBaseMixin],
@@ -193,19 +194,31 @@ export default {
         visibilityType: 'campus',
         visibilityValue: 'all'
       },
-      visibilityOptions: [
-        { label: '外校', value: 'other' },
-        { label: '全国', value: 'all' },
-        { label: '滴水湖大学城', value: 'dishui' }
-      ]
+      visibilityOptions: []
     }
   },
   onLoad() {
     const systemInfo = uni.getWindowInfo()
     this.statusBarHeight = systemInfo.statusBarHeight
     this.calcScrollHeight()
+    this.loadVisibilityOptions()
   },
   methods: {
+    async loadVisibilityOptions() {
+      try {
+        const data = await regionApi.getVisibleOptions()
+        this.visibilityOptions = (data || []).map(item => ({
+          label: item.label,
+          value: item.value
+        }))
+      } catch (e) {
+        this.visibilityOptions = [
+          { label: '外校', value: 'other' },
+          { label: '全国', value: 'all' },
+          { label: '本校', value: 'campus' }
+        ]
+      }
+    },
     calcScrollHeight() {
       const systemInfo = uni.getWindowInfo()
       const navBarHeight = uni.upx2px(88)
@@ -293,21 +306,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+
   .nav-content {
     position: relative;
     display: flex;
     align-items: center;
     height: 88rpx;
     padding: 0 24rpx;
-    .nav-cancel { font-size: 30rpx; color: #666666; z-index: 10; }
-    .nav-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 34rpx; color: #333333; font-weight: 600; }
+    .nav-cancel {
+      font-size: 30rpx;
+      color: #666666;
+      z-index: 10;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
+    }
+    .nav-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 34rpx;
+      color: #333333;
+      font-weight: 600;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
+    }
   }
 }
 
@@ -326,6 +373,13 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-top-color: $dark-border;
+  }
+
   .submit-btn {
     width: 100%;
     height: 88rpx;
@@ -347,6 +401,11 @@ export default {
     font-size: 28rpx;
     color: #333;
     margin-bottom: 16rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -355,11 +414,23 @@ export default {
   border-radius: 8rpx;
   padding: 20rpx;
   background: #FFFFFF;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
+
   .content-input {
     width: 100%;
     min-height: 120rpx;
     font-size: 28rpx;
     color: #333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -373,12 +444,24 @@ export default {
     border: 1rpx solid #E5E5E5;
     border-radius: 8rpx;
     background: #FFFFFF;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+    }
+
     .option-input {
       width: 100%;
       height: 80rpx;
       padding: 0 20rpx;
       font-size: 28rpx;
       color: #333;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
   .option-actions {
@@ -397,6 +480,13 @@ export default {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+    }
+
     .option-image-preview {
       width: 100%;
       height: 100%;
@@ -414,6 +504,12 @@ export default {
   border: 1rpx solid #E5E5E5;
   border-radius: 50%;
   background: #FFFFFF;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
 }
 
 // 投票类型
@@ -422,6 +518,12 @@ export default {
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
   overflow: hidden;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
+
   .type-option {
     flex: 1;
     height: 80rpx;
@@ -432,10 +534,22 @@ export default {
     color: #666;
     background: #FFFFFF;
     border-right: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
     &:last-child { border-right: none; }
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-right-color: $dark-border;
+    }
+
     &.active {
       color: #333;
       font-weight: 500;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -475,6 +589,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: border-color 0.3s ease;
+
+    .dark-mode & {
+      border-color: $dark-border;
+    }
   }
 }
 
@@ -487,10 +606,29 @@ export default {
   background: #FFFFFF;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
+
   .time-text {
     font-size: 26rpx;
     color: #333;
-    &.placeholder { color: #999; }
+    transition: color 0.3s ease;
+
+    &.placeholder {
+      color: #999;
+
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
+    }
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -501,6 +639,12 @@ export default {
   border-radius: 8rpx;
   overflow: hidden;
   margin-bottom: 20rpx;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
+
   .visibility-tab {
     flex: 1;
     height: 80rpx;
@@ -511,10 +655,22 @@ export default {
     color: #666;
     background: #FFFFFF;
     border-right: 1rpx solid #E5E5E5;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
     &:last-child { border-right: none; }
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-right-color: $dark-border;
+    }
+
     &.active {
       color: #333;
       font-weight: 500;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -530,9 +686,23 @@ export default {
     font-size: 26rpx;
     color: #666;
     background: #FFFFFF;
+    transition: all 0.3s ease;
+
     &.active {
       border-color: #007AFF;
       color: #007AFF;
+    }
+
+    .dark-mode & {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-secondary;
+
+      &.active {
+        border-color: $dark-link;
+        color: $dark-link;
+        background-color: rgba(90, 159, 255, 0.1);
+      }
     }
   }
 }

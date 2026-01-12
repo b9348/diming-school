@@ -401,13 +401,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+
   .nav-content {
     position: relative;
     display: flex;
@@ -418,6 +431,11 @@ export default {
       font-size: 30rpx;
       color: #666666;
       z-index: 10;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
     }
     .nav-title {
       position: absolute;
@@ -426,6 +444,11 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -440,6 +463,13 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-top-color: $dark-border;
+  }
+
   .submit-btn {
     width: 100%;
     height: 88rpx;
@@ -460,6 +490,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 }
 
 .section-title {
@@ -468,12 +503,23 @@ export default {
   font-weight: 500;
   margin-bottom: 20rpx;
   display: block;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
 }
 
 .content-box {
   border: 1rpx solid #E5E5E5;
   border-radius: 12rpx;
   padding: 20rpx;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+  }
 }
 
 .content-input {
@@ -482,6 +528,11 @@ export default {
   font-size: 28rpx;
   color: #333333;
   line-height: 1.6;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
 }
 
 .image-upload {
@@ -522,6 +573,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 }
 
 .price-group {
@@ -536,6 +592,11 @@ export default {
     color: #666666;
     margin-bottom: 12rpx;
     display: block;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-secondary;
+    }
   }
 }
 
@@ -545,15 +606,32 @@ export default {
   border: 1rpx solid #E5E5E5;
   border-radius: 8rpx;
   padding: 16rpx 20rpx;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+  }
+
   .price-unit {
     font-size: 28rpx;
     color: #333333;
     margin-right: 8rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
   .price-input {
     flex: 1;
     font-size: 28rpx;
     color: #333333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -563,6 +641,11 @@ export default {
   margin-top: 16rpx;
   display: block;
   line-height: 1.6;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
 }
 
 .deadline-tabs {
@@ -571,6 +654,11 @@ export default {
   border-radius: 8rpx;
   overflow: hidden;
   margin-bottom: 20rpx;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 }
 
 .deadline-tab {
@@ -581,9 +669,18 @@ export default {
   color: #666666;
   background-color: #FFFFFF;
   border-right: 1rpx solid #E5E5E5;
+  transition: all 0.3s ease;
+
   &:last-child {
     border-right: none;
   }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-right-color: $dark-border;
+    color: $dark-text-secondary;
+  }
+
   &.active {
     background-color: #007AFF;
     color: #FFFFFF;
@@ -601,6 +698,13 @@ export default {
   font-size: 28rpx;
   color: #333333;
   width: 200rpx;
+  transition: all 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+  }
 }
 
 .picker-input {
@@ -611,6 +715,11 @@ export default {
 .deadline-tip {
   font-size: 22rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
 }
 
 .contact-header {
@@ -631,8 +740,18 @@ export default {
 .contact-type {
   font-size: 26rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
   &.active {
     color: #007AFF;
+  }
+
+  .dark-mode & {
+    color: $dark-text-tertiary;
+
+    &.active {
+      color: $dark-link;
+    }
   }
 }
 
@@ -641,17 +760,33 @@ export default {
   border-radius: 8rpx;
   padding: 16rpx 20rpx;
   margin-bottom: 16rpx;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+  }
 }
 
 .contact-input {
   font-size: 28rpx;
   color: #333333;
   width: 100%;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
 }
 
 .contact-tip {
   font-size: 22rpx;
   color: #999999;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-tertiary;
+  }
 }
 
 .visibility-tabs {
@@ -660,6 +795,11 @@ export default {
   border-radius: 8rpx;
   overflow: hidden;
   margin-bottom: 24rpx;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
 }
 
 .visibility-tab {
@@ -669,9 +809,21 @@ export default {
   font-size: 28rpx;
   color: #666666;
   background-color: #FFFFFF;
+  transition: all 0.3s ease;
+
   &:first-child {
     border-right: 1rpx solid #E5E5E5;
+
+    .dark-mode & {
+      border-right-color: $dark-border;
+    }
   }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    color: $dark-text-secondary;
+  }
+
   &.active {
     background-color: #007AFF;
     color: #FFFFFF;
@@ -690,10 +842,24 @@ export default {
   border-radius: 32rpx;
   font-size: 26rpx;
   color: #666666;
+  transition: all 0.3s ease;
+
   &.active {
     border-color: #007AFF;
     color: #007AFF;
     background-color: rgba(0, 122, 255, 0.05);
+  }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+    color: $dark-text-secondary;
+
+    &.active {
+      border-color: $dark-link;
+      color: $dark-link;
+      background-color: rgba(90, 159, 255, 0.1);
+    }
   }
 }
 
@@ -710,8 +876,18 @@ export default {
     gap: 8rpx;
     font-size: 28rpx;
     color: #333333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
+
     .placeholder {
       color: #999999;
+
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
   }
 }
@@ -737,6 +913,12 @@ export default {
   transform: translateY(100%);
   transition: transform 0.3s ease;
   padding-bottom: env(safe-area-inset-bottom);
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+
   &.show {
     transform: translateY(0);
   }
@@ -748,10 +930,21 @@ export default {
   justify-content: space-between;
   padding: 32rpx 24rpx;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
+  }
+
   .popup-title {
     font-size: 32rpx;
     color: #333333;
     font-weight: 600;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 }
 
@@ -766,9 +959,21 @@ export default {
   border: 1rpx solid #E5E5E5;
   border-radius: 12rpx;
   margin-bottom: 20rpx;
+  transition: all 0.3s ease;
+
   &.active {
     border-color: #007AFF;
     background-color: rgba(0, 122, 255, 0.02);
+  }
+
+  .dark-mode & {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+
+    &.active {
+      border-color: $dark-link;
+      background-color: rgba(90, 159, 255, 0.1);
+    }
   }
 }
 
@@ -781,6 +986,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-color: $dark-border;
+  }
+
   .radio-inner {
     width: 24rpx;
     height: 24rpx;
@@ -791,23 +1002,42 @@ export default {
 
 .top-option-item.active .option-radio {
   border-color: #007AFF;
+
+  .dark-mode & {
+    border-color: $dark-link;
+  }
 }
 
 .option-text {
   flex: 1;
   font-size: 28rpx;
   color: #333333;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
 }
 
 .option-price {
   font-size: 28rpx;
   color: #333333;
   font-weight: 500;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
 }
 
 .popup-footer {
   padding: 24rpx;
   border-top: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-top-color: $dark-border;
+  }
 }
 
 .confirm-btn {

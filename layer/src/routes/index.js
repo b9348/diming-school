@@ -254,6 +254,9 @@ router.post('/admin/config/pricing', adminConfigController.savePricing)
 router.get('/admin/config/region', adminConfigController.getRegionList)
 router.post('/admin/config/region', adminConfigController.saveRegion)
 router.post('/admin/config/region/:id/delete', adminConfigController.deleteRegion)
+router.get('/admin/config/school', adminConfigController.getSchoolList)
+router.post('/admin/config/school', adminConfigController.saveSchool)
+router.post('/admin/config/school/:id/delete', adminConfigController.deleteSchool)
 
 // 拍卖管理
 router.get('/admin/auction/list', adminAuctionController.getList)

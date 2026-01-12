@@ -59,10 +59,10 @@
       </view>
 
       <!-- 可见范围 -->
-      <view class="form-item" @click="chooseVisible">
+      <view class="form-item" @click="showVisiblePicker = true">
         <text class="item-label">可见范围</text>
         <view class="item-value">
-          <text>{{ visibleOptions[formData.visible] || '请选择' }}</text>
+          <text>{{ currentVisibleLabel || '请选择' }}</text>
           <text class="tn-icon-right" style="font-size: 14px; color: #999999;"></text>
         </view>
       </view>
@@ -85,6 +85,61 @@
       <!-- 底部占位,防止内容被按钮遮挡 -->
       <view style="height: 120rpx;"></view>
     </scroll-view>
+
+    <!-- 可见范围选择器 -->
+    <view v-if="showVisiblePicker" class="picker-mask" @click="showVisiblePicker = false">
+      <view class="picker-content" @click.stop>
+        <view class="picker-header">
+          <text class="picker-title">选择可见范围</text>
+          <text class="picker-close" @click="showVisiblePicker = false">✕</text>
+        </view>
+
+        <!-- 搜索栏 -->
+        <view class="picker-search">
+          <view class="search-box">
+            <text class="tn-icon-search" style="font-size: 16px; color: #999999;"></text>
+            <input
+              v-model="visibleKeyword"
+              type="text"
+              placeholder="搜索地区"
+              @input="handleVisibleSearch"
+            />
+          </view>
+        </view>
+
+        <view class="picker-body">
+          <!-- 基础可见范围 -->
+          <view class="picker-section">
+            <text class="section-title">基础范围</text>
+            <view
+              v-for="item in baseVisibleOptions"
+              :key="item.value"
+              class="picker-item"
+              :class="{ active: formData.visibleType === item.type && formData.visibleValue === item.value }"
+              @click="selectVisible(item)"
+            >
+              <text class="picker-item-name">{{ item.name }}</text>
+              <text v-if="formData.visibleType === item.type && formData.visibleValue === item.value" class="picker-check">✓</text>
+            </view>
+          </view>
+
+          <!-- 指定地区可见 -->
+          <view class="picker-section">
+            <text class="section-title">指定地区</text>
+            <view
+              v-for="region in filteredRegions"
+              :key="region.id"
+              class="picker-item"
+              :class="{ active: formData.visibleType === 'region' && formData.visibleValue === region.id }"
+              @click="selectRegionVisible(region)"
+            >
+              <text class="picker-item-name">{{ region.name }}可见</text>
+              <text v-if="formData.visibleType === 'region' && formData.visibleValue === region.id" class="picker-check">✓</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
 
     <!-- 底部发布按钮 -->
     <view class="submit-bar">
@@ -110,15 +165,44 @@ export default {
         images: [],
         topic: '',
         location: '',
-        visible: 0,
+        visibleType: 'all',
+        visibleValue: 'all',
         anonymous: false,
         topType: 0
       },
-      visibleOptions: [],
+      baseVisibleOptions: [
+        { name: '全国可见', type: 'all', value: 'all' },
+        { name: '本城市可见', type: 'city', value: 'current' },
+        { name: '本校区可见', type: 'school', value: 'current' },
+        { name: '外校可见', type: 'other', value: 'other' }
+      ],
+      regionList: [],
+      visibleKeyword: '',
       topOptions: [],
       showTopicPicker: false,
       showVisiblePicker: false,
       showTopPicker: false
+    }
+  },
+  computed: {
+    currentVisibleLabel() {
+      // 先检查基础可见范围
+      const baseOption = this.baseVisibleOptions.find(
+        item => item.type === this.formData.visibleType && item.value === this.formData.visibleValue
+      )
+      if (baseOption) return baseOption.name
+
+      // 再检查指定地区
+      if (this.formData.visibleType === 'region') {
+        const region = this.regionList.find(r => r.id === this.formData.visibleValue)
+        return region ? `${region.name}可见` : '请选择'
+      }
+
+      return '请选择'
+    },
+    filteredRegions() {
+      if (!this.visibleKeyword) return this.regionList
+      return this.regionList.filter(item => item.name.includes(this.visibleKeyword))
     }
   },
   onLoad() {
@@ -126,16 +210,17 @@ export default {
     this.statusBarHeight = systemInfo.statusBarHeight
     this.calcRightSafeArea()
     this.calcScrollHeight()
-    this.loadVisibleOptions()
+    this.loadRegionList()
     this.loadTopPricing()
   },
   methods: {
-    async loadVisibleOptions() {
+    async loadRegionList() {
       try {
-        const data = await regionApi.getVisibleOptions()
-        this.visibleOptions = (data || []).map(item => item.name)
+        const data = await regionApi.getList()
+        this.regionList = (data || []).filter(item => item.id !== 0)
       } catch (e) {
-        this.visibleOptions = ['全国可见', '本城市可见', '本校区可见']
+        console.error('加载地区列表失败', e)
+        this.regionList = []
       }
     },
     async loadTopPricing() {
@@ -186,14 +271,18 @@ export default {
         }
       })
     },
-    chooseVisible() {
-      if (!this.visibleOptions.length) return
-      uni.showActionSheet({
-        itemList: this.visibleOptions,
-        success: (res) => {
-          this.formData.visible = res.tapIndex
-        }
-      })
+    selectVisible(item) {
+      this.formData.visibleType = item.type
+      this.formData.visibleValue = item.value
+      this.showVisiblePicker = false
+    },
+    selectRegionVisible(region) {
+      this.formData.visibleType = 'region'
+      this.formData.visibleValue = region.id
+      this.showVisiblePicker = false
+    },
+    handleVisibleSearch() {
+      // 搜索由 computed 自动处理
     },
     handleSubmit() {
       if (!this.formData.content.trim()) {
@@ -211,13 +300,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/dark-mode.scss';
+
 .page-container {
   min-height: 100vh;
   background-color: #F8F8F8;
+  transition: background-color 0.3s ease;
+
+  &.dark-mode {
+    background-color: $dark-bg-primary;
+  }
 }
 
 .nav-bar {
   background-color: #FFFFFF;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .nav-content {
     position: relative;
@@ -230,6 +331,11 @@ export default {
       font-size: 30rpx;
       color: #666666;
       z-index: 10;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-secondary;
+      }
     }
 
     .nav-title {
@@ -239,6 +345,11 @@ export default {
       font-size: 34rpx;
       color: #333333;
       font-weight: 600;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
     }
   }
 }
@@ -253,6 +364,12 @@ export default {
   background-color: #FFFFFF;
   border-top: 1rpx solid #F5F5F5;
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-top-color: $dark-border;
+  }
 
   .submit-btn {
     width: 100%;
@@ -275,6 +392,11 @@ export default {
   padding: 24rpx;
   background-color: #FFFFFF;
   margin-bottom: 20rpx;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
 
   .content-input {
     width: 100%;
@@ -282,6 +404,11 @@ export default {
     font-size: 30rpx;
     color: #333333;
     line-height: 1.6;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .content-count {
@@ -290,6 +417,11 @@ export default {
     font-size: 24rpx;
     color: #999999;
     margin-top: 16rpx;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-tertiary;
+    }
   }
 }
 
@@ -350,10 +482,21 @@ export default {
   padding: 32rpx 24rpx;
   background-color: #FFFFFF;
   border-bottom: 1rpx solid #F5F5F5;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+    border-bottom-color: $dark-border;
+  }
 
   .item-label {
     font-size: 30rpx;
     color: #333333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
   }
 
   .item-value {
@@ -361,10 +504,173 @@ export default {
     align-items: center;
     font-size: 28rpx;
     color: #333333;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-primary;
+    }
 
     .placeholder {
       color: #999999;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-tertiary;
+      }
     }
   }
+}
+
+.picker-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.picker-content {
+  width: 100%;
+  max-height: 70vh;
+  background-color: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+  transition: background-color 0.3s ease;
+
+  .dark-mode & {
+    background-color: $dark-bg-secondary;
+  }
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
+  }
+}
+
+.picker-search {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+  transition: border-color 0.3s ease;
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    padding: 16rpx 24rpx;
+    background-color: #F5F5F5;
+    border-radius: 8rpx;
+    transition: background-color 0.3s ease;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+    }
+
+    input {
+      flex: 1;
+      margin-left: 16rpx;
+      font-size: 28rpx;
+      color: #333333;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: $dark-text-primary;
+      }
+    }
+  }
+}
+
+.picker-title {
+  font-size: 32rpx;
+  color: #333333;
+  font-weight: 600;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
+}
+
+.picker-close {
+  font-size: 40rpx;
+  color: #999999;
+  line-height: 1;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-secondary;
+  }
+}
+
+.picker-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+.picker-section {
+  margin-bottom: 24rpx;
+
+  .section-title {
+    display: block;
+    padding: 24rpx 24rpx 16rpx;
+    font-size: 26rpx;
+    color: #999999;
+    transition: color 0.3s ease;
+
+    .dark-mode & {
+      color: $dark-text-tertiary;
+    }
+  }
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  .dark-mode & {
+    border-bottom-color: $dark-border;
+  }
+
+  &.active {
+    background-color: #F8F8F8;
+
+    .dark-mode & {
+      background-color: $dark-bg-tertiary;
+    }
+  }
+}
+
+.picker-item-name {
+  font-size: 30rpx;
+  color: #333333;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $dark-text-primary;
+  }
+}
+
+.picker-check {
+  font-size: 32rpx;
+  color: #007AFF;
+  font-weight: 600;
 }
 </style>

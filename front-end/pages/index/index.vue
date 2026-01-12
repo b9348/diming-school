@@ -419,9 +419,14 @@ export default {
       this.loading = true
 
       const tabName = this.currentTabName
+      const regionId = uni.getStorageSync('currentRegionId') || '0'
+      const schoolId = uni.getStorageSync('currentSchoolId') || ''
+
       const params = {
         page: this.page,
         pageSize: 10,
+        regionId,
+        schoolId,
         ...this.filterValue
       }
 
@@ -545,6 +550,13 @@ export default {
       this.loadPostList()
     },
     loadMore() {
+      this.loadPostList()
+    },
+    onRegionChange(region) {
+      // 地区切换后刷新列表
+      this.page = 1
+      this.postList = []
+      this.noMore = false
       this.loadPostList()
     },
     goHotDetail(item) {
