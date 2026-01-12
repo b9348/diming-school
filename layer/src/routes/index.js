@@ -83,6 +83,7 @@ router.post('/errand/accept/:id', errandController.accept)
 router.post('/errand/complete/:id', errandController.complete)
 
 // ==================== 闲置 ====================
+router.get('/idle/data', idleController.getData)
 router.get('/idle/list', idleController.getList)
 router.get('/idle/detail/:id', idleController.getDetail)
 router.post('/idle/saveOrUpdate', idleController.saveOrUpdate)

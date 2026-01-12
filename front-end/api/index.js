@@ -96,6 +96,9 @@ export const errandApi = {
  * 闲置相关 API
  */
 export const idleApi = {
+  // 获取闲置数据（轮播图、公告等）
+  getData: (params) => get('/idle/data', params),
+
   // 获取闲置列表
   getList: (params) => get('/idle/list', params),
 

@@ -1,4 +1,85 @@
 const { successResponse, errorResponse } = require('../utils/response')
+const bannerData = require('../data/bannerData')
+
+// 闲置公告数据配置
+const IDLE_NOTICE_CONFIG = {
+  '售卖中': {
+    noticeInfo: {
+      id: 1,
+      type: 'notice',
+      content: '闲置交易平台全新升级，支持更多支付方式，快来体验吧',
+      url: '/pages/notice/detail?id=1'
+    },
+    activityInfo: {
+      id: 2,
+      type: 'activity',
+      content: '新用户首单免手续费，快来发布你的第一个闲置商品',
+      url: '/pages/activity/detail?id=2'
+    },
+    recommendInfo: {
+      id: 3,
+      type: 'recommend',
+      tag: '推荐',
+      content: '热门商品：教材书籍、电子产品、生活用品，物美价廉',
+      url: '/pages/recommend/detail?id=3'
+    }
+  },
+  '我发布的': {
+    noticeInfo: {
+      id: 4,
+      type: 'notice',
+      content: '商品发布后，买家会尽快联系您，请注意查收消息',
+      url: '/pages/notice/detail?id=4'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '我买到的': {
+    noticeInfo: {
+      id: 5,
+      type: 'notice',
+      content: '收到商品后请及时确认，评价卖家可以获得积分奖励',
+      url: '/pages/notice/detail?id=5'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '我卖出的': {
+    noticeInfo: {
+      id: 6,
+      type: 'notice',
+      content: '订单完成后请及时发货，保持良好信誉可以获得更多曝光',
+      url: '/pages/notice/detail?id=6'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  },
+  '聊过的': {
+    noticeInfo: {
+      id: 7,
+      type: 'notice',
+      content: '查看您与买家/卖家的聊天记录，及时沟通交易细节',
+      url: '/pages/notice/detail?id=7'
+    },
+    activityInfo: null,
+    recommendInfo: null
+  }
+}
+
+// 获取闲置数据
+const getData = (req, res) => {
+  const { tab } = req.query
+  const config = IDLE_NOTICE_CONFIG[tab] || IDLE_NOTICE_CONFIG['售卖中']
+
+  const data = {
+    bannerList: bannerData.getBannersByPosition('idle'),
+    noticeInfo: config.noticeInfo,
+    activityInfo: config.activityInfo,
+    recommendInfo: config.recommendInfo
+  }
+
+  successResponse(res, data)
+}
 
 // 生成闲置列表数据
 const generateIdleList = (page, pageSize) => {
@@ -278,6 +359,7 @@ const setTop = (req, res) => {
 }
 
 module.exports = {
+  getData,
   getList,
   getDetail,
   saveOrUpdate,
