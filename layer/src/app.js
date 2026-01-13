@@ -24,6 +24,8 @@ app.use('/api', routes)
 app.use(errorHandler)
 
 // 启动服务
+const env = config.isDev ? '开发环境' : '生产环境'
+const host = config.isDev ? 'localhost' : '47.120.68.27'
 app.listen(config.port, () => {
-  console.log(`递明校园中间层服务已启动: http://localhost:${config.port}`)
+  console.log(`递明校园中间层服务已启动 (${env}): http://${host}:${config.port}`)
 })

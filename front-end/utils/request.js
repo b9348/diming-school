@@ -7,24 +7,29 @@
  */
 import userStore from '@/store/user.js'
 
-// API 基础路径（根据环境动态设置）
+// API 基础路径
 const getBaseUrl = () => {
   // #ifdef H5
-  // H5 环境使用相对路径，由 devServer 代理
+  // H5 开发环境使用相对路径，由 devServer 代理
   return '/api'
   // #endif
 
   // #ifdef MP-WEIXIN
-  // 微信小程序环境使用完整地址
+  // #ifdef DEV
   return 'http://localhost:5102/api'
+  // #else
+  return 'http://47.120.68.27:20715/api'
+  // #endif
   // #endif
 
   // #ifdef APP-PLUS
-  // APP 环境使用完整地址
+  // #ifdef DEV
   return 'http://localhost:5102/api'
+  // #else
+  return 'http://47.120.68.27:20715/api'
+  // #endif
   // #endif
 
-  // 默认返回相对路径
   return '/api'
 }
 
